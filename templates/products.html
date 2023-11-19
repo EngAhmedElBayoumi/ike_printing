@@ -1,0 +1,509 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+			<!-- ======================= Shop Style 1 ======================== -->
+			<section class="bg-cover" style="background:url({% static 'assets/img/banner-2.png' %}) no-repeat;">
+				<div class="container">
+					<div class="row align-items-center justify-content-center">
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+							<div class="text-center py-5 mt-3 mb-3">
+								<h1 class="ft-medium mb-3">Products</h1>
+								<ul class="shop_categories_list m-0 p-0">
+									<li><a href="#">Men</a></li>
+									<li><a href="#">Women</a></li>
+									<li><a href="#">Accessories</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- ======================= Shop Style 1 ======================== -->
+			
+			
+			
+			<!-- ======================= Filter Wrap Style 1 ======================== -->
+			<section class="py-3 br-bottom br-top">
+				<div class="container">
+					<div class="row align-items-center justify-content-between">
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Products</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- ============================= Filter Wrap ============================== -->
+			
+			
+			<!-- ======================= All Product List ======================== -->
+			<section class="middle">
+				<div class="container-fluid">
+					<div class="row">
+						
+						<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 p-xl-0">
+							<div class="search-sidebar sm-sidebar border">
+								<div class="search-sidebar-body">
+								
+								<div class="single_search_boxed">
+										<div class="widget-boxed-header">
+											<h4><a href="#brands" data-toggle="collapse"  aria-expanded="false" role="button">Matrials</a></h4>
+										</div>
+										<div class="widget-boxed-body collapse show"  id="brands" data-parent="#brands">
+											<div class="side-list no-border">
+												<!-- Single Filter Card -->
+												<div class="single_filter_card">
+													<div class="card-body pt-0">
+														<div class="inner_widget_link">
+															<ul class="no-ul-list">
+                                                                {% for matireal in matireals %}
+																<li>
+																	<input onchange="getproductbymatireals(this)" id="{{matireal.name}}" class="checkbox-custom" value="{{matireal.name}}" type="checkbox">
+																	<label for="{{matireal.name}}" class="checkbox-custom-label">{{matireal.name}}<span>{{matireal.number}}</span></label>
+																</li>
+                                                                {% endfor %}
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+		                              <!-- Single Option -->
+									<div class="single_search_boxed">
+										<div class="widget-boxed-header">
+											<h4><a href="#Size" data-toggle="collapse"  aria-expanded="false" role="button">Size</a></h4>
+										</div>
+										<div class="widget-boxed-body collapse show" id="Size" data-parent="#Size">
+											<div class="side-list no-border">
+												<!-- Single Filter Card -->
+												<div class="single_filter_card">
+													<div class="card-body pt-0">
+														<div class="inner_widget_link">
+															<ul class="no-ul-list">
+                                                                {% for size in sizes %}
+																<li>
+																	<input id="{{size.id}}" onchange="getproductsbysize(this)" class="checkbox-custom" value="{{size.name}}" type="checkbox">
+                                                                    <label for="{{size.id}}" class="checkbox-custom-label">{{size.simbol}}<span>{{size.number}}</span></label>
+
+																</li>
+                                                                {% endfor %}
+															
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								
+									<!-- Single Option -->
+									
+									<!-- Single Option -->
+									<div class="single_search_boxed">
+										<div class="widget-boxed-header">
+											<h4><a href="#gender" data-toggle="collapse" aria-expanded="false" role="button">category </a></h4>
+										</div>
+										<div class="widget-boxed-body collapse show" id="gender" data-parent="#gender">
+											<div class="side-list no-border">
+												<!-- Single Filter Card -->
+												<div class="single_filter_card">
+													<div class="card-body pt-0">
+														<div class="inner_widget_link">
+															<ul class="no-ul-list">
+                                                                {% for category in categories %}
+																<li>
+																	<input id="{{category.name}}"onchange="getproductsbycategory(this)" class="checkbox-custom" name="g1" value="{{category.name}}" type="checkbox">
+																	<label for="{{category.name}}" class="checkbox-custom-label">{{category.name}} <span>{{category.number}}</span></label>
+																</li>
+                                                                {% endfor %}
+																
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+
+									<!-- Single Option -->
+									<div class="single_search_boxed">
+										<div class="widget-boxed-header">
+											<h4><a href="#colors" data-toggle="collapse" aria-expanded="false" role="button">Colors</a></h4>
+										</div>
+										<div class="widget-boxed-body collapse show" id="colors" data-parent="#colors">
+											<div class="side-list no-border">
+												<!-- Single Filter Card -->
+												<div class="single_filter_card">
+													<div class="card-body pt-0">
+														<div class="text-left">
+                                                            {% for color in colors %}
+															<div class="form-check form-option form-check-inline mb-1">
+																<input class="form-check-input" type="radio" name="colora8" id="{{color.name}}" onchange="getproductsbycolor(this)" value="{{color.name}}">
+																<label class="form-option-label rounded-circle" for="{{color.name}}"><span class="form-option-color rounded-circle" style="background-color:{{color.code}}"></span></label>
+															</div>
+                                                            {% endfor %}
+															
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12">
+							
+							<div class="row">
+								<div class="col-xl-12 col-lg-12 col-md-12">
+									<div class="border mb-3 mfliud">
+										<div class="row align-items-center py-2 m-0">
+											<div class="col-xl-3 col-lg-4 col-md-5 col-sm-12">
+												<h6 class="mb-0">{{products.count}} Items Found</h6>
+											</div>
+											
+											{% comment %} <div class="col-xl-9 col-lg-8 col-md-7 col-sm-12">
+												<div class="filter_wraps d-flex align-items-center justify-content-end m-start">
+													<div class="single_fitres">
+														<select class="custom-select simple">
+														  <option value="1" selected="">Default Sorting</option>
+														  <option value="2">Sort by price: Low price</option>
+														  <option value="3">Sort by price: Hight price</option>
+														  <option value="4">Sort by rating</option>
+														  <option value="5">Sort by trending</option>
+														</select>
+													</div>
+													
+												</div>
+											</div> {% endcomment %}
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<!-- row -->
+							<div class="row align-items-center rows-products" id="productitem">
+								{% if products %}
+                                {% for product in products %}
+								<!-- Single -->
+								<div class="col-xl-4 col-lg-4 col-md-6 col-6">
+									<div class="product_grid card b-0">
+                                      <div class="card-body p-0">
+                                            <div class="shop_thumb position-relative">
+                                                <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                    <img class="card-img-top" src="{{product.frontimage.url}}" alt="">
+                                                </a>
+                                                <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                    <img class="card-img-top" src="{{product.backimage.url}}" alt="">
+                                                </a>
+                                                <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
+                                                    <div class="group_btn">
+                                                        <a href="{% url 'product:edit_product_design' product.id %}"  class="prd_btn_square">
+                                                            <i class="ti-fullscreen"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="prd_btn_square snackbar-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
+                                                            <i class="lni lni-heart"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
+                                                            <i class="lni lni-shopping-basket"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
+                                            <div class="text-left">
+                                                <div class="text-center">
+                                                    <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="#">{{product.name}}</a></h5>
+                                                    {% comment %} description {% endcomment %}
+                                                    <p class="lead">{{product.description}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+								</div>
+                                {% endfor %}
+                                {% else %}
+                                <h1 style="margin:10px auto;">no product</h1>
+                                {% endif %}		
+
+							</div>
+							<!-- row -->
+							
+						
+					</div>
+				</div>
+			</section>
+            {% block script %}
+            {% comment %} function getproductsbycategory {% endcomment %}
+            <script>
+                projecturl="http://127.0.0.1:8000/"
+                function getproductsbycategory(checked) {
+                    
+                    if (checked.checked){
+                      var  category=checked.value
+                        $.ajax({
+                            type: "GET",
+                            url: `${projecturl}product/getproductsbycategory/${category}`,
+                            success: function (data) {
+                                
+                                const productitem = document.getElementById('productitem');
+                                productitem.innerHTML = '';
+                                // Loop through the product data and add it to the productitem
+                                data.products.forEach(function(product) {
+                                    // Create a new product card
+                                    const productCard = document.createElement('div');
+                                    productCard.className = 'col-xl-4 col-lg-4 col-md-6 col-6';
+                                    productCard.innerHTML = `
+                                        <div class="product_grid card b-0">
+                                            <div class="card-body p-0">
+                                                <div class="shop_thumb position-relative">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                        <img class="card-img-top" src="${product.frontimage}" alt="">
+                                                    </a>
+                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                        <img class="card-img-top" src="${product.backimage}" alt="">
+                                                    </a>
+                                                    <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
+                                                        <div class="group_btn">
+                                                            <a href="#" data-toggle="modal" data-target="#quickview" class="prd_btn_square">
+                                                                <i class="ti-fullscreen"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
+                                                                <i class="lni lni-heart"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
+                                                                <i class="lni lni-shopping-basket"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
+                                                <div class="text-left">
+                                                    <div class="text-center">
+                                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="#">${product.name}</a></h5>
+                                                        <p class="lead">${product.description}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    // Append the product card to the productitem
+                                    productitem.appendChild(productCard);
+                                });
+                            },
+                            error: function (data) {
+                                
+                            },
+                        });
+                    }
+                    
+                }
+                
+              
+                function getproductsbycolor(checked) {
+                    if (checked.checked){
+                       var category=checked.value
+                        $.ajax({
+                            type: "GET",
+                            url: `${projecturl}product/getproductsbycolor/${category}`,
+                            success: function (data) {
+                                
+                                const productitem = document.getElementById('productitem');
+                                productitem.innerHTML = '';
+                                // Loop through the product data and add it to the productitem
+                                data.products.forEach(function(product) {
+                                    // Create a new product card
+                                    const productCard = document.createElement('div');
+                                    productCard.className = 'col-xl-4 col-lg-4 col-md-6 col-6';
+                                    productCard.innerHTML = `
+                                        <div class="product_grid card b-0">
+                                            <div class="card-body p-0">
+                                                <div class="shop_thumb position-relative">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                        <img class="card-img-top" src="${product.frontimage}" alt="">
+                                                    </a>
+                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                        <img class="card-img-top" src="${product.backimage}" alt="">
+                                                    </a>
+                                                    <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
+                                                        <div class="group_btn">
+                                                            <a href="#" data-toggle="modal" data-target="#quickview" class="prd_btn_square">
+                                                                <i class="ti-fullscreen"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
+                                                                <i class="lni lni-heart"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
+                                                                <i class="lni lni-shopping-basket"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
+                                                <div class="text-left">
+                                                    <div class="text-center">
+                                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="#">${product.name}</a></h5>
+                                                        <p class="lead">${product.description}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    // Append the product card to the productitem
+                                    productitem.appendChild(productCard);
+                                });
+                            },
+                            error: function (data) {
+                                
+                            },
+                        });
+                    }
+                }
+                
+              
+                function getproductsbysize(checked) {
+                    if (checked.checked){
+                        var category=checked.value
+                        $.ajax({
+                            type: "GET",
+                            url: `${projecturl}product/getproductsbysize/${category}`,
+                            success: function (data) {
+                                
+                                const productitem = document.getElementById('productitem');
+                                productitem.innerHTML = '';
+                                // Loop through the product data and add it to the productitem
+                                data.products.forEach(function(product) {
+                                    // Create a new product card
+                                    const productCard = document.createElement('div');
+                                    productCard.className = 'col-xl-4 col-lg-4 col-md-6 col-6';
+                                    productCard.innerHTML = `
+                                        <div class="product_grid card b-0">
+                                            <div class="card-body p-0">
+                                                <div class="shop_thumb position-relative">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                        <img class="card-img-top" src="${product.frontimage}" alt="">
+                                                    </a>
+                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                        <img class="card-img-top" src="${product.backimage}" alt="">
+                                                    </a>
+                                                    <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
+                                                        <div class="group_btn">
+                                                            <a href="#" data-toggle="modal" data-target="#quickview" class="prd_btn_square">
+                                                                <i class="ti-fullscreen"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
+                                                                <i class="lni lni-heart"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
+                                                                <i class="lni lni-shopping-basket"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
+                                                <div class="text-left">
+                                                    <div class="text-center">
+                                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="#">${product.name}</a></h5>
+                                                        <p class="lead">${product.description}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    // Append the product card to the productitem
+                                    productitem.appendChild(productCard);
+                                });
+                            },
+                            error: function (data) {
+                                
+                            },
+                        });
+                    }
+                }
+                
+              
+                function getproductbymatireals(checked) {
+                    if (checked.checked){
+                      var  category=checked.value
+                        $.ajax({
+                            type: "GET",
+                            url: `${projecturl}product/getproductsbymatireal/${category}`,
+                            success: function (data) {
+                                
+                                const productitem = document.getElementById('productitem');
+                                productitem.innerHTML = '';
+                                // Loop through the product data and add it to the productitem
+                                data.products.forEach(function(product) {
+                                    // Create a new product card
+                                    const productCard = document.createElement('div');
+                                    productCard.className = 'col-xl-4 col-lg-4 col-md-6 col-6';
+                                    productCard.innerHTML = `
+                                        <div class="product_grid card b-0">
+                                            <div class="card-body p-0">
+                                                <div class="shop_thumb position-relative">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                        <img class="card-img-top" src="${product.frontimage}" alt="">
+                                                    </a>
+                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                        <img class="card-img-top" src="${product.backimage}" alt="">
+                                                    </a>
+                                                    <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
+                                                        <div class="group_btn">
+                                                            <a href="#" data-toggle="modal" data-target="#quickview" class="prd_btn_square">
+                                                                <i class="ti-fullscreen"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
+                                                                <i class="lni lni-heart"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
+                                                                <i class="lni lni-shopping-basket"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
+                                                <div class="text-left">
+                                                    <div class="text-center">
+                                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="#">${product.name}</a></h5>
+                                                        <p class="lead">${product.description}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    // Append the product card to the productitem
+                                    productitem.appendChild(productCard);
+                                });
+                            },
+                            error: function (data) {
+                                
+                            },
+                        });
+                    }
+                }
+                
+               
+
+
+            </script>
+
+            {% endblock %}
+
+
+			<!-- ======================= All Product List ======================== -->
+			{% endblock %}

@@ -1,0 +1,275 @@
+<!--django load static-->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zxx">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="author" content="Themezhub" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+        <title>IKE Print</title>
+		 
+        <!-- Custom CSS -->
+        <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet">
+		
+        {% block style %}
+
+        {% endblock %}
+
+
+    </head>
+	
+    <body>
+	
+			 <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+		<div class="preloader"></div>
+		
+        <!-- ============================================================== -->
+        <!-- Main wrapper - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <div id="main-wrapper">
+		
+            <!-- ============================================================== -->
+            <!-- Top header  -->
+            <!-- ============================================================== -->
+            <!-- Start Navigation -->
+			<div class="header header-light dark-text">
+				<div class="container">
+					<nav id="navigation" class="navigation navigation-landscape">
+						<div class="nav-header">
+							<a class="nav-brand" href="{% url 'home:home' %}">
+								<img src="{% static 'assets/img/newImages/new1/logo.png' %}" class="logo" alt="" />
+							</a>
+							<div class="nav-toggle"></div>
+							<div class="mobile_nav">
+								<ul>
+								{% comment %} if user login {% endcomment %}
+								{% if user.is_authenticated %}
+                                <li class="liProfillelee">
+                                    <a class="ProfileLinkHeader">
+                                        <img class="UserProfileImages" src="{% static 'assets/img/team-1.jpg' %}">
+                                    </a>
+                                    <ul class="nav-dropdown nav-submenu">
+                                        <li><a href="{% url 'accounts:profile' %}">My Profile</a></li>
+                                        <li><a href="{% url 'accounts:logout' %}">Log Out</a></li>
+                                    </ul>
+								</li>
+								{% else %}
+
+								<li>
+									<a href="{% url 'accounts:login' %}" >
+										<i class="lni lni-user"></i>
+									</a>
+								</li>
+								{% endif %}
+								
+								</ul>
+							</div>
+						</div>
+						<div class="nav-menus-wrapper" style="transition-property: none;">
+							<ul class="nav-menu">
+							     <li><a href="{% url 'home:home' %}">Home</a></li>
+								<li><a href="{% url 'product:self_customization' %}">self customization</a></li>
+								<li><a href="{% url 'banner_and_posters:banner_and_posters' %}">Signs and posters</a></li>
+								<li><a href="{% url 'call_expert:call_expert' %}">Call expert</a></li>
+								<li><a href="{% url 'product:ordaring' %}">Ordaring</a></li>								
+							</ul>
+							<ul class="nav-menu nav-menu-social align-to-right">
+								{% if user.is_authenticated %}
+								<li>
+                                    <a class="ProfileLinkHeader">
+										
+                                        <img class="UserProfileImages" src="{{user.profile.image.url}}">
+										
+										{% comment %} first name for user {% endcomment %}
+										{{user.first_name }}
+										{{user.last_name }}
+									</a>
+                                        <ul class="nav-dropdown nav-submenu">
+                                            <li><a href="{% url 'accounts:profile' %}">My Profile</a></li>
+                                            <li><a href="{% url 'accounts:logout' %}">Log Out</a></li>
+											{% if user.is_superuser %}
+											<li><a href="{% url 'admin:index' %}">DAshboard</a></li>
+											{% endif %}
+                                        </ul>
+								</li>
+								{% else %}
+								<li>
+									<a href="{% url 'accounts:login' %}" >
+										<i class="lni lni-user"></i>
+									</a>
+								</li>
+								{% endif %}
+								
+							</ul>
+						</div>
+					</nav>
+				</div>
+			</div>
+			<!-- End Navigation -->
+			<div class="clearfix"></div>
+			<!-- ============================================================== -->
+			<!-- Top header  -->
+			<!-- ============================================================== -->
+
+
+
+
+            {% comment %} django block {% endcomment %}
+            {% block body %}
+
+            {% endblock %}
+			
+			<!-- ============================ Footer Start ================================== -->
+			<footer class="dark-footer skin-dark-footer style-2">
+				<div class="footer-middle">
+					<div class="container">
+						<div class="row">
+							
+							<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+								<div class="footer_widget">
+									<img src="{% static 'assets/img/newImages/new1/logo.png' %}" class="img-footer small mb-2" alt="" />
+									
+									<div class="address mt-3">
+										3298 Grant Street Longview, TX<br>United Kingdom 75601	
+									</div>
+									<div class="address mt-3">
+										1-202-555-0106<br>help@shopper.com
+									</div>
+									<div class="address mt-3">
+										<ul class="list-inline">
+											<li class="list-inline-item"><a href="#"><i class="lni lni-facebook-filled"></i></a></li>
+											<li class="list-inline-item"><a href="#"><i class="lni lni-twitter-filled"></i></a></li>
+											<li class="list-inline-item"><a href="#"><i class="lni lni-youtube"></i></a></li>
+											<li class="list-inline-item"><a href="#"><i class="lni lni-instagram-filled"></i></a></li>
+											<li class="list-inline-item"><a href="#"><i class="lni lni-linkedin-original"></i></a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+								<div class="footer_widget">
+									<h4 class="widget_title">Supports</h4>
+									<ul class="footer-menu">
+										<li><a href="#">Contact Us</a></li>
+										<li><a href="#">About Page</a></li>
+										<li><a href="#">Size Guide</a></li>
+										<li><a href="#">Shipping & Returns</a></li>
+									
+									</ul>
+								</div>
+							</div>
+									
+							<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+								<div class="footer_widget">
+									<h4 class="widget_title">Shop</h4>
+									<ul class="footer-menu">
+										<li><a href="#">Men's Shopping</a></li>
+										<li><a href="#">Women's Shopping</a></li>
+										<li><a href="#">Kids's Shopping</a></li>
+										
+									</ul>
+								</div>
+							</div>
+					
+							<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+								<div class="footer_widget">
+									<h4 class="widget_title">Company</h4>
+									<ul class="footer-menu">
+										<li><a href="#">About</a></li>
+										<li><a href="#">Blog</a></li>
+										<li><a href="#">Affiliate</a></li>
+										<li><a href="#">Login</a></li>
+									</ul>
+								</div>
+							</div>
+							
+							<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+								<div class="footer_widget">
+									<h4 class="widget_title">Subscribe</h4>
+									<p>Receive updates, hot deals, discounts sent straignt in your inbox daily</p>
+									<div class="foot-news-last">
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Email Address">
+											<div class="input-group-append">
+												<button type="button" class="input-group-text b-0 text-light"><i class="lni lni-arrow-right"></i></button>
+											</div>
+										</div>
+									</div>
+									<div class="address mt-3">
+										<h5 class="fs-sm text-light">Secure Payments</h5>
+										<div class="scr_payment"><img src="{% static 'assets/img/card.png' %}" class="img-fluid" alt="" /></div>
+									</div>
+								</div>
+							</div>
+								
+						</div>
+					</div>
+				</div>
+				
+				<div class="footer-bottom">
+					<div class="container">
+						<div class="row align-items-center">
+							<div class="col-lg-12 col-md-12 text-center">
+								<p class="mb-0">© 2023 . Designd By <a href="#">IKE Print</a>.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- ============================ Footer End ================================== -->
+			
+			
+			
+
+		
+			
+			<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
+			
+
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Wrapper -->
+		<!-- ============================================================== -->
+
+		<!-- ============================================================== -->
+		<!-- All Jquery -->
+		<!-- ============================================================== -->
+		<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+		<script src="{% static 'assets/js/popper.min.js' %}"></script>
+		<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'assets/js/ion.rangeSlider.min.js' %}"></script>
+		<script src="{% static 'assets/js/slick.js' %}"></script>
+		<script src="{% static 'assets/js/slider-bg.js' %}"></script>
+		<script src="{% static 'assets/js/lightbox.js' %}"></script> 
+		<script src="{% static 'assets/js/smoothproducts.js' %}"></script>
+		<script src="{% static 'assets/js/snackbar.min.js' %}"></script>
+		<script src="{% static 'assets/js/jQuery.style.switcher.js' %}"></script>
+		<script src="{% static 'assets/js/custom.js' %}"></script>
+		<!-- ============================================================== -->
+		<!-- This page plugins -->
+		<!-- ============================================================== -->	
+
+		<script>
+			function openCart() {
+				document.getElementById("Cart").style.display = "block";
+			}
+			function closeCart() {
+				document.getElementById("Cart").style.display = "none";
+			}
+		</script>
+
+		
+
+        {% block script %}
+
+        {% endblock %}
+
+	</body>
+
+</html>
+        

@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+        <!-- Custom CSS -->
+		<link href="{% static 'assets/libs/select2/js/select2.min.js' %}" rel="stylesheet">
+        <link href="{% static 'assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+		<style>
+        [type="radio"]:checked + label, [type="radio"]:not(:checked) + label {
+    padding-left: 30px;
+    line-height: 25px;
+}
+        [type="radio"]:checked + label:before, [type="radio"]:not(:checked) + label:before {
+    width: 25px;
+    height: 25px;
+}
+         .checkbox-custom:checked +  .checkbox-custom-label:before {
+    background: #000 !important;
+    border-radius: 50%;
+}
+ .checkbox-custom:checked +  .checkbox-custom-label:after {
+left: 0;
+    top: 0;
+    font-size: 14px;
+    color: #ffffff !important;
+    background: #000 !important;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 27px;
+}
+    </style>
+
+{% endblock %}
+
+{% block body %}
+			<!-- ======================= Top Breadcrubms ======================== -->
+			<div class="gray py-3">
+				<div class="container">
+					<div class="row">
+						<div class="colxl-12 col-lg-12 col-md-12">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Call Expert</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ======================= Top Breadcrubms ======================== -->
+			
+			<!-- ======================= Dashboard Detail ======================== -->
+			<section class="middle CheckOutPage">
+				<div class="container">
+					<div class="row align-items-start justify-content-between">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="submit-page">
+                                            <form action="#" method="post">
+                                                <!-- row -->
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label>Choose Session Meeting</label>
+                                                            <div class="row">
+                                                                <div class="col-lg-4 col-md-6">
+                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                        <div class="flex-1">
+                                                                            <input id="ddd" class="checkbox-custom" name="ddd" type="radio">
+                                                                            <label for="ddd" class="checkbox-custom-label">Normal Session (10 MIN)</label>
+                                                                        </div>		
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-md-6">
+                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                        <div class="flex-1">
+                                                                            <input id="ddd2" class="checkbox-custom" name="ddd" type="radio">
+                                                                            <label for="ddd2" class="checkbox-custom-label">Private Session (30 MIN)</label>
+                                                                        </div>		
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!---input and labels for name , email , phone , plateform select option-->
+                                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>name</label>
+                                                            <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Enter Your Name">
+                                                            <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Email</label>
+                                                            <div class="input-group">
+                                                            <input type="email" class="form-control" placeholder="Enter Your email">
+                                                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>phone</label>
+                                                            <div class="input-group">
+                                                            <input type="number" class="form-control" placeholder="Enter Your phone">
+                                                            <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Meeting platform</label>
+                                                            <div class="input-group">
+                                                            <select class="form-control">
+                                                                <option>Zoom</option>
+                                                                <option>Skype</option>
+                                                                <option>Google Meet</option>
+                                                                <option>Microsoft Teams</option>
+                                                                
+                                                            </select>
+                                                            <span class="input-group-text"><i class="fa fa-globe"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                   
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="datepicker2">Choose Date</label>
+                                                            <div class="input-group" id="datepicker2">
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="dd, MM, yyyy"
+                                                                    data-date-format="dd, MM, yyyy"
+                                                                    data-date-container='#datepicker2'
+                                                                    data-provide="datepicker"
+                                                                    data-date-autoclose="true">
+
+                                                                <span class="input-group-text"><i
+                                                                        class="fa fa-calendar-alt"></i></span>
+                                                            </div><!-- input-group -->
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label>Choose Time</label>
+                                                            <div class="twochoise mb-3">
+                                                                <div class="paymentWrap">
+                                                                    <div class="btn-group paymentBtnGroup btn-group-justified"
+                                                                        data-toggle="buttons">
+                                                                        <label class="btn paymentMethod active">
+                                                                            <div class="method visa">
+                                                                                <div class="sasasas">
+                                                                                    <p>1:00 PM</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <input type="radio" name="options" checked>
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>2:00 PM</p>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>3:00 PM</p>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>4:00 PM</p>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>5:00 PM</p>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>6:00 PM</p>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>7:00 PM</p>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>8:00 PM</p>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>9:00 PM</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>10:00 PM</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>11:00 PM</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+                                                                        <label class="btn paymentMethod">
+                                                                            <div class="method master-card">
+                                                                                <div class="sasasas">
+                                                                                    <p>12:00 PM</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <input type="radio" name="options">
+                                                                        </label>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    
+
+
+                                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                                        <div class="form-group text-center">
+                                                            <button type="submit" class="btn BookBUTTON full-width">
+                                                                Book Date & Time Now</button>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </form>
+                                            <!--/row -->
+                                        </div>
+                        </div>
+					</div>
+				</div>
+			</section>
+			<!-- ======================= Dashboard Detail End ======================== -->
+
+            {% block script %}
+            <script src="{% static 'assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+            <script src="{% static 'assets/libs/select2/js/select2.min.js' %}"></script>
+            {% endblock %}
+	{% endblock %}

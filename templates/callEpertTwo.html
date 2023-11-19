@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+<link href="{% static 'assets/libs/select2/js/select2.min.js' %}" rel="stylesheet">
+<link href="{% static 'assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'assets/libs/simpleCalndr/simple-calendar.css' %}">
+{% endblock %}
+
+
+{% block body %}
+
+			<!-- ======================= Top Breadcrubms ======================== -->
+			<div class="gray py-3">
+				<div class="container">
+					<div class="row">
+						<div class="colxl-12 col-lg-12 col-md-12">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Call Expert</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ======================= Top Breadcrubms ======================== -->
+			
+			<!-- ======================= Dashboard Detail ======================== -->
+			<section class="middle CheckOutPage cllExpertTwo">
+				<div class="container">
+					<div class="row align-items-start justify-content-between">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="submit-page">
+                                
+                                            <form action="#" method="post">
+                                                <!-- row -->
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="CallInputsInfo">
+                                                         
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Call Name</label>
+                                                                        <input type="text" class="form-control" placeholder="Name">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label>Choose Session Meeting</label>
+                                                                    </div>
+                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                        <div class="flex-1">
+                                                                            <input id="ddd" class="checkbox-custom" name="ddd" type="radio">
+                                                                            <label for="ddd" class="checkbox-custom-label">Normal Session 10 Min</label>
+                                                                        </div>		
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                        <div class="flex-1">
+                                                                            <input id="ddd2" class="checkbox-custom" name="ddd" type="radio">
+                                                                            <label for="ddd2" class="checkbox-custom-label">Private Session 30 Min</label>
+                                                                        </div>		
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                       
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <div class="ClaenderBox">
+                                                            <div id="container" class="calendar-container"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="CallAppointMentBox">
+                                                            <div class="twochoise mb-3">
+                                                    <div class="paymentWrap">
+                                                        <div class="btn-group paymentBtnGroup btn-group-justified"
+                                                            data-toggle="buttons">
+                                                            <label class="btn paymentMethod ">
+                                                                <div class="method visa">
+                                                                    <div class="sasasas">
+                                                                        <p>1:00 AM</p>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="radio" name="options" >
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:10 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:20 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:30 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options" checked>
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:40 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:50 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:50 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:50 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:50 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:50 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:50 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:50 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                            <label class="btn paymentMethod">
+                                                                <div class="method master-card">
+                                                                    <div class="sasasas">
+                                                                        <p>1:50 AM</p>
+                                                                    </div>
+
+                                                                </div>
+                                                                <input type="radio" name="options">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                        </div>
+                                                    </div>
+                                                   
+              
+
+
+                                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                                        <div class="form-group text-center">
+                                                            <button type="submit" class="btn BookBUTTON full-width">
+                                                                Book Date & Time Now</button>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </form>
+                                            <!--/row -->
+                                        </div>
+                        </div>
+					</div>
+				</div>
+			</section>
+			<!-- ======================= Dashboard Detail End ======================== -->
+
+			{% block script %}
+			<script src="{% static 'assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+			<script src="{% static 'assets/libs/select2/js/select2.min.js' %}"></script>
+			<!-- ============================================================== -->
+			<!-- This page plugins -->
+			<!-- ============================================================== -->	
+	
+			<script>
+				function openWishlist() {
+					document.getElementById("Wishlist").style.display = "block";
+				}
+				function closeWishlist() {
+					document.getElementById("Wishlist").style.display = "none";
+				}
+			</script>
+			
+			<script>
+				function openCart() {
+					document.getElementById("Cart").style.display = "block";
+				}
+				function closeCart() {
+					document.getElementById("Cart").style.display = "none";
+				}
+			</script>
+		
+			
+			<script src="{% static 'assets/libs/simpleCalndr/jquery.simple-calendar.js' %}"></script>
+	<script>
+	  var $calendar;
+	  $(document).ready(function () {
+		let container = $("#container").simpleCalendar({
+		  fixedStartDay: 0, // begin weeks by sunday
+		  disableEmptyDetails: true,
+		  events: [
+			// generate new event after tomorrow for one hour
+			{
+			  startDate: new Date(new Date().setHours(new Date().getHours() + 24)).toDateString(),
+			  endDate: new Date(new Date().setHours(new Date().getHours() + 25)).toISOString(),
+			  summary: 'Visit of the Eiffel Tower'
+			},
+			// generate new event for yesterday at noon
+			{
+			  startDate: new Date(new Date().setHours(new Date().getHours() - new Date().getHours() - 12, 0)).toISOString(),
+			  endDate: new Date(new Date().setHours(new Date().getHours() - new Date().getHours() - 11)).getTime(),
+			  summary: 'Restaurant'
+			},
+			// generate new event for the last two days
+			{
+			  startDate: new Date(new Date().setHours(new Date().getHours() - 48)).toISOString(),
+			  endDate: new Date(new Date().setHours(new Date().getHours() - 24)).getTime(),
+			  summary: '12:50 AM'
+			},
+			  // generate new event for the last two days
+			{
+			  startDate: new Date(new Date().setHours(new Date().getHours() + 48)).toISOString(),
+			  endDate: new Date(new Date().setHours(new Date().getHours() + 48)).getTime(),
+			  summary: '10:10 PM'
+			},
+			  // generate new event for the last two days
+			{
+			  startDate: new Date(new Date().setHours(new Date().getHours() + 48)).toISOString(),
+			  endDate: new Date(new Date().setHours(new Date().getHours() + 48)).getTime(),
+			  summary: '10:20 PM'
+			},
+			  // generate new event for the last two days
+			{
+			  startDate: new Date(new Date().setHours(new Date().getHours() + 48)).toISOString(),
+			  endDate: new Date(new Date().setHours(new Date().getHours() + 48)).getTime(),
+			  summary: '10:30 PM'
+			},
+			  // generate new event for the last two days
+			{
+			  startDate: new Date(new Date().setHours(new Date().getHours() + 48)).toISOString(),
+			  endDate: new Date(new Date().setHours(new Date().getHours() + 48)).getTime(),
+			  summary: '10:10 PM'
+			},
+			  // generate new event for the last two days
+			{
+			  startDate: new Date(new Date().setHours(new Date().getHours() + 48)).toISOString(),
+			  endDate: new Date(new Date().setHours(new Date().getHours() + 48)).getTime(),
+			  summary: '10:20 PM'
+			},
+			  // generate new event for the last two days
+			{
+			  startDate: new Date(new Date().setHours(new Date().getHours() + 48)).toISOString(),
+			  endDate: new Date(new Date().setHours(new Date().getHours() + 48)).getTime(),
+			  summary: '10:30 PM'
+			}
+			  
+		  ],
+	
+		});
+		$calendar = container.data('plugin_simpleCalendar')
+	  });
+	</script>
+
+			{% endblock %}
+
+{% endblock %}
