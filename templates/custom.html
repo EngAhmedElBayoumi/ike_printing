@@ -152,21 +152,21 @@
 
              
                         <div class="row">
-                            <div class="col-12 text-center mb-5">
+                            <!-- <div class="col-12 text-center mb-5">
                                 <h3 class="">To call a Designer click <a class="h3 text-danger" href="{% url 'call_expert:call_expert' %}">here</a> </h3>
-                            </div>
+                            </div> -->
 
                            <div class="col-lg-1 col-xs-12">
                             <!-- bring forward , send backward buttons with font aswome icon -->
-                           
+                           <!--
                             {% comment %} <div class="btn-group-vertical" role="group" aria-label="Basic example">
-                                <!--undoButton -->
+                               
                                 <button type="button" class="btn btn-secondary" id="undoButton"><i class="fas fa-undo"></i>undo</button>
-                                <!--redoButton -->
+                         
                                 <button type="button" class="btn btn-secondary" id="redoButton"><i class="fas fa-redo"></i>redo</button>
                             </div> {% endcomment %}
 
-
+                        -->
 
 
                            </div>
@@ -540,7 +540,7 @@
 
 
                                                                                     <div class="row otherrow" style="    max-height: 300px;
-                                                                                    overflow: scroll;">
+                                                                                    overflow: auto;">
                                                                                         
                                                                                     
                                                                                         {% for clip_art in clip_arts %}
@@ -673,7 +673,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
+                                                                </div>
                                                                 <div class="accordion-item">
                                                                     <h2 class="accordion-header"
                                                                         id="flush-heading_AddDesign_4">
@@ -772,6 +772,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                          
+                                                
                                                 <div class="tab-pane" id="Add_Text" role="tabpanel">
                                                     <div class="AddTextTap">
                                                         <div class="Title">
@@ -815,14 +817,14 @@
                                                                 <div class="elementItem" style="justify-content: space-evenly">
                                                                     <!-- fontcolor , bordercolor, shadowcolor -->
                                                                     <div class="IconTitle">
-                                                                        <span style="color: #068b8e;">font color</span>
+                                                                        <span style="color: #eac97a;">font color</span>
 
                                                                     </div>
                                                                     <div class="inputElement">
                                                                         <input type="color" name="" id="" oninput="changeFontColor(this.value)">
                                                                     </div>
                                                                     <div class="IconTitle">
-                                                                        <span style="color: #068b8e;">border color</span>
+                                                                        <span style="color: #eac97a;">border color</span>
 
                                                                     </div>
                                                                     <div class="inputElement">
@@ -877,7 +879,7 @@
                                                                         onclick="changeUnderline()"
                                                                         >
                                                                         
-                                                                                <i class="fa fa-underline fa-x"  style="color: #068b8e;"></i>
+                                                                                <i class="fa fa-underline fa-x"  style="color: #eac97a;"></i>
                                                                             <span>underline</span>
                                                                         </div>
                                                                     </div>
@@ -1135,14 +1137,14 @@
                                                                 <div class="elementItem" style="justify-content: space-evenly">
                                                                     <!-- fontcolor , bordercolor, shadowcolor -->
                                                                     <div class="IconTitle">
-                                                                        <span style="color: #068b8e;">font color</span>
+                                                                        <span style="color: #eac97a;">font color</span>
 
                                                                     </div>
                                                                     <div class="inputElement">
                                                                         <input type="color" name="" id="" oninput="changeFontColor(this.value)">
                                                                     </div>
                                                                     <div class="IconTitle">
-                                                                        <span style="color: #068b8e;">border color</span>
+                                                                        <span style="color: #eac97a;">border color</span>
 
                                                                     </div>
                                                                     <div class="inputElement">
@@ -1197,7 +1199,7 @@
                                                                         onclick="changeUnderline()"
                                                                         >
                                                                         
-                                                                                <i class="fa fa-underline fa-x"  style="color: #068b8e;"></i>
+                                                                                <i class="fa fa-underline fa-x"  style="color: #eac97a;"></i>
                                                                             <span>underline</span>
                                                                         </div>
                                                                     </div>
@@ -1465,20 +1467,20 @@
 								</div>
 							</div>
 							
-							<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+							<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
 								<div class="footer_widget">
-									<h4 class="widget_title">Supports</h4>
-									<ul class="footer-menu">
-										<li><a href="#">Contact Us</a></li>
-										<li><a href="#">About Page</a></li>
-										<li><a href="#">Size Guide</a></li>
-										<li><a href="#">Shipping & Returns</a></li>
-									
-									</ul>
+								  <h4 class="widget_title">Site Map</h4>
+								  <ul class="footer-menu">
+									<li><a href="#">Home</a></li>
+									<li><a href="#">Self Custmization</a></li>
+									<li><a href="#">Poster And Banners</a></li>
+									<li><a href="#">Call Design</a></li>
+									<li><a href="#">Ordaring</a></li>
+								  </ul>
 								</div>
-							</div>
+							  </div>
 									
-							<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+							<!-- <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
 								<div class="footer_widget">
 									<h4 class="widget_title">Shop</h4>
 									<ul class="footer-menu">
@@ -1488,19 +1490,18 @@
 										
 									</ul>
 								</div>
-							</div>
+							</div> -->
 					
-							<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+							<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
 								<div class="footer_widget">
-									<h4 class="widget_title">Company</h4>
-									<ul class="footer-menu">
-										<li><a href="#">About</a></li>
-										<li><a href="#">Blog</a></li>
-										<li><a href="#">Affiliate</a></li>
-										<li><a href="#">Login</a></li>
-									</ul>
+								  <h4 class="widget_title">Company</h4>
+								  <ul class="footer-menu">
+									<li><a href="#">About</a></li>
+									<li><a href="#">Policy</a></li>
+									<li><a href="#">Terms & Conditions</a></li>
+								  </ul>
 								</div>
-							</div>
+							  </div>
 							
 							<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
 								<div class="footer_widget">
@@ -2070,15 +2071,27 @@
 
 
     <script>
-function addNewItem() {
+     function addNewItem() {
   var tableBody = document.getElementById("table-body");
+  var inputs = tableBody.getElementsByTagName("input");
+
+  // Check if any input field is empty
+  var inputsNotEmpty = Array.from(inputs).every(function(input) {
+    return input.value.trim() !== '';
+  });
+
+  if (!inputsNotEmpty) {
+    alert("Please fill in all input fields before adding a new item.");
+    return;
+  }
+
   var newRow = document.createElement("tr");
   var rowContent = `
     <td>
       <input type="text" class="form-control" placeholder="00">
     </td>
     <td>
-      <input type="text" class="form-control" placeholder="Name">
+      <input type="text" class="form-control InputAddName" placeholder="Name">
     </td>
     <td>
       <select class="form-control" onchange="">
@@ -2153,36 +2166,50 @@ function saveData() {
   var tableBody = document.getElementById("table-body");
   var rows = tableBody.getElementsByTagName("tr");
   var data = [];
+  var isValid = true;
+
   for (var i = 0; i < rows.length; i++) {
     var row = rows[i];
     var cells = row.getElementsByTagName("td");
-    var num = cells[0].querySelector("input").value;
-    var name = cells[1].querySelector("input").value;
+    var num = cells[0].querySelector("input").value.trim();
+    var name = cells[1].querySelector("input").value.trim();
     var size = cells[2].querySelector("select").value;
+
+    // Check if any input fields are empty
+    if (num === '' || name === '') {
+      isValid = false;
+      // Optionally, you can alert the user about the empty fields
+      alert("Please fill in all input fields in all rows before saving.");
+      break;
+    }
+
     var rowData = {
       num: num,
       name: name,
-      size: size
+      size: size,
     };
     data.push(rowData);
   }
 
-  var tableBodyItems = document.getElementById("tablbodyItems");
-  tableBodyItems.innerHTML = "";
-  for (var i = 0; i < data.length; i++) {
-    var rowData = data[i];
-    var newRow = document.createElement("tr");
-    var rowContent = `
-      <td><p>${rowData.num}</p></td>
-      <td><p>${rowData.name}</p></td>
-      <td><p>${rowData.size}</p></td>
-    `;
-    newRow.innerHTML = rowContent;
-    tableBodyItems.appendChild(newRow);
+  if (isValid) {
+    var tableBodyItems = document.getElementById("tablbodyItems");
+    tableBodyItems.innerHTML = "";
+    for (var i = 0; i < data.length; i++) {
+      var rowData = data[i];
+      var newRow = document.createElement("tr");
+      var rowContent = `
+        <td><p>${rowData.num}</p></td>
+        <td><p>${rowData.name}</p></td>
+        <td><p>${rowData.size}</p></td>
+      `;
+      newRow.innerHTML = rowContent;
+      tableBodyItems.appendChild(newRow);
+    }
+
+    var jsonData = JSON.stringify(data);
+    // Here, you can proceed with saving the validated data
+    console.log(jsonData); // Displaying the data in the console for demonstration
   }
-
-  var jsonData = JSON.stringify(data);
-
 }
 </script>
 		<!-- ============================================================== -->

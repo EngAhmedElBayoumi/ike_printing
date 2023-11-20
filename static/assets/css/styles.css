@@ -41,9 +41,10 @@ body {
 	font-weight:500 !important;
 }
 html {
-  position: relative;
+  /* position: relative;
   min-height: 100%;
-  background: #ffffff; }
+  background: #ffffff;  */
+}
 a {
     color:#aaa;
     text-decoration: none;
