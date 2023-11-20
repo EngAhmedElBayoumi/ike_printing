@@ -222,7 +222,7 @@ font-size: 12px;
 
 
 .form-control, select.form-control{
-    height: 40px !important
+    height: 45px !important
 }
 
 
@@ -746,4 +746,7 @@ img{
 }
 .btn-group-vertical .btn i{
     display: block;
+}
+.stretched-link:after{
+    display: none;
 }
