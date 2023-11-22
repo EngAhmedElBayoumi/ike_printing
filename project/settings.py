@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'contact_us',
     'home',
     'pricing',
+    'dragon',
+    'senior_dragon',
+    'senior_unicorn',
+    'unicorn',
 ]
 
 MIDDLEWARE = [

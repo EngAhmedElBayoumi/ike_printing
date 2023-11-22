@@ -48,13 +48,9 @@ def self_customization(request):
     if request.user.is_authenticated:
         user_images = UserImage.objects.filter(user=request.user)
         product_designs = ProductDesign.objects.filter(user=request.user)
-
     else:
         user_images = []
         product_designs=[]
-        
-    
-    
     #get 2 products for each category
     categories = Category.objects.all()
     products = []
@@ -241,7 +237,7 @@ def getproductbyid(request, product_id):
         "colors": serializers.serialize('json', colors),
         "matireals": serializers.serialize('json', matireal),
         "description": description,
-        "price": product.price,
+        "height": product.height,
         "related_products": serializers.serialize('json', related_products),
     }
     

@@ -9,7 +9,7 @@ from .models import Product , Matireal , Category , Color , Size , ProductDesign
 
 class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name']
-    list_display = ('name','display_image', 'price', 'category', 'display_matireals')
+    list_display = ('name','display_image', 'category', 'display_matireals')
     list_filter = ('category',)
     
     def display_matireals(self, obj):
@@ -71,19 +71,9 @@ class ColorAdmin(admin.ModelAdmin):
 # size display
 class SizeAdmin(admin.ModelAdmin):
     # display name , image
-    list_display = ('name', 'simbol', 'display_height', 'display_width', 'display_price')
+    list_display = ('name', 'simbol', 'display_price')
     # search bar
     search_fields = ['name']
-
-    def display_height(self, obj):
-        return f'{obj.height} in'
-
-    display_height.short_description = 'Height'
-
-    def display_width(self, obj):
-        return f'{obj.width} in'
-
-    display_width.short_description = 'Width'
 
     def display_price(self, obj):
         return f'${obj.price}'

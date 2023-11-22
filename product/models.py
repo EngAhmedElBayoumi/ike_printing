@@ -28,11 +28,9 @@ class Size(models.Model):
     name = models.CharField(max_length=50)
     #simbol
     simbol = models.CharField(max_length=50)
-    height = models.CharField(max_length=50)
-    width = models.CharField(max_length=50)
     price = models.CharField(max_length=50)
     def __str__(self):
-        return f"{self.name}->{self.height}"
+        return f"{self.name}"
 
   
   
@@ -49,7 +47,7 @@ class Matireal(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
-    price = models.IntegerField()
+    height = models.CharField(max_length=50)
     frontimage = models.ImageField(upload_to='product/product_image')
     backimage = models.ImageField(upload_to='product/product_image')
     category = models.ForeignKey(Category,on_delete=models.CASCADE)

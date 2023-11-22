@@ -7,7 +7,7 @@ def home(request):
 
 
 def error_404_view(request, exception):
-    pass
+    return render(request, '404.html', {})
 
 def privacy(request):
     return render(request, 'privacy.html', {})

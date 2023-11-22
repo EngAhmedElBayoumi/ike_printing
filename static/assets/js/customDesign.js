@@ -302,6 +302,9 @@ var front_design_price= document.getElementById("front_design_price");
 var back_design_price= document.getElementById("back_design_price");
 
 document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
+    // get pruduct height from input with id "product_height"
+    var productHeight = document.getElementById("product_height").value;
+    console.log(productHeight);
     // get the objects on the canvas
     var frontObjects = canvas.getObjects();
     var backObjects = canvasBack.getObjects();
@@ -310,8 +313,8 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
     // calculate total area for back canvas
     var backTotalArea = calculateTotalArea(backObjects);
     // Round the values to two decimal places after dividing by 96
-    front_design_price.innerHTML = frontTotalArea + " in";
-    back_design_price.innerHTML = backTotalArea + " in";
+    front_design_price.innerHTML = frontTotalArea + " inches";
+    back_design_price.innerHTML = backTotalArea + " inches";
     calculatePrice();
 });
 
@@ -327,6 +330,8 @@ function calculateTotalArea(objects) {
         // assuming width and height are in pixels
         // adjust width and height based on the object's scale
         var scaledHeight = object.height * object.scaleY;
+        // convert from pixels to inches
+        scaledHeight /= 35;
         // calculate area and add to the total
         totalArea += scaledHeight;
     }
@@ -351,50 +356,9 @@ function calculatePrice(){
     var frontDesignHeight = calculateTotalArea(frontObjects);//<----------
     // calculate total height for back canvas
     var backDesignHeight = calculateTotalArea(backObjects);//<----------
-    // get all size items
-    var sizeItems = document.querySelectorAll('.SizeItem');
-    // sizequantity
-    var productSize = [];
+    // get product hidden input with id "product_id"
+    var product_id = document.getElementById("product_id").value;
 
-    sizeItems.forEach(function (sizeItem) {
-        var sizeSymbol = sizeItem.dataset.sizeSymbol;
-        var sizeId = sizeItem.dataset.sizeId;
-        var sizeHeight = sizeItem.dataset.sizeHeight;
-        var sizePrice = sizeItem.dataset.sizePrice;
-        // get value in input with id "size_sizeId"
-        var sizeQuantity = document.getElementById("size_"+sizeId).value;
-        // append sizesymbol , sizequantity to sizeQuantity array
-        productSize.push({
-            "sizeSymbol": sizeSymbol,
-            "sizeQuantity": sizeQuantity,
-            "sizeHeight": sizeHeight,// by inches
-            "sizePrice": sizePrice
-        });
-
-    });
-    // object with productsize, tshirtheight, frontdesignheight, backdesignheight
-    var productData = {
-        "productSize": productSize,
-        "tshirtHeight": tshirtHeight,//by pixels
-        "frontDesignHeight": frontDesignHeight, // by pixels
-        "backDesignHeight": backDesignHeight    // by pixels
-    };
-    var formData = new FormData();
-    formData.append('productData', JSON.stringify(productData));
-    // axios call to calculate price
-    axios.get(`${projecturl}pricing/calculate_price/`, formData, {
-        withCredentials: true,
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    })
-    .then(function (response) {
-        console.log(response);
-        // set price 
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
 }
 
 

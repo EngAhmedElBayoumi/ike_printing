@@ -1,29 +1,24 @@
-// the semi-colon before function invocation is a safety net against concatenated
-// scripts and/or other plugins which may not be closed properly.
 ;(function ($, window, document, undefined) {
-
   "use strict";
 
-  // Create the defaults once
   var pluginName = "simpleCalendar",
-    defaults = {
-      months: ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'], //string of months starting from january
-      days: ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'], //string of days starting from sunday
-      displayYear: true, // display year in header
-      fixedStartDay: true, // Week begin always by monday or by day set by number 0 = sunday, 7 = saturday, false = month always begin by first day of the month
-      displayEvent: true, // display existing event
-      disableEventDetails: false, // disable showing event details
-      disableEmptyDetails: false, // disable showing empty date details
-      events: [], // List of event
-      onInit: function (calendar) {}, // Callback after first initialization
-      onMonthChange: function (month, year) {}, // Callback on month change
-      onDateSelect: function (date, events) {}, // Callback on date selection
-      onEventSelect: function () {},              // Callback fired when an event is selected     - see $(this).data('event')
-      onEventCreate: function( $el ) {},          // Callback fired when an HTML event is created - see $(this).data('event')
-      onDayCreate:   function( $el, d, m, y ) {}  // Callback fired when an HTML day is created   - see $(this).data('today'), .data('todayEvents')
-    };
+  defaults = {
+    months: ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'], //string of months starting from january
+    days: ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'], //string of days starting from sunday
+    displayYear: true, // display year in header
+    fixedStartDay: true, // Week begin always by monday or by day set by number 0 = sunday, 7 = saturday, false = month always begin by first day of the month
+    displayEvent: true, // display existing event
+    disableEventDetails: false, // disable showing event details
+    disableEmptyDetails: false, // disable showing empty date details
+    events: [], // List of event
+    onInit: function (calendar) {}, // Callback after first initialization
+    onMonthChange: function (month, year) {}, // Callback on month change
+    onDateSelect: function (date, events) {}, // Callback on date selection
+    onEventSelect: function () {},              // Callback fired when an event is selected     - see $(this).data('event')
+    onEventCreate: function( $el ) {},          // Callback fired when an HTML event is created - see $(this).data('event')
+    onDayCreate:   function( $el, d, m, y ) {}  // Callback fired when an HTML day is created   - see $(this).data('today'), .data('todayEvents')
+  };
 
-  // The actual plugin constructor
   function Plugin(element, options) {
     this.element = element;
     this.settings = $.extend({}, defaults, options);
@@ -33,7 +28,6 @@
     this.init();
   }
 
-  // Avoid Plugin.prototype conflicts
   $.extend(Plugin.prototype, {
     init: function () {
       var container = $(this.element);
@@ -156,7 +150,8 @@
       this.updateHeader(this.currentDate, $(this.element).find('.calendar header'));
       this.settings.onMonthChange(this.currentDate.getMonth(), this.currentDate.getFullYear())
     },
-    //Init global events listeners
+
+
     bindEvents: function () {
       var plugin = this;
 
@@ -175,26 +170,52 @@
         e.preventDefault();
       });
 
-      //Binding day event
       $(plugin.element).on('click', '.day', function (e) {
         var date = new Date($(this).data('date'));
         var events = plugin.getDateEvents(date);
         if (!$(this).hasClass('disabled')) {
           plugin.fillUp(e.pageX, e.pageY);
           plugin.displayEvents(events);
+          plugin.displayTimeSlots(); // Call to new function to display time slots
         }
         plugin.settings.onDateSelect(date, events);
       });
 
-      //Binding event container close
+     //Binding event container close
       $(plugin.element).on('click', '.event-container .close', function (e) {
         plugin.empty(e.pageX, e.pageY);
       });
+
+    },
+
+    displayTimeSlots: function () {
+      var container = $('.paymentBtnGroup');
+      container.empty(); // Clear existing content
+
+      // Generate time slots
+      for (var hour = 1; hour <= 15; hour++) {
+        var amPm = hour < 12 ? 'AM' : 'PM';
+        var displayHour = hour <= 12 ? hour : hour - 12;
+        var time = displayHour + ':00 ' + amPm;
+
+        var timeSlot = $(`
+        <label class="btn paymentMethod ">
+        <div class="method visa">
+            <div class="sasasas">
+                <p>${time}</p>
+            </div>
+        </div>
+        <input type="checkbox" name="options" >
+    </label>
+        `);
+        container.append(timeSlot);
+      }
     },
     displayEvents: function (events) {
       var plugin = this;
-      var container = $(this.element).find('.event-wrapper');
-
+      var container = $(this.element).find('.paymentBtnGroup');
+     
+      // for each event, display it
       events.forEach(function (event) {
         var startDate = new Date(event.startDate);
         var endDate = new Date(event.endDate);
@@ -226,47 +247,40 @@
       plugin.settings.events = newEvents
       this.buildCalendar(this.currentDate, $(this.element).find('.calendar'));
     },
-    //Small effect to fillup a container
+    // //Small effect to fillup a container
     fillUp: function (x, y) {
       var plugin = this;
       var elem = $(plugin.element);
       var elemOffset = elem.offset();
-
       var filler = $('<div class="filler" style=""></div>');
       filler.css("left", x - elemOffset.left);
       filler.css("top", y - elemOffset.top);
-
       elem.find('.calendar').append(filler);
-
-      filler.animate({
-        width: "300%",
-        height: "300%"
-      }, 500, function () {
-        elem.find('.event-container').show();
-        filler.hide();
-      });
+      // filler.animate({
+      //   width: "300%",
+      //   height: "300%"
+      // }, 500, function () {
+      //   elem.find('.event-container').show();
+      //   filler.hide();
+      // });
     },
-    //Small effect to empty a container
-    empty: function (x, y) {
-      var plugin = this;
-      var elem = $(plugin.element);
-      var elemOffset = elem.offset();
-
-      var filler = elem.find('.filler');
-      filler.css("width", "300%");
-      filler.css("height", "300%");
-
-      filler.show();
-
-      elem.find('.event-container').hide().find('.event').remove();
-
-      filler.animate({
-        width: "0%",
-        height: "0%"
-      }, 500, function () {
-        filler.remove();
-      });
-    },
+    // //Small effect to empty a container
+    // empty: function (x, y) {
+    //   var plugin = this;
+    //   var elem = $(plugin.element);
+    //   var elemOffset = elem.offset();
+    //   var filler = elem.find('.filler');
+    //   filler.css("width", "300%");
+    //   filler.css("height", "300%");
+    //   filler.show();
+    //   elem.find('.event-container').hide().find('.event').remove();
+    //   filler.animate({
+    //     width: "0%",
+    //     height: "0%"
+    //   }, 500, function () {
+    //     filler.remove();
+    //   });
+    // },
     getDateEvents: function (d) {
       var plugin = this;
       return plugin.settings.events.filter(function (event) {
@@ -290,9 +304,6 @@
       return formatted;
     }
   });
-
-  // A really lightweight plugin wrapper around the constructor,
-  // preventing against multiple instantiations
   $.fn[pluginName] = function (options) {
     return this.each(function () {
       if (!$.data(this, "plugin_" + pluginName)) {
@@ -300,4 +311,5 @@
       }
     });
   };
+
 })(jQuery, window, document);

@@ -82,8 +82,13 @@
 								<li>
                                     <a class="ProfileLinkHeader">
 										
-                                        <img class="UserProfileImages" src="{{user.profile.image.url}}">
-										
+										{% if user.profile.image %}
+										<img class="UserProfileImages" src="{{ user.profile.image.url }}">
+										{% else %}
+										<!--user icon-->
+										<i class="lni lni-user" style="color:rgb(182 144 76)"></i>
+
+											{% endif %}										
 										{% comment %} first name for user {% endcomment %}
 										{{user.first_name }}
 										{{user.last_name }}
