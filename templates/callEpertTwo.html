@@ -72,7 +72,7 @@ color: #000;
 								<nav aria-label="breadcrumb">
 									<ol class="breadcrumb">
 										<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-										<li class="breadcrumb-item active" aria-current="page">Call Expert</li>
+										<li class="breadcrumb-item active" aria-current="page">Call Designer</li>
 									</ol>
 								</nav>
 							</div>
@@ -90,20 +90,17 @@ color: #000;
 									
 												<form action="#" method="post">
 													<!-- row -->
-													<div class="col-lg-12">
+													{% comment %} <div class="col-lg-12">
 														<div class="form-group text-center">
 															<label> Price for hour</label>
 															<p class="mb-0" id="call_price"> $ 100</p>
 														</div>
-													</div>
+													</div> {% endcomment %}
 	
 													<div class="row">
 														<div class="col-lg-4">
-															<div class="CallInputsInfo">
-															 
-																<div class="row">
-	
-																	
+															<div class="CallInputsInfo">	 
+																<div class="row">										
 																	<div class="col-lg-12">
 																		<div class="form-group">
 																			<label> Name</label>
@@ -196,22 +193,6 @@ color: #000;
 				var today = new Date();
 				today.setHours(0,0,0,0);
 				var date = event.date;
-		
-				
-				// static oject with avilable time from 1am to 4 pm
-				avialableTime=[
-				{from:"1:00",to:"1:30"},
-				{from:"1:30",to:"2:00"},
-				{from:"2:00",to:"2:30"},
-				{from:"2:30",to:"3:00"},
-				{from:"3:00",to:"3:30"},
-				{from:"3:30",to:"4:00"},
-				{from:"4:00",to:"4:30"},
-				{from:"4:30",to:"5:00"},
-				{from:"5:00",to:"5:30"},
-				{from:"5:30",to:"6:00"},
-				{from:"6:00",to:"6:30"},
-				]
 				var singleTime=""
 				//get paymentBtnGroup element by class name
 				var timesection = document.getElementsByClassName("paymentBtnGroup");
@@ -224,6 +205,33 @@ color: #000;
 					timesection[0].innerHTML=singleTime
 					return
 				}
+
+				// get from date day name
+				var dayName = date.toLocaleString('en-us', {  weekday: 'long' });
+				// convert date to be like 2020-12-12
+				date=date.toISOString().slice(0,10)
+
+				// get from date month name
+
+				// make ajax request to get avilable time from database by day name and data
+				$.ajax({
+				url: "{% url 'senior_dragon:get_available_time' %}",
+				type: "GET",
+				data: {
+				"dayName": dayName,
+				"date": date
+				},
+				success: function (data) {
+					console.log(data)
+				// if there is no avilable time display message no avilable time
+				if(data.available_times.length==0)
+				{
+				singleTime=`<div class="" role="alert">No avilable time</div>`
+				timesection[0].innerHTML=singleTime
+				return
+				}
+				// static oject with avilable time from 1am to 4 pm
+				avialableTime=data.available_times
 				// loop on all avilable time and set it to the div
 				for (var i = 0; i < avialableTime.length; i++) {
 				singleTime=`
@@ -238,6 +246,17 @@ color: #000;
 				`;
 				timesection[0].innerHTML+=singleTime
 				}
+			},
+			error: function (error) {
+				console.log(error)
+			}
+			});
+
+
+
+
+				
+				
 				}
 				// Add an event listener for the changeDate event
 				$('.bootstrap-datepicker-inline').datepicker().on('changeDate', handleDateChange);

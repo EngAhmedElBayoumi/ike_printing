@@ -22,8 +22,8 @@ class working_setting(models.Model):
     meeting_duration_hour = models.IntegerField(null=True,blank=True)
     meeting_duration_minute = models.IntegerField(null=True,blank=True)
     #break time duration by hour and minute
-    break_duration_hour = models.IntegerField(null=True,blank=True)
-    break_duration_minute = models.IntegerField(null=True,blank=True)
+    break_time_from = models.TimeField()
+    break_time_to = models.TimeField()
     #meeting price
     meeting_price = models.IntegerField()
     def __str__(self):

@@ -62,8 +62,12 @@ def self_customization(request):
     size_data = serialize('json', Size.objects.all())    
     
        
-    #get related products  that have the same category get first 10 products
-    related_products = Product.objects.filter(category=products[0].category).exclude(id=products[0].id).distinct()[:10]
+    #get related products that have the same category get first 10 products
+    #check if products is not empty
+    if products:
+        related_products = Product.objects.filter(category=products[0].category).exclude(id=products[0].id).distinct()[:10]
+    else:
+        related_products = []
     
     
     context={
@@ -123,7 +127,7 @@ def getproductsbycategory(request, category_name):
         product_data.append({
             "name": product.name,
             "description": product.description,
-            "price": product.price,
+            "price": 0,
             "frontimage": product.frontimage.url,
             "backimage": product.backimage.url,
         })
@@ -143,7 +147,7 @@ def getproductsbysize(request,size_name):
         product_data.append({
             "name": product.name,
             "description": product.description,
-            "price": product.price,
+            "price": 0,
             "frontimage": product.frontimage.url,
             "backimage": product.backimage.url,
         })
@@ -163,7 +167,7 @@ def getproductsbymatireal(request,matireal_name):
         product_data.append({
             "name": product.name,
             "description": product.description,
-            "price": product.price,
+            "price": 0,
             "frontimage": product.frontimage.url,
             "backimage": product.backimage.url,
         })
@@ -183,7 +187,7 @@ def getproductsbycolor(request,color_name):
         product_data.append({
             "name": product.name,
             "description": product.description,
-            "price": product.price,
+            "price": 0,
             "frontimage": product.frontimage.url,
             "backimage": product.backimage.url,
         })

@@ -252,9 +252,11 @@
                     
                     if (checked.checked){
                       var  category=checked.value
+                      var link="{% url 'product:getproductsbycategory' 'placeholder' %}"
+                      link=link.replace('placeholder',category)
                         $.ajax({
                             type: "GET",
-                            url: `${projecturl}product/getproductsbycategory/${category}`,
+                            url:link ,
                             success: function (data) {
                                 
                                 const productitem = document.getElementById('productitem');
@@ -315,9 +317,11 @@
                 function getproductsbycolor(checked) {
                     if (checked.checked){
                        var category=checked.value
+                       var link="{% url 'product:getproductsbycolor' 'placeholder' %}"
+                        link=link.replace('placeholder',category)
                         $.ajax({
                             type: "GET",
-                            url: `${projecturl}product/getproductsbycolor/${category}`,
+                            url: link,
                             success: function (data) {
                                 
                                 const productitem = document.getElementById('productitem');
@@ -377,9 +381,12 @@
                 function getproductsbysize(checked) {
                     if (checked.checked){
                         var category=checked.value
+                        var link="{% url 'product:getproductsbysize' 'placeholder' %}"
+                        link=link.replace('placeholder',category)
+
                         $.ajax({
                             type: "GET",
-                            url: `${projecturl}product/getproductsbysize/${category}`,
+                            url: link,
                             success: function (data) {
                                 
                                 const productitem = document.getElementById('productitem');
@@ -439,9 +446,12 @@
                 function getproductbymatireals(checked) {
                     if (checked.checked){
                       var  category=checked.value
+                      var link="{% url 'product:getproductsbymatireal' 'placeholder' %}"
+                        link=link.replace('placeholder',category)
                         $.ajax({
                             type: "GET",
-                            url: `${projecturl}product/getproductsbymatireal/${category}`,
+                            //url: `${projecturl}product/getproductsbymatireal/${category}`,
+                            url: link,
                             success: function (data) {
                                 
                                 const productitem = document.getElementById('productitem');

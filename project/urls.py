@@ -23,6 +23,10 @@ from product import urls
 from contact_us import urls
 from home import urls
 from pricing import urls
+from dragon import urls
+from senior_dragon import urls
+from senior_unicorn import urls
+from unicorn import urls
 from django.conf.urls import handler404, handler500
 #import settings
 from django.conf import settings
@@ -38,6 +42,11 @@ urlpatterns = [
     path("product/",include("product.urls")),
     path("contact_us/",include("contact_us.urls")),
     path("pricing/",include("pricing.urls")),
+    path("dragon/",include("dragon.urls")),
+    path("senior_dragon/",include("senior_dragon.urls")),
+    path("senior_unicorn/",include("senior_unicorn.urls")),
+    path("unicorn/",include("unicorn.urls")),
+    
         ]
 
 #media , static url

@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from dragon.models import working_setting as dragon_working_setting
+from senior_dragon.models import working_setting as senior_dragon_working_setting
 
 # Create your views here.
 
@@ -12,3 +14,4 @@ def call_senior_designer(request):
 #call designer
 def call_designer(request):
     return render(request, 'callEpertTwo.html', {})
+

@@ -7,6 +7,6 @@ from . import views
 app_name = "dragon"
 
 urlpatterns = [
-    path("",views.dragon,name="dragon"),
+    path("",views.get_available_time,name="get_available_time"),
 ]
 
