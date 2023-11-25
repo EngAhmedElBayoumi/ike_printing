@@ -303,63 +303,69 @@ var back_design_price= document.getElementById("back_design_price");
 
 document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
     // get pruduct height from input with id "product_height"
-    var productHeight = document.getElementById("product_height").value;
-    console.log(productHeight);
-    // get the objects on the canvas
-    var frontObjects = canvas.getObjects();
-    var backObjects = canvasBack.getObjects();
-    // calculate total area for front canvas
-    var frontTotalArea = calculateTotalArea(frontObjects);
-    // calculate total area for back canvas
-    var backTotalArea = calculateTotalArea(backObjects);
-    // Round the values to two decimal places after dividing by 96
-    front_design_price.innerHTML = frontTotalArea + " inches";
-    back_design_price.innerHTML = backTotalArea + " inches";
-    calculatePrice();
-});
-
-
-
-function calculateTotalArea(objects) {
-    // initialize total area
-    var totalArea = 0;
-
-    // loop through each object and add its area to the total
-    for (var i = 0; i < objects.length; i++) {
-        var object = objects[i];
-        // assuming width and height are in pixels
-        // adjust width and height based on the object's scale
-        var scaledHeight = object.height * object.scaleY;
-        // convert from pixels to inches
-        scaledHeight /= 35;
-        // calculate area and add to the total
-        totalArea += scaledHeight;
+    var productHeightByInches = document.getElementById("product_height").value;
+    // get product height in screen by pixels
+    var productHeightByPixels = document.getElementById("tshirt-div").offsetHeight;
+    // check if productHeightByPixels is 0 get tshirt-div-back
+    if (productHeightByPixels == 0) {
+        productHeightByPixels = document.getElementById("tshirt-div-back").offsetHeight;
     }
-
-    return (totalArea).toFixed(2);
-}
-
-
-
-
-
-//----------------------------------calculate price call----------------------------------------------
-
-function calculatePrice(){
-    // get t-shirt height from activecanvas on screen
-    var tshirtHeight = activecanvas.height;//<----------
+    // calculate scale
+    var scale = productHeightByPixels / productHeightByInches;
     // get front design height on screen
     // get the objects on the canvas
     var frontObjects = canvas.getObjects();
     var backObjects = canvasBack.getObjects();
     // calculate total height for front canvas
-    var frontDesignHeight = calculateTotalArea(frontObjects);//<----------
+    var frontDesignHeight = calculateTotalArea(frontObjects);
     // calculate total height for back canvas
-    var backDesignHeight = calculateTotalArea(backObjects);//<----------
-    // get product hidden input with id "product_id"
-    var product_id = document.getElementById("product_id").value;
+    var backDesignHeight = calculateTotalArea(backObjects);
+    // calculate front design height by inches
+    var frontDesignHeightByInches = frontDesignHeight / scale;
+    // calculate back design height by inches
+    var backDesignHeightByInches = backDesignHeight / scale;
 
+    // get all  SizeItem 
+    var SizeItem = document.querySelectorAll(".SizeItem");
+    // loop through all SizeItem
+    var totalSizePrice = 0;
+    SizeItem.forEach(function(SizeItem) {
+        // get data-size-price
+        var SizeItemPrice = SizeItem.getAttribute("data-size-price");
+        console.log(SizeItem);
+        var SizeItemNumber = SizeItem.getElementsByTagName("input")[0].value;
+        // check if SizeItemInput is null
+        if (SizeItemNumber == "") {
+            // set SizeItemInput to 0
+            SizeItemNumber = 0;
+        }
+        // calculate totalSizePrice
+        totalSizePrice += SizeItemPrice * SizeItemNumber;
+        console.log(totalSizePrice)
+        
+    });
+    console.log(totalSizePrice);
+
+});
+
+
+// function to calculate total area of objects
+function calculateTotalArea(objects) {
+    var totalArea = 0;
+    // loop through all objects
+    objects.forEach(function(object) {
+        // get object height on screen
+        var objectHeight = object.getBoundingRect().height;
+        // return object height
+        totalArea += objectHeight;
+
+        
+    });
+    return totalArea;
 }
+
+
+
 
 
 

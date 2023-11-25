@@ -101,8 +101,6 @@ def call_designer(request):
         totime = datetime.strptime(totime, '%H:%M').time()
         date = datetime.strptime(date, '%Y-%m-%d').date()
         print(date)
-
-        
         #set meeting to senior dragon or senior unicorn if the time is available in senior unicorn or senior dragon
         #get all senior dragon meetings 
         unicorn_conflict = unicorn_meeting.objects.filter(meeting_date=date, start_time__lt=totime, end_time__gt=fromtime).exists()        
@@ -115,6 +113,13 @@ def call_designer(request):
             #conflict true
             unicorn_conflict = True
         
+        
+        
+        
+        # payment stage
+        
+        #---------------------------------
+
         #check if the time is not exist in senior unicorn meetings add meeting to senior unicorn else check in senior dragon meetings 
         if not unicorn_conflict:
             # No conflict: schedule with senior unicorn
@@ -157,4 +162,7 @@ def call_designer(request):
       
         
     return render(request, 'callEpertTwo.html', {})
+
+
+
 

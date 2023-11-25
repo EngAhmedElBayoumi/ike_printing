@@ -586,13 +586,12 @@
                                               class="SizeItem"
                                               data-size-symbol="{{ size.simbol }}"
                                               data-size-id="{{ size.id }}"
-                                              data-size-height="{{ size.height }}"
                                               data-size-price="{{ size.price }}"
                                             >
                                               <p>{{ size.simbol }}</p>
                                               <input
                                                 name="size_{{ size.simbol }}"
-                                                value=""
+                                                value="0"
                                                 id="size_{{ size.id }}"
                                                 type="number"
                                                 class="InputNumber"
@@ -865,8 +864,8 @@
                                             <h3>
                                               No Images Found upload image first
                                             </h3>
-                                            {% endif %}
                                           </div>
+                                            {% endif %}
 
                                         {% else %}
                                         <a
@@ -2829,57 +2828,6 @@
         row.remove();
       }
 
-      var product_sizes_price = document.getElementById("product_sizes_price");
-
-      // get Quote_Buy_tab by id and add event listener
-      document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
-          product_sizes_price.innerHTML="";
-
-          // get tablbodyItems by id
-          var teamtableItems = document.getElementById("tablbodyItems");
-          // check if tableBodyItems has childNodes
-          if (teamtableItems.children.length > 0){
-              // get teamtable
-              var teamtable = document.getElementById("teamtable");
-              console.log(teamtable);
-
-              document.getElementById("teamtableprice").innerHTML=teamtable.innerHTML;
-          }else{
-              // get teamtableprice parent div
-              document.getElementById("teamtableprice").parentNode.style.display = "none";
-          }
-
-
-          // get SizeItem by classname []
-          var SizeItems = document.getElementsByClassName("SizeItem");
-
-          // loop through SizeItem and get p , input value
-          for (var i = 0; i < SizeItems.length; i++){
-            var sizeItem = SizeItems[i];
-
-            // get p element
-            var sizeSymbol = sizeItem.getElementsByTagName("p")[0].innerHTML;
-
-            // get input element
-            var inputElement = sizeItem.getElementsByTagName("input")[0];
-
-             // Get the value from the input element
-             var inputValue = inputElement.value;
-             product_sizes_price.innerHTML +=`
-             <div class="col-8" >
-                 <h3>${sizeSymbol}</h3>
-                 </div>
-                 <div class="col-4">
-                     <p class="lead" id="back_design_price">
-                         ${inputValue} 
-                     </p>
-                 </div>
-             `;
-          }
-      });
-
-
-
 
 
       function saveData() {
@@ -3038,7 +2986,11 @@
             for (const size of sizesData) {
               single_size = `
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                                <div class="SizeItem">
+                                <div class="SizeItem"
+                                data-size-symbol="${size.fields.simbol}"
+                                
+                                data-size-price="${size.fields.price}"
+                                >
                                     <p>${size.fields.simbol}</p>
                                     <input name="size_${size.fields.simbol}"
                                         value="0"
