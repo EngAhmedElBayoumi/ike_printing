@@ -8,8 +8,35 @@ from datetime import datetime
 from django.contrib import messages
 # Create your views here.
 
+
+import os
+
+allowed_extiontion=[
+    '.pdf',
+    '.doc',
+    '.docx',
+    '.png',
+    '.jpg',
+    '.jpeg',
+]
+
+def allowed_file(file_name):
+    #get file name 
+    file_name=file_name.name
+    #get file extention
+    ext=os.path.splitext(file_name)[1]    
+    if ext.lower() in allowed_extiontion:
+        return True
+    else:
+        return False
+    
+    
+
+
 def call_expert(request):
     return render(request, 'ChooseDesigner.html', {})
+
+
 
 #CallSeniorDesigner
 def call_senior_designer(request):
@@ -21,15 +48,17 @@ def call_senior_designer(request):
         fromtime=request.POST.get('fromtime')
         totime=request.POST.get('totime')
         date=request.POST.get('data')
-        print(date)
+        upload_file=request.FILES.get('upload_file')
+        
+        if not allowed_file(upload_file):
+            messages.error(request, "File type not supported.")
+            return render(request, 'CallSeniorDesigner.html', {})  
+        
         #convert fromtime from string to time not datetime
         fromtime = datetime.strptime(fromtime, '%H:%M').time()
         #convert totime from string to time not datetime
         totime = datetime.strptime(totime, '%H:%M').time()
-        date = datetime.strptime(date, '%Y-%m-%d').date()
-        print(date)
-
-        
+        date = datetime.strptime(date, '%Y-%m-%d').date()        
         #set meeting to senior dragon or senior unicorn if the time is available in senior unicorn or senior dragon
         #get all senior dragon meetings 
         unicorn_conflict = senior_unicorn_meeting.objects.filter(meeting_date=date, start_time__lte=totime, end_time__gte=fromtime).exists()
@@ -78,11 +107,9 @@ def call_senior_designer(request):
                 messages.success(request, "Meeting scheduled with Senior Dragon.")
             else:
                 messages.error(request, "No available slots with either Senior Unicorn or Senior Dragon.")  
-      
-        
-        
-    
+     
     return render(request, 'CallSeniorDesigner.html', {})
+
 
 #call designer
 def call_designer(request):
@@ -94,6 +121,11 @@ def call_designer(request):
         fromtime=request.POST.get('fromtime')
         totime=request.POST.get('totime')
         date=request.POST.get('data')
+        upload_file=request.FILES.get('upload_file')
+        
+        if not allowed_file(upload_file):
+            messages.error(request, "File type not supported.")
+            return render(request, 'callEpertTwo.html', {})
         print(date)
         #convert fromtime from string to time not datetime
         fromtime = datetime.strptime(fromtime, '%H:%M').time()
@@ -130,7 +162,9 @@ def call_designer(request):
                 message=message,
                 meeting_date=date,
                 start_time=fromtime,
-                end_time=totime
+                end_time=totime,
+                upload_file=upload_file
+                
             )
             messages.success(request, "Meeting scheduled with Unicorn team.")
         else:
@@ -154,7 +188,8 @@ def call_designer(request):
                     message=message,
                     meeting_date=date,
                     start_time=fromtime,
-                    end_time=totime
+                    end_time=totime,
+                    upload_file=upload_file
                 )
                 messages.success(request, "Meeting scheduled with Dragon.")
             else:

@@ -38,10 +38,11 @@ class meeting(models.Model):
     user_name = models.CharField(max_length=100)
     user_email = models.EmailField()
     subject = models.CharField(max_length=100)
-    message = models.TextField()
+    message = models.TextField(null=True,blank=True)
     meeting_date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
+    upload_file = models.FileField(upload_to='uploads/meetings',null=True,blank=True)
     def __str__(self):
         return str(self.meeting_date)
     
