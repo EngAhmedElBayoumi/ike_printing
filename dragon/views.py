@@ -31,7 +31,6 @@ def get_available_time(request):
     return JsonResponse({'available_times': available_time})
 
 
-
 def remove_duplicate_times(dragon_times, unicorn_times):
     # Combine both lists
     combined_times = dragon_times + unicorn_times
@@ -102,9 +101,9 @@ def get_available_time_for_unicorn_team(day_name, date):
        
     # Assuming 'date' is obtained from the request and formatted as YYYY-MM-DD
     meeting_date = datetime.strptime(date, "%Y-%m-%d").date()
-
+    
     # Remove reserved times
-    available_time = remove_reserved_times_from_dragon_team(working_time, meeting_date)
+    available_time = remove_reserved_times_from_unicorn_team(working_time, meeting_date)
     
     return available_time
     
@@ -139,10 +138,45 @@ def remove_reserved_times_from_dragon_team(available_times, meeting_date):
     # Filter out the available times that overlap with the reserved times
     filtered_times = []
     for time_slot in available_times:
+        
         start_time = datetime.strptime(time_slot['from'], "%H:%M").time()
         end_time = datetime.strptime(time_slot['to'], "%H:%M").time()
 
-        if (start_time, end_time) not in reserved_times:
+        overlap = False
+        for reserved_start, reserved_end in reserved_times:
+            if (start_time < reserved_end and end_time > reserved_start):
+                overlap = True
+                break
+        
+        if not overlap:
             filtered_times.append(time_slot)
 
+    return filtered_times
+
+
+def remove_reserved_times_from_unicorn_team(available_times, meeting_date):
+    # Fetch all meetings for the given date
+    reserved_meetings = unicorn_meeting.objects.filter(meeting_date=meeting_date)
+
+    # Convert the meeting times to a set of tuples for easier comparison
+    reserved_times = {(m.start_time, m.end_time) for m in reserved_meetings}
+    print('reserved_times', reserved_times)    
+    # Filter out the available times that overlap with the reserved times
+
+    filtered_times = []
+    for time_slot in available_times:
+        
+        start_time = datetime.strptime(time_slot['from'], "%H:%M").time()
+        end_time = datetime.strptime(time_slot['to'], "%H:%M").time()
+
+        overlap = False
+        for reserved_start, reserved_end in reserved_times:
+            if (start_time < reserved_end and end_time > reserved_start):
+                overlap = True
+                break
+        
+        if not overlap:
+            filtered_times.append(time_slot)
+
+    print('filtered_times', filtered_times)
     return filtered_times

@@ -35,6 +35,12 @@ line-height: 27px;
 	.datepicker-inline {
 width: 100%;
 }
+.alert-error {
+color: red;
+background-color: #f2dede;
+border-color: #eed3d7;
+}
+
 	.datepicker table tr td.active.active{
 	   border-radius: 50%;
 background: #eac97a;
@@ -87,45 +93,53 @@ color: #000;
 						<div class="row align-items-start justify-content-between">
 							<div class="col-lg-12 col-md-12 col-sm-12">
 								<div class="submit-page">
-									
-												<form action="#" method="post">
-													<!-- row -->
-													{% comment %} <div class="col-lg-12">
-														<div class="form-group text-center">
-															<label> Price for hour</label>
-															<p class="mb-0" id="call_price"> $ 100</p>
-														</div>
-													</div> {% endcomment %}
+											<!-- django message with close btn --->
+											{% if messages %}
+											
+												{% for message in messages %}
+												<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+												{{ message }}
+												</div>
+												{% endfor %}
+											
+											{% endif %}
+												<form method="post">
+													{% csrf_token %}
+
+													<input type="text" name="fromtime" id="fromtime" class="d-none">
+													<input type="text" name="totime" id="totime" class="d-none">
+													<input type="text" name="data" id="data" class="d-none">
+
+
 	
 													<div class="row">
 														<div class="col-lg-4">
 															<div class="CallInputsInfo">
 															 
 																<div class="row">
-	
 																	
 																	<div class="col-lg-12">
 																		<div class="form-group">
 																			<label> Name</label>
-																			<input type="text" class="form-control" placeholder="Name" required>
+																			<input type="text" class="form-control"  name="name" placeholder="Name" required>
 																		</div>
 																	</div>
 																	<div class="col-lg-12">
 																		<div class="form-group">
 																			<label>Email</label>
-																			<input type="email" class="form-control" placeholder="Email" required>
+																			<input type="email" class="form-control" name="email" placeholder="Email" required>
 																		</div>
 																	</div>
 																	<div class="col-lg-12">
 																		<div class="form-group">
 																			<label>Subject</label>
-																			<input type="text" class="form-control" placeholder="Subject" required>
+																			<input type="text" class="form-control" name="subject" placeholder="Subject" required>
 																		</div>
 																	</div>
 																	<div class="col-lg-12">
 																		<div class="form-group">
 																			<label>Leave Message</label>
-																			<textarea style="max-height:100px;" class="form-control" placeholder="Message" required></textarea>
+																			<textarea style="max-height:100px;" name="message" class="form-control" placeholder="Message" required></textarea>
 																		</div>
 																	</div>
 																	
@@ -161,7 +175,7 @@ color: #000;
 	
 														<div class="col-lg-12 col-md-12 col-sm-12">
 															<div class="form-group text-center">
-																<button type="submit" class="btn BookBUTTON full-width">
+																<button type="submit" id="submitbtn" class="btn BookBUTTON full-width" disabled>
 																	Book Date & Time Now</button>
 															</div>
 														</div>
@@ -213,6 +227,17 @@ color: #000;
 				var dayName = date.toLocaleString('en-us', {  weekday: 'long' });
 				// convert date to be like 2020-12-12
 				date=date.toISOString().slice(0,10)
+				// date += 1day
+				date = new Date(date);
+				date.setDate(date.getDate() + 1);
+				// convert date to be like 2020-12-12
+				date=date.toISOString().slice(0,10)
+				
+				// get data element by id
+				var datainput = document.getElementById("data");
+				datainput.value=date
+				console.log(date)
+
 
 				// get from date month name
 
@@ -238,10 +263,10 @@ color: #000;
 				// loop on all avilable time and set it to the div
 				for (var i = 0; i < avialableTime.length; i++) {
 				singleTime=`
-				<label class="btn paymentMethod ">
+				<label class="btn paymentMethod  " onclick="putTime(this)">
 					 <div class="method visa">
 						 <div class="sasasas">
-							 <p>from: ${avialableTime[i].from}-To: ${avialableTime[i].to}</p>
+							 <p  >from: ${avialableTime[i].from}-To: ${avialableTime[i].to}</p>
 						 </div>
 					 </div>
 					 <input type="radio" name="options" >
@@ -266,7 +291,34 @@ color: #000;
 			  </script>
 		
 
+			<script>
+				function putTime(item){
+					// this item inner text from: 03:00-To: 03:30 in want to get 03:00 and 03:30
+					 // Regular expression to match time patterns
+					var timePattern = /\d{2}:\d{2}/g;
+					var timeText=item.innerText
+					console.log(timeText)
+					// Extract all time patterns from the input string
+					var times = timeText.match(timePattern);
+					from=times[0]
+					to=times[1]
+					// get fromtime element by id
+					var fromtime = document.getElementById("fromtime");
+					// get totime element by id
+					var totime = document.getElementById("totime");
+					// set from time to fromtime element
+					fromtime.value=from
+					// set to time to totime element
+					totime.value=to
 
+					// get submitbtn element by id
+					var submitbtn = document.getElementById("submitbtn");
+					// enable submitbtn
+					submitbtn.disabled=false
+
+
+				}
+			</script>
 	  
 
 
