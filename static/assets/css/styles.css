@@ -41,10 +41,9 @@ body {
 	font-weight:500 !important;
 }
 html {
-  /* position: relative;
+  position: relative;
   min-height: 100%;
-  background: #ffffff;  */
-}
+ }
 a {
     color:#aaa;
     text-decoration: none;
@@ -4783,7 +4782,7 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 .skin-dark-footer .foot-news-last .input-group-text{
     border-color: #424141;
     background: #424141;
-    color: #ffffff;
+    color: #ffffff;border-radius: 0;
 }
 .skin-blue-footer .foot-news-last .form-control {
     border-color: #233148;
@@ -5710,10 +5709,10 @@ background: radial-gradient(circle, rgba(234,201,122,1) 0%, rgba(115,69,18,1) 10
 .CallInputsInfo{
     margin-bottom: 30px;
     display: block;
-    height: 100%;
+    height: auto;
      border: 1px solid #333;
     padding: 15px;
-    max-height: 450px;
+
 }
 
 
@@ -5841,9 +5840,27 @@ background: radial-gradient(circle, rgba(234,201,122,1) 0%, rgba(115,69,18,1) 10
 
 
 
-
-
-
+.ChoseDesignerBTN{
+    
+}
+.ChoseDesignerBTN a{
+        display: block;
+    height: 55px;
+    line-height: 55px;
+    padding: 0 25px;
+    border: 2px solid #eac97a;
+    font-size: 20px;
+    text-align: center;
+    color: #eac97a;
+    transition: all .4s ease-in-out;
+}
+.ChoseDesignerBTN a:hover{
+        color: #000;
+    background: #eac97a;
+}
+.ChoseDesignerBTN a span{
+    
+}
 
 
 
