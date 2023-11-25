@@ -134,7 +134,8 @@ font-size: 12px;
     
 }
 .CustomTapsDesign .CustomTapsbody .TapsContentBody .tab-content{
-
+    max-height: 450px;
+    overflow: auto;
 }
 
 .CustomTapsDesign .CustomTapsbody .TapsContentBody .tab-pane{
