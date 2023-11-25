@@ -1014,7 +1014,7 @@
                           </div>
                           <div class="AddTextBodyTap">
                             <div class="TextOptions">
-                              <div class="elementItem">
+                              <!-- <div class="elementItem">
                                 <div class="IconTitle">
                                   <img
                                     src="{% static 'assets/img/newImages/icons/fontType.png' %}"
@@ -1058,7 +1058,7 @@
                                     </option>
                                   </select>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="elementItem">
                                 <button type="button" class="FontTapUpper">
                                   <span class="namoffont">Font name</span>
@@ -1129,6 +1129,54 @@
                                       id="range_blur"
                                       onchange="changeTextLetterSpace(this.value)"
                                     />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row" style="    align-items: center;">
+                                <div class="col-lg-10 col-md-10">
+                                  <div class="elementItem" style="width: 80%;">
+                                    <div class="IconTitle">
+                                      <img
+                                        src="{% static 'assets/img/newImages/icons/width.png' %}"
+                                      />
+                                      <span>Width</span>
+                                    </div>
+                                    <div class="InputElement">
+                                      <div class="InputRange">
+                                        <input
+                                          type="text"
+                                          id="range_width"
+                                          onchange="changeFontSize(this.value)"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="elementItem" style="width: 80%;">
+                                    <div class="IconTitle">
+                                      <img
+                                        src="{% static 'assets/img/newImages/icons/height.png' %}"
+                                      />
+                                      <span>Height</span>
+                                    </div>
+                                    <div class="InputElement">
+                                      <div class="InputRange">
+                                        <input
+                                          type="text"
+                                          id="range_height"
+                                          onchange="changeFontSize(this.value)"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                  <div class="elementItem" style="cursor: pointer;">
+                                    <div class="IconTitle">
+                                      <img
+                                        src="{% static 'assets/img/newImages/icons/unlock.png' %}"
+                                      />
+                                    </div>
+                                   
                                   </div>
                                 </div>
                               </div>
@@ -2685,6 +2733,24 @@
           postfix: "px",
         });
         $("#range_Size_2").ionRangeSlider({
+          skin: "square",
+          min: 0,
+          max: 100,
+          hide_min_max: true,
+          step: 2,
+          from: 14,
+          postfix: "px",
+        });
+        $("#range_width").ionRangeSlider({
+          skin: "square",
+          min: 0,
+          max: 100,
+          hide_min_max: true,
+          step: 2,
+          from: 14,
+          postfix: "px",
+        });
+        $("#range_height").ionRangeSlider({
           skin: "square",
           min: 0,
           max: 100,
