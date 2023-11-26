@@ -115,6 +115,7 @@ def call_senior_designer(request):
     return render(request, 'CallSeniorDesigner.html', {})
 
 
+
 #call designer 6$ 
 def call_designer(request):
     host = request.get_host() # Host 
@@ -216,10 +217,26 @@ def call_designer(request):
 
 
 def payment_success(request):
-    pass 
+    form_data = request.session.get('form_data', None)
 
+    if form_data:
+        form_data['is_paid'] = True
 
+        if form_data.get('team') == 'unicorn':
+            meeting = unicorn_meeting(**form_data)
+        else:
+            meeting = dragon_meeting(**form_data)
+
+        meeting.save()
+
+        del request.session['form_data']
+
+        messages.success(request, "Payment successful. Meeting details saved.")
+    else:
+        messages.error(request, "No form data found.")
+
+    return render(request, 'payment_success.html')
 
 
 def payment_failed(request):
-    pass 
+    
