@@ -1,11 +1,15 @@
+from django.contrib import messages
 from django.shortcuts import render
+from django.conf import settings 
+from django.urls import reverse 
+import uuid 
+from datetime import datetime
+from paypal.standard.forms import PayPalPaymentsForm 
 from dragon.models import working_setting as dragon_working_setting , meeting as dragon_meeting 
 from senior_dragon.models import working_setting as senior_dragon_working_setting , meeting as senior_dragon_meeting
 from unicorn.models import working_setting as unicorn_working_setting , meeting as unicorn_meeting
 from senior_unicorn.models import working_setting as senior_unicorn_working_setting , meeting as senior_unicorn_meeting
-from datetime import datetime
 #import messages
-from django.contrib import messages
 # Create your views here.
 
 
@@ -111,8 +115,21 @@ def call_senior_designer(request):
     return render(request, 'CallSeniorDesigner.html', {})
 
 
-#call designer
+#call designer 6$ 
 def call_designer(request):
+    host = request.get_host() # Host 
+    paypal_checkout = {
+            'business' : settings.PAYPAL_RECEIVER, 
+            'amount' : 6, 
+            'item_name' : 'Fast Design Reservation', 
+            'invoice' : uuid.uuid4(), 
+            'currency' : 'USD', 
+            'notify_url' : f'http://{host}{reverse("paypal-ipn")}/',
+            'return_url' : f'http://{host}{reverse("call_expert:payment-success")}/',
+            'cancel_url' : f'http://{host}{reverse("call_expert:payment-failed")}/',
+    }
+        # Render Form 
+      
     if request.method == 'POST':
         name=request.POST.get('name')
         email=request.POST.get('email')
@@ -145,12 +162,9 @@ def call_designer(request):
             #conflict true
             unicorn_conflict = True
         
+    
         
-        
-        
-        # payment stage
-        
-        #---------------------------------
+    # payment stage
 
         #check if the time is not exist in senior unicorn meetings add meeting to senior unicorn else check in senior dragon meetings 
         if not unicorn_conflict:
@@ -181,7 +195,7 @@ def call_designer(request):
             
             if not dragon_conflict:
                 # No conflict: schedule with senior dragon
-                dragon_meeting.objects.create(
+                dragon_meeting.objects(
                     user_name=name,
                     user_email=email,
                     subject=subject,
@@ -191,13 +205,21 @@ def call_designer(request):
                     end_time=totime,
                     upload_file=upload_file
                 )
+                dragon_meeting.save(commit=False)
                 messages.success(request, "Meeting scheduled with Dragon.")
             else:
                 messages.error(request, "No available slots with either  Unicorn or Dragon teams.")  
       
         
-    return render(request, 'callEpertTwo.html', {})
+    paypal = PayPalPaymentsForm(initial=paypal_checkout)
+    return render(request, 'callEpertTwo.html', {'paypal' : paypal })
+
+
+def payment_success(request):
+    pass 
 
 
 
 
+def payment_failed(request):
+    pass 

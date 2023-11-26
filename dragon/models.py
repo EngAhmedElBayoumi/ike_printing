@@ -27,7 +27,7 @@ class working_setting(models.Model):
     #break time duration by hour and minute
     break_time_from = models.TimeField()
     break_time_to = models.TimeField()
-    meeting_price = models.IntegerField()
+    meeting_price = models.FloatField()
 
     def __str__(self):
         return self.day
