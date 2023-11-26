@@ -247,7 +247,7 @@ color: #000;
 
 				// make ajax request to get avilable time from database by day name and data
 				$.ajax({
-				url: "{% url 'dragon:get_available_time' %}",
+				url: "{% url 'senior_dragon:get_available_time' %}",
 				type: "GET",
 				data: {
 				"dayName": dayName,
