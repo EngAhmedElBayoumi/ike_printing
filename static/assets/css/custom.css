@@ -70,7 +70,9 @@ width: 100%;
     
 }
 .CustomTapsDesign .CustomTapsbody{
-    
+    border: 1px solid #eac97a;
+    padding: 10px;
+    background: #0e0e0e;
 }
 .CustomTapsDesign .CustomTapsbody .TapsHeaders{
     
@@ -235,9 +237,13 @@ font-size: 12px;
     align-items: center;
     padding: 0;
     background: #fff;
+    margin-bottom: 5px;
 }
 .CustomTapsDesign .ProductTap .accordion-body .ProductItems .ProItem.active .Image{
-        border: 2px solid #edb003;
+    border: 3px solid #edb003;
+    height: 120px;
+    border-bottom: 0;
+    margin-bottom: 0;
 }
 .CustomTapsDesign .ProductTap .accordion-body .ProductItems .ProItem .Image img{
     height: 90%;

@@ -24,16 +24,128 @@
 
 
 			<!-- ========================= Category Style ========================== -->
+			<div class="BannerAndBosterMockup">
+				<div class="container">
+					<div class="titileDescr">
+						<h2>Add Your Post Or Banner</h2>
+						<div class="descriptionPara">
+							<p class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-5 col-md-5 col-sm-12">
+							<div class="mockupsImagess">
+								<div class="mokUpImageItem">
+									<img class="imageMock" src="{% static 'assets/img/newImages/mockups/1t.png' %}">
+									<img class="imageUploaded" src="{% static 'assets/img/newImages/New_Products/8.png' %}" >
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+							<div class="customModal">
+								<div class="modal-body">
+									<div class="customForm">
+										<form>	
+											<div class="row">
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Lamination</label>
+														<select class="form-control" required>
+															<option value="">None</option>
+															<option> Glossy</option>
+															<option> Matte</option>
+															<option> Textured</option>
+															<option> Dry Erase</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Paper Type</label>
+														<select class="form-control" required>
+															<option value="">None</option>
+															<option> Matte Paper</option>
+															<option> Glossy Paper</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Orintation</label>
+														<select class="form-control" required>
+															<option value="">None</option>
+															<option> Vertical</option>
+															<option> Horizenal</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Size</label>
+														<select id="imageSize" class="form-control" onchange="changeImageSize()" required>
+															<option value="">Select Size</option>
+															<option value="16x20">16In X 20In</option>
+															<option value="18x24">18In X 24In</option>
+															<option value="22x28">22In X 28In</option>
+															<option value="24x36">24In X 36In</option>
+															<option value="36x48">36In X 48In</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Mounting</label>
+														<select class="form-control" required>
+															<option value="">Select Size</option>
+															<option> Size</option>
+															<option> Size</option>
+															<option> Size</option>
+															<option> Size</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Quantity</label>
+														<input min="1" type="number" class="form-control" required>
+													</div>
+												</div>
+												<div class="col-lg-12">
+													<div class="form-group">
+														<label>Upload Poster Or Banner</label>
+														<input id="uploadPoster" type="file" class="form-control" required>
+													</div>
+												</div>
+												<div class="col-lg-12">
+													<div class="form-group">
+														<h2 class="printingCoast">Printing Coast <span>17.5 $</span></h2>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="row">
+													<div class="col-lg-6 col-md-6">
+														<button type="submit" class="btn btn-md  bg-dark text-light fs-md ft-medium">Submit Now</button>
+													</div>
+													<div class="col-lg-6 col-md-6">
+														<button type="button" data-toggle="modal" data-target="#PreviewImage" class="btn btn-md PreviewBUTTON  fs-md ft-medium">Preview Poster</button>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+				</div>
+			</div>
+
 <section class="middle p-0">
 	<div class="container-fluid">
 		<div class="row no-gutters exlio_gutters">
-			<div class="col-lg-12">
-				<div class="AddYourPost">
-					<h2>Add Your Post Or Banner</h2>
-					
-					<button data-toggle="modal" data-target="#AddPannerAndBost"> Add Your Post</button>
-				</div>
-			</div>
+
 			
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 				<div class="single_cats">
