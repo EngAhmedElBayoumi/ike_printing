@@ -286,8 +286,8 @@ font-size: 12px;
     display: block;
 }
 .CustomTapsDesign .ProductTap .accordion-body .ProductColor .SizeBoxs{
-    padding: 0 50px;
-    margin-bottom: 30px;
+    padding: 0 0px;
+    margin-bottom: 0px;
 }
 .CustomTapsDesign .ProductTap .accordion-body .ProductColor .SizeBoxs .SizeItem{
     text-align: center;
@@ -301,7 +301,7 @@ font-size: 12px;
 }
 .CustomTapsDesign .ProductTap .accordion-body .ProductColor .SizeBoxs .SizeItem .InputNumber{
         display: block;
-    width: 50%;
+    width: 100%;
     margin: auto;
     border: 1px solid #eac97a;
     border-radius: 0;
@@ -582,7 +582,7 @@ padding: 13px 10px;
     width: 100%;
     border-radius: 0px;
     padding: 10px;
-    min-height: 110px;
+    min-height: 60px;
     border: 1px solid #333;
     resize: vertical;
     background: #111;

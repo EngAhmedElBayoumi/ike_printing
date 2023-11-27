@@ -432,7 +432,7 @@
                                 >
                                   <div class="accordion-body text-muted">
                                     <div class="ProductItems">
-                                      <div
+                                      <div style="z-index: 9;"
                                         class="swiper product-taps-active position-relative"
                                       >
                                         <div class="swiper-wrapper">
@@ -526,8 +526,7 @@
                                       <h2>Choose Product Color</h2>
                                       <div
                                         style="
-                                          padding: 10px;
-                                          padding-bottom: 20px;
+                                          padding:0
                                         "
                                         id="product_colors"
                                       >
@@ -1058,6 +1057,21 @@
                                   </select>
                                 </div>
                               </div> -->
+                              <div class="TextAreaBox">
+                                <textarea
+                                  placeholder="TEXT"
+                                  id="text-input"
+                                ></textarea>
+                              </div>
+                              <div class="AddBUTTON">
+                                <button
+                                  type="button"
+                                  onclick="addText()"
+                                  class="AddBTN"
+                                >
+                                  Add
+                                </button>
+                              </div>
                               <div class="elementItem">
                                 <button type="button" class="FontTapUpper">
                                   <span class="namoffont">Font name</span>
@@ -1238,21 +1252,7 @@
                                   </div>
                                 </div>
 
-                                <div class="TextAreaBox">
-                                  <textarea
-                                    placeholder="TEXT"
-                                    id="text-input"
-                                  ></textarea>
-                                </div>
-                                <div class="AddBUTTON">
-                                  <button
-                                    type="button"
-                                    onclick="addText()"
-                                    class="AddBTN"
-                                  >
-                                    Add
-                                  </button>
-                                </div>
+                                
                               </div>
                             </div>
                             <div class="FontsBoxxxTap">
