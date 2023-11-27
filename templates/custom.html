@@ -432,14 +432,14 @@
                                 >
                                   <div class="accordion-body text-muted">
                                     <div class="ProductItems">
-                                      <div
+                                      <div style="z-index: 9;"
                                         class="swiper product-taps-active position-relative"
                                       >
                                         <div class="swiper-wrapper">
                                           {% if products %} 
                                           {% for product in products %}
                                           <div class="swiper-slide">
-                                            <div class="ProItem active">
+                                            <div class="ProItem ">
                                               <div class="Image">
                                                 <img
                                                   onclick="changetshirt(this.getAttribute('front-src'), this.getAttribute('back-src')); getpro({{product.id}})"
