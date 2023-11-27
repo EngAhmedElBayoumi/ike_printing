@@ -1609,7 +1609,7 @@ nav a:hover {
     border: none !important
 }
 .nav-menu.nav-menu-social>li:last-child a {
-    padding-right: 0;
+    padding-left: 0;
 }
 .navigation-portrait .nav-menu.nav-menu-social>li {
     width: auto
@@ -1903,7 +1903,7 @@ nav a:hover {
   content: "";
   width:22px;
   height:22px;
-  left:27px;
+  right:27px;
   top:-12px;
   position: absolute;
   -webkit-transform: rotate(45deg);
