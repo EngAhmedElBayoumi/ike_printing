@@ -3197,7 +3197,7 @@ ul.dahs_navbar li a.active {
 /*------------ Product Grid Styles -----------------*/
 .product_grid, .product_grid.card {
     margin-bottom: 30px;
-	background:transparent;
+	background:#fff;
 }
 .product_grid .badge {
     display: none;
@@ -3681,14 +3681,15 @@ ul.dahs_navbar li a.active {
 }
 .single_search_boxed {
     padding: 0;
-    border-top: 1px solid #eac97a;
+    /* border-top: 1px solid #eac97a; */
     display: inline-block;
     width: 100%;
     background: #0e0e0e;
+    margin-bottom: 30px;
 
 }
 .single_search_boxed:first-child {
-    border-top: none;
+    /* border-top: none; */
 }
 .widget-boxed-header {
     padding: 0;
@@ -3701,16 +3702,19 @@ ul.dahs_navbar li a.active {
     text-transform: uppercase;
     font-weight:600;
     margin: 0;
+    margin-bottom: 0px;
 }
 .widget-boxed-header h4 a {
     height: 100%;
     display: block;
     position: relative;
-    padding: 1rem 1rem;
+    padding: 12px 15px;
+    color: #fff;
+    background: linear-gradient(45deg, rgba(115,69,18,1) 0%, rgba(234,201,122,1) 100%);
 }
 .widget-boxed-header h4 a.collapsed:before {
     content: "\e61a";
-    background: #eac97a;
+    background: #fff;
     color: #000;
 }
 .widget-boxed-header h4 a:before {
@@ -3725,13 +3729,13 @@ ul.dahs_navbar li a.active {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #eac97a;
+    background: #fff;
     font-family: themify;
     font-size: 10px;
     color: #000;
 }
 .widget-boxed-body .side-list {
-    padding: 0 1rem;
+    padding: 10px;
 }
 .single_filter_card {
     display: block;
