@@ -239,4 +239,4 @@ def payment_success(request):
 
 
 def payment_failed(request):
-    
+    pass
