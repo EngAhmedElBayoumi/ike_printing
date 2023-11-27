@@ -5875,7 +5875,11 @@ background: radial-gradient(circle, rgba(234,201,122,1) 0%, rgba(115,69,18,1) 10
     text-align: center;
     color: #fff;
     transition: all .4s ease-in-out;
+<<<<<<< HEAD
+    width: max-content;
+=======
     width: 200px;
+>>>>>>> f3215158c267f22773c46a7a98f3600d70e82212
     margin: auto;   
      background: linear-gradient(45deg, rgba(115,69,18,1) 0%, rgba(234,201,122,1) 100%);
 }
@@ -5942,6 +5946,8 @@ font-size: 16px;;
     object-fit: cover;
     object-position: center;
 }
+<<<<<<< HEAD
+=======
 
 
 .chosedesinerBox{
@@ -6034,20 +6040,38 @@ font-size: 16px;;
 
 
 
+>>>>>>> f3215158c267f22773c46a7a98f3600d70e82212
 
 
+.chosedesinerBox{
 
-
-
-
-
-
-
-
-
-
-
-
+}
+.chosedesinerBox .titile{
+    
+}
+.chosedesinerBox .titile h2{
+    background: linear-gradient(45deg, rgba(115,69,18,1) 0%, rgba(234,201,122,1) 100%);
+    color: #fff;
+    font-size: 20px;
+    padding: 7px 15px;
+    text-align: center;
+    margin: 0;
+}
+.chosedesinerBox .titile h2 span{
+    
+}
+.chosedesinerBox .boxoxoBody{
+    border: 1px solid #111;
+    padding: 20px;
+    text-align: center;
+    background: #0e0e0e;
+}
+.chosedesinerBox .boxoxoBody .descriptionPara{
+    margin-bottom: 10px;
+}
+.chosedesinerBox .boxoxoBody .descriptionPara p{
+    font-size: 15px;
+}
 
 
 
