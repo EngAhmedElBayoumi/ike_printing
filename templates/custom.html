@@ -439,7 +439,7 @@
                                           {% if products %} 
                                           {% for product in products %}
                                           <div class="swiper-slide">
-                                            <div class="ProItem {% if forloop.first %}active{% endif %">
+                                            <div class="ProItem {% if forloop.first %}active{% endif %}">
                                               <div class="Image">
                                                 <img
                                                   onclick="changetshirt(this.getAttribute('front-src'), this.getAttribute('back-src')); getpro({{product.id}})"
