@@ -107,7 +107,25 @@ class UserImageAdmin(admin.ModelAdmin):
     
     display_image.short_description = 'image'
 
-
+#CartProduct display
+class CartProductAdmin(admin.ModelAdmin):
+    #display name , image
+    list_display = ('user','product','quantity','total_price','dispaly_front_design','display_back_design')
+    #search bar
+    search_fields = ['user']
+    #display image
+    def dispaly_front_design(self, obj):
+        return format_html('<img src="{}" width="50" height="50" />', obj.front_design.url)
+    dispaly_front_design.short_description = 'front_design'
+    
+    #display image
+    def display_back_design(self, obj):
+        return format_html('<img src="{}" width="50" height="50" />', obj.back_design.url)
+    display_back_design.short_description = 'back_design'
+    
+    
+    
+    
 
 
 

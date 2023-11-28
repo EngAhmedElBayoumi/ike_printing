@@ -22,5 +22,8 @@ urlpatterns = [
     path("edit_product_design/<int:product_id>",views.edit_product_design,name="edit_product_design"),
     #save_design
     path("save_design/",views.save_design,name="save_design"),
-    
+    #get_quote
+    path("get_quote/",views.get_quote,name="get_quote"),   
+    #add_to_card
+    path("add_to_card/",views.card,name="card"),
 ]

@@ -5,7 +5,9 @@ from django.http import JsonResponse
 from django.core import serializers
 import json
 from django.core.serializers import serialize
-
+from pricing.models import ProductDiscountQuantity ,PrintingDiscountQuantity ,PrintingPrice ,GeneralDiscount ,Copoun
+#import login required
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def product(request):
@@ -243,6 +245,7 @@ def getproductbyid(request, product_id):
         "description": description,
         "height": product.height,
         "related_products": serializers.serialize('json', related_products),
+        "id": product_id,
     }
     
     return JsonResponse({"product": product_data})
@@ -303,3 +306,194 @@ def get_user_product_design(request):
     return JsonResponse({"product_designs": product_designs_data})
 
 
+
+def get_quote(request):
+
+
+
+    #get form front_design_height , back_design_height , quantity ,quantity_price
+    front_design_height = request.POST.get('front_design_height')
+    back_design_height = request.POST.get('back_design_height')
+    quantity = request.POST.get('quantity')
+    quantity_price = request.POST.get('quantity_price')
+    
+    #check if quantity is 0 or null
+    if quantity == "0" or quantity == "":
+        #return error
+        return JsonResponse({"error":"quantity is 0"})
+    
+    
+    
+    
+    #get price for design depend on height
+    front_design_price = PrintingPrice.objects.filter(min_size__lte=front_design_height, max_size__gte=front_design_height).first()
+    #check if front_design_price is null
+    if front_design_price == None:
+        #return error
+        return JsonResponse({"error":"front design price not found"})
+    front_design_price=front_design_price.price
+    back_design_price = PrintingPrice.objects.filter(min_size__lte=back_design_height, max_size__gte=back_design_height).first()
+    #check if back_design_price is null
+    if back_design_price == None:
+        #return error
+        return JsonResponse({"error":"back design price not found"})
+    back_design_price=back_design_price.price
+    
+    #----------------
+    #get discount for design depend on quantity
+    front_design_discount = PrintingDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
+    #check if there are discount for front design
+    if front_design_discount:
+        front_design_discount=front_design_discount.discount
+        #apply discount
+        front_design_price=front_design_price-(front_design_price*(front_design_discount/100))
+    
+    back_design_discount = PrintingDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
+    #check if there are discount for back design
+    if back_design_discount:
+        back_design_discount=back_design_discount.discount
+        #apply discount
+        back_design_price=back_design_price-(back_design_price*(back_design_discount/100))
+        
+    #----------------
+    #get discount for quantity
+    quantity_discount = ProductDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
+    #check if there are discount for quantity
+    if quantity_discount:
+        quantity_discount=quantity_discount.discount
+        #apply discount
+        quantity_price=quantity_price-(quantity_price*(quantity_discount/100))
+        
+    #----------------
+    #convert quantity , front_design_price , back_design_price to int
+    quantity=int(quantity)
+    front_design_price=float(front_design_price)
+    back_design_price=float(back_design_price)
+    quantity_price=float(quantity_price)
+    total_price = front_design_price + back_design_price + quantity_price
+    
+    #----------------
+    #get general discount
+    general_discount = GeneralDiscount.objects.first()
+    #check if there are general discount
+    if general_discount:
+        general_discount=general_discount.discount
+        #apply discount
+        total_price=total_price-(total_price*(general_discount/100))
+        
+    #create json data with front_design_price , back_design_price , quantity_price , total_price
+    data = {
+        "front_design_price": front_design_price,
+        "back_design_price": back_design_price,
+        "quantity_price": quantity_price,
+        "total_price": total_price,
+    }
+    #return data
+    return JsonResponse(data)
+
+
+#------------------------------
+
+def validate_positive_integer(value, field_name):
+    try:
+        validated_value = int(value)
+        if validated_value < 0:
+            raise ValueError(f"{field_name} should be a positive integer.")
+        return validated_value
+    except ValueError:
+        raise ValueError(f"{field_name} should be a valid positive integer.")
+
+def get_front_back_design_price(front_design_height, back_design_height, quantity):
+    # Validate and set default values if height is null
+    front_design_height = validate_positive_integer(front_design_height, "Front Design Height") or 0
+    back_design_height = validate_positive_integer(back_design_height, "Back Design Height") or 0
+
+    # Get front and back design prices
+    front_design_price = PrintingPrice.objects.filter(min_size__lte=front_design_height, max_size__gte=front_design_height).first()
+    if front_design_price:
+        front_design_price=front_design_price.price
+    else:
+        front_design_price=0
+    back_design_price = PrintingPrice.objects.filter(min_size__lte=back_design_height, max_size__gte=back_design_height).first()
+    if back_design_price:   
+        back_design_price=back_design_price.price
+    else:
+        back_design_price=0
+    
+
+    return front_design_price, back_design_price
+
+def get_general_discounted_price(total_price):
+    # Get and apply general discount
+    general_discount = GeneralDiscount.objects.first()
+    if general_discount:
+        general_discount = general_discount.discount
+        total_price -= total_price * (general_discount / 100)
+
+    return total_price
+
+def get_quote(request):
+    front_design_height = request.POST.get('front_design_height')
+    back_design_height = request.POST.get('back_design_height')
+    quantity = request.POST.get('quantity')
+    quantity_price = request.POST.get('quantity_price')
+
+    try:
+        # Validate and get front, back, and quantity prices
+        front_design_price, back_design_price = get_front_back_design_price(
+            front_design_height, back_design_height, quantity
+        )
+
+        # Convert to int and float
+        quantity = validate_positive_integer(quantity, "Quantity")
+        front_design_price = float(front_design_price)
+        back_design_price = float(back_design_price)
+        quantity_price = float(quantity_price)
+
+        # Calculate total price
+        total_price = front_design_price + back_design_price + quantity_price
+
+        # Apply general discount
+        total_price = get_general_discounted_price(total_price)
+
+        # Create JSON data
+        data = {
+            "front_design_price": front_design_price,
+            "back_design_price": back_design_price,
+            "quantity_price": quantity_price,
+            "total_price": total_price,
+        }
+
+        return JsonResponse(data)
+
+    except ValueError as e:
+        return JsonResponse({"error": str(e)})
+    
+#login required
+@login_required() 
+def card(request):
+    #if request is post 
+    if request.method == "POST":
+        try:
+            #get product id , quantity , front_design_price , back_design_price , quantity_price , total_price , frontcanvas , backcanvas
+            product_id = request.POST.get('product_id')
+            quantity = request.POST.get('quantity')
+            front_design_price = request.POST.get('front_design_price')
+            back_design_price = request.POST.get('back_design_price')
+            quantity_price = request.POST.get('quantity_price')
+            total_price = request.POST.get('total_price')
+            frontcanvas = request.POST.get('frontcanvas')
+            backcanvas = request.POST.get('backcanvas')
+            #get product
+            product = Product.objects.get(id=product_id)
+            #get user
+            user=request.user
+            #create cart product
+            cart_product = CartProduct.objects.create(user=user, product=product, quantity=quantity, front_design_price=front_design_price, back_design_price=back_design_price, quantity_price=quantity_price, total_price=total_price, frontcanvas=frontcanvas, backcanvas=backcanvas)
+            #return success
+            return JsonResponse({"success": "success"})
+        except Exception as e:
+            #return error
+            return JsonResponse({"error": str(e)})
+
+    return render(request, 'card.html', {})

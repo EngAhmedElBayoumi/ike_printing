@@ -736,6 +736,7 @@
 
 
                               <input id="product_height" value="{{products.0.height}}" style="display:none">
+                              <input id="product_id" value="{{products.0.id}}" style="display:none">
 
                               <div class="accordion-item">
                                 <h2
@@ -1757,36 +1758,59 @@
                             </div>
                             <div class="row">
                               <div class="col-8">
+                                <h3>front design price</h3>
+                              </div>
+                              <div class="col-4">
+                                <p class="lead" id="front_price"></p>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-8">
                                 <h3>Back design Height</h3>
                               </div>
                               <div class="col-4">
                                 <p class="lead" id="back_design_price"></p>
                               </div>
                             </div>
+                            <div class="row">
+                              <div class="col-8">
+                                <h3>Back design price</h3>
+                              </div>
+                              <div class="col-4">
+                                <p class="lead" id="back_price"></p>
+                              </div>
+                            </div>
 
                             <div class="row" id="product_sizes_price">
                               <div class="col-8">
-                                <h3>size</h3>
+                                <h3>Quantity</h3>
                               </div>
                               <div class="col-4">
-                                <p class="lead" id="back_design_price"></p>
+                                <p class="lead" id="product_size"></p>
                               </div>
                             </div>
-                            <div class="row">
-                              <div class="col-12">
-                                <h3>team</h3>
-                                <table
-                                  class="table table-bordered"
-                                  id="teamtableprice"
-                                ></table>
+                            <div class="row" id="quantity_price_dev">
+                              <div class="col-8">
+                                <h3>products price</h3>
+                              </div>
+                              <div class="col-4">
+                                <p class="lead" id="quantity_price"></p>
                               </div>
                             </div>
+                            <div class="row" id="total_price_dev">
+                              <div class="col-8">
+                                <h3>Total price</h3>
+                              </div>
+                              <div class="col-4">
+                                <p class="lead" id="total_price"></p>
+                              </div>
+                            </div>
+                            
                             {% if user.is_authenticated %}
                             <div class="text-center">
                               <div class="">
-                                <a href="#" class="btn stretched-link borders"
-                                  >Add To Card</a
-                                >
+                                <button id="addToCard"  class="btn stretched-link borders"
+                                  >Add To Card</button>
                               </div>
                             </div>
                             {% else %}
@@ -3015,9 +3039,14 @@
             // related products
             var related_products = document.getElementById("related_products");
             var product_height = document.getElementById("product_height");
+            var product_id = document.getElementById("product_id");
             var product_height_data="";
+            var product_id_data="";
             product_height_data = data.product.height;
             product_height.value = product_height_data;
+            product_id_data = data.product.id;
+            product_id.value = product_id_data;
+            console.log(data)
             related_products.innerHTML = "";
             single_related_product = "";
 

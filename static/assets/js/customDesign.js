@@ -300,7 +300,8 @@ document.addEventListener("keydown", function(e) {
 
 var front_design_price= document.getElementById("front_design_price");
 var back_design_price= document.getElementById("back_design_price");
-
+var product_size= document.getElementById("product_size");
+var quantity_price = document.getElementById("quantity_price");
 document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
     // get pruduct height from input with id "product_height"
     var productHeightByInches = document.getElementById("product_height").value;
@@ -325,10 +326,26 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
     // calculate back design height by inches
     var backDesignHeightByInches = backDesignHeight / scale;
 
+    frontDesignHeightByInches = Math.round(frontDesignHeightByInches);
+    backDesignHeightByInches = Math.round(backDesignHeightByInches);
+
+    // set front_design_price to frontDesignHeightByInches
+    front_design_price.innerHTML = frontDesignHeightByInches;
+    // set back_design_price to backDesignHeightByInches
+    back_design_price.innerHTML = backDesignHeightByInches;
+
+
+
+
+
+
+
+
     // get all  SizeItem 
     var SizeItem = document.querySelectorAll(".SizeItem");
     // loop through all SizeItem
     var totalSizePrice = 0;
+    var quality = 0;
     SizeItem.forEach(function(SizeItem) {
         // get data-size-price
         var SizeItemPrice = SizeItem.getAttribute("data-size-price");
@@ -339,12 +356,20 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
             // set SizeItemInput to 0
             SizeItemNumber = 0;
         }
+        // set quality to 
+        quality = Number(SizeItemNumber) + quality;
         // calculate totalSizePrice
         totalSizePrice += SizeItemPrice * SizeItemNumber;
-        console.log(totalSizePrice)
         
     });
-    console.log(totalSizePrice);
+
+    // call getQuote function
+    getQuote(frontDesignHeightByInches, backDesignHeightByInches, quality,totalSizePrice);
+
+    // set product_size to quality
+    product_size.innerHTML = quality;
+    // set quantity_price to totalSizePrice
+    quantity_price.innerHTML = totalSizePrice;
 
 });
 
@@ -364,7 +389,138 @@ function calculateTotalArea(objects) {
     return totalArea;
 }
 
+// function take frontdesign and backdesign height and quantity and call ajax to get price
+function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) {
+    
+    // check if quantity not null or empty or 0
+    if (quantity == "" || quantity == 0) {
+        // alert to the user to enter quantity
+        alert("Please enter quantity");
+        // return
+        return;
+    }
+    // get csrf_token from form with id has input  "csrf_token"
+    var crftoken = document.getElementById("crftokenform").getElementsByTagName("input")[0].value;
+    // create form data
+    var formData = new FormData();
+    formData.append('front_design_height', frontDesignHeight);
+    formData.append('back_design_height', backDesignHeight);
+    formData.append('quantity', quantity);
+    formData.append('quantity_price', quantity_price);
+    formData.append('csrfmiddlewaretoken', crftoken);
 
+    // axios call to get quote
+    axios.post(`${projecturl}product/get_quote/`, formData, {
+        withCredentials: true,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+    .then(function (response) {
+        // get from response front_design_price , back_design_price , total_price , quantity_price
+        var front_design_price = response.data.front_design_price;
+        var back_design_price = response.data.back_design_price;
+        var total_price = response.data.total_price;
+        var quantity_price = response.data.quantity_price;
+        // get front_price by id
+        document.getElementById("front_price").innerHTML = front_design_price;
+        // get back_price by id
+        document.getElementById("back_price").innerHTML = back_design_price;
+        // get quantity_price by id
+        document.getElementById("quantity_price").innerHTML = quantity_price;
+        // get total_price by id
+        document.getElementById("total_price").innerHTML = total_price;
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+
+
+//------------------------
+
+// add to card
+document.getElementById("addToCard").addEventListener("click", function() {
+
+
+
+    // get product id from input with id "product_id"
+    var product_id = document.getElementById("product_id").value;
+    // get quantity from input with id "product_size"
+    var quantity = document.getElementById("product_size").innerHTML;
+    // get front design price from input with id "front_design_price"
+    var front_design_price = document.getElementById("front_design_price").innerHTML;
+    // get back design price from input with id "back_design_price"
+    var back_design_price = document.getElementById("back_design_price").innerHTML;
+    // get quantity price from input with id "quantity_price"
+    var quantity_price = document.getElementById("quantity_price").innerHTML;
+    // get total price from input with id "total_price"
+    var total_price = document.getElementById("total_price").innerHTML;
+    // convert front canvas as jpg data 
+    canvas.discardActiveObject();
+    canvas.renderAll();
+    var frontimageData = canvas.toDataURL({
+        format: 'jpeg',
+        quality: 1
+    });
+    // convert back canvas as jpg data
+    canvasBack.discardActiveObject();
+    canvasBack.renderAll();
+    var backimageData = canvasBack.toDataURL({
+        format: 'jpeg',
+        quality: 1
+    });
+    // get csrf_token from form with id has input  "csrf_token"
+    var crftoken = document.getElementById("crftokenform").getElementsByTagName("input")[0].value;
+    // confirm to the user to add to card
+    var confirm = window.confirm("Are you sure you want to add to card?");
+    // check if confirm is false
+    if (confirm == false) {
+        // return
+        return;
+    }
+
+    
+    
+    // check if quantity not null or empty or 0
+    if (quantity == "" || quantity == 0) {
+        // alert to the user to enter quantity
+        alert("Please enter quantity");
+        // return
+        return;
+    }
+
+
+    // create form data
+    var formData = new FormData();
+    formData.append('product_id', product_id);
+    formData.append('quantity', quantity);
+    formData.append('front_design_price', front_design_price);
+    formData.append('back_design_price', back_design_price);
+    formData.append('quantity_price', quantity_price);
+    formData.append('total_price', total_price);
+    formData.append('frontcanvas', frontimageData);
+    formData.append('backcanvas', backimageData);
+    formData.append('csrfmiddlewaretoken', crftoken);
+    // axios call to add to card
+    axios.post(`${projecturl}product/add_to_card/`, formData, {
+        withCredentials: true,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+    .then(function (response) {
+        // alert to the user that product added to card
+        alert("Product added to your card");
+    }
+    )
+    .catch(function (error) {
+        // alert to the user that product not added to card
+        alert("Product not added to your card");
+    });
+    
+});
 
 
 
@@ -412,9 +568,6 @@ function saveDesign() {
     formData.append('frontcanvas', frontimageData);
     formData.append('name', designName);
     formData.append('csrfmiddlewaretoken', crftoken);
-
-  
-
     // axios call to save design
     axios.post(`${projecturl}product/save_design/`, formData, {
         withCredentials: true,
@@ -423,10 +576,12 @@ function saveDesign() {
         },
     })
     .then(function (response) {
-        console.log(response);
+        // alert to the user that design saved
+        alert("Design saved");
     })
     .catch(function (error) {
-        console.log(error);
+        // alert to the user that design not saved
+        alert("Design not saved");
     });
 }
 function loaddesign(front, back) {
@@ -443,8 +598,6 @@ function loaddesign(front, back) {
 }
 
 
-// get element by id Quote_Buy
-// add event listener click
 
 
 

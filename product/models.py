@@ -119,8 +119,34 @@ class FavoriteProduct(models.Model):
 class CartProduct(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    front_design_price = models.FloatField()
+    back_design_price = models.FloatField()
+    quantity_price = models.FloatField()
+    total_price = models.FloatField()
+    frontcanvas = models.TextField()
+    backcanvas = models.TextField()
     def __str__(self):
         return self.user.username
+    
+    #get front canvas data
+    def get_frontcanvas(self):
+        return json.loads(self.frontcanvas)
+    
+    #get back canvas data
+    def get_backcanvas(self):
+        return json.loads(self.backcanvas)
+    
+    #set front canvas data
+    def set_frontcanvas(self):
+        self.frontcanvas=json.dumps(self.frontcanvas)
+
+    #set back canvas data
+    def set_backcanvas(self):
+        self.backcanvas=json.dumps(self.backcanvas)
+        
+            
+    
     
 
 

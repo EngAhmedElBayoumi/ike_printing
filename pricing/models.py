@@ -13,7 +13,7 @@ class ProductDiscountQuantity(models.Model):
     
     #string representation
     def __str__(self):
-        return f"{self.min_quantity} - {self.max_quantity} : {self.price}"
+        return f"{self.min_quantity} - {self.max_quantity} : {self.discount} %"
     
     
 #printing discount quantity
@@ -27,7 +27,7 @@ class PrintingDiscountQuantity(models.Model):
     
     #string representation
     def __str__(self):
-        return f"{self.min_quantity} - {self.max_quantity} : {self.price}"
+        return f"{self.min_quantity} - {self.max_quantity} : {self.discount} %"
 
 
 #printing price
