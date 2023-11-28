@@ -126,6 +126,7 @@ class CartProduct(models.Model):
     total_price = models.FloatField()
     frontcanvas = models.TextField()
     backcanvas = models.TextField()
+    product_color = models.CharField(max_length=50)
     def __str__(self):
         return self.user.username
     

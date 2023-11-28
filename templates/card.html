@@ -36,17 +36,22 @@
                                                 <tr>
                                                     <th>
                                                         <div class="olh_flex text-center">
-                                                            <h6 class="mb-0 ft-medium">Product Price</h6>
+                                                            <h6 class="mb-0 ft-medium">Price</h6>
                                                         </div>	
                                                     </th>
                                                     <th>
                                                         <div class="olh_flex text-center">
-                                                            <h6 class="mb-0 ft-medium">Product Name</h6>
+                                                            <h6 class="mb-0 ft-medium">Quantity</h6>
                                                         </div>
                                                     </th>
                                                     <th >
                                                         <div class="olh_flex">
                                                             <h6 class="mb-0 ft-medium">Product Image</h6>
+                                                        </div>
+                                                    </th>
+                                                    <th >
+                                                        <div class="olh_flex">
+                                                            <h6 class="mb-0 ft-medium">Product Color</h6>
                                                         </div>
                                                     </th>
                                                     <th>
@@ -59,30 +64,62 @@
                                                             <h6 class="mb-0 ft-medium">Back Design</h6>
                                                         </div>
                                                     </th>
-                                                    <th>
+                                                    {% comment %} <th>
                                                         <div class="olh_flex text-center">
                                                             <h6 class="mb-0 ft-medium"><i class="fas fa-trash-alt"></i></h6>
                                                         </div>
-                                                    </th>
+                                                    </th> {% endcomment %}
                                                 </tr>
                                             </thead>
                                             <tbody class="ord_list_body text-left">
+                                                {% for card in product_card %}
                                                 <tr class="br-bottom">
                                                     <td>
                                                         <div class="ProductPrice">
-                                                            <h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
+                                                            <h4 class="fs-sm ft-bold mb-0 lh-1">{{ card.total_price }}</h4>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="ProductName">
-                                                            <h4 class="fs-sm ft-bold mb-0 lh-1">Product Name</h4>
+                                                            <h4 class="fs-sm ft-bold mb-0 lh-1">{{ card.quantity }}</h4>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="cart_single ProductImage d-flex align-items-start mfliud-bot">
                                                             <div class="cart_selected_single_thumb" style="width: 100%">
                                                                 <a href="#">
-                                                                    <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
+                                                                    <img src="{{card.product.frontimage.url}}" width="75" class="img-fluid rounded" alt="">
+                                                                </a>
+                                                                
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cart_single ProductImage d-flex align-items-start mfliud-bot">
+                                                            <div class="cart_selected_single_thumb" style="width: 100%">
+                                                                <a href="#">
+                                                                    <p>{{card.product_color}}</p>
+                                                                    <label
+                                                                    for=""
+                                                                    class="colorItem active"
+                                                                    style="background: {{card.product_color}};width: 20px;height: 20px;"
+                                                                    >
+                                                                    <span
+                                                                        class="IconCheck bx bx-check"
+                                                                        style="color: {{card.product_color}"
+                                                                    ></span>
+                                                                </label>                                                                </a>
+                                                                
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cart_single d-flex align-items-start mfliud-bot">
+                                                            <div class="cart_selected_single_thumb">
+                                                                <a href="#">
+                                                                    <img src="{{card.frontcanvas}}" width="75" class="img-fluid rounded" alt="">
                                                                 </a>
                                                             </div>
                                                             
@@ -92,239 +129,31 @@
                                                         <div class="cart_single d-flex align-items-start mfliud-bot">
                                                             <div class="cart_selected_single_thumb">
                                                                 <a href="#">
-                                                                    <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
+                                                                    <img src="{{card.backcanvas}}" width="75" class="img-fluid rounded" alt="">
                                                                 </a>
                                                             </div>
-                                                            <div class="cart_single_caption pl-3">
-                                                                <p class="mb-0"><span class="text-muted small">Dresses</span></p>
-                                                                <h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-                                                                <p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-                                                                <h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="cart_single d-flex align-items-start mfliud-bot">
-                                                            <div class="cart_selected_single_thumb">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
-                                                                </a>
-                                                            </div>
-                                                            <div class="cart_single_caption pl-3">
-                                                                <p class="mb-0"><span class="text-muted small">Dresses</span></p>
-                                                                <h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-                                                                <p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-                                                                <h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-                                                            </div>
+                                                            
                                                         </div>
                                                     </td>
                                                     
-                                                    <td>
+                                                    {% comment %} <td>
                                                         <div class="fls_last TrashItem"><button class="close_slide gray"><i class="ti-close"></i></button></div>
-                                                    </td>
+                                                    </td> {% endcomment %}
                                                 </tr>
+                                                {% endfor %}
                                                 
-                                                <tr class="br-bottom">
-                                                    <td>
-                                                        <div class="ProductPrice">
-                                                            <h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="ProductName">
-                                                            <h4 class="fs-sm ft-bold mb-0 lh-1">Product Name</h4>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="cart_single ProductImage d-flex align-items-start mfliud-bot">
-                                                            <div class="cart_selected_single_thumb" style="width: 100%">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
-                                                                </a>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="cart_single d-flex align-items-start mfliud-bot">
-                                                            <div class="cart_selected_single_thumb">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
-                                                                </a>
-                                                            </div>
-                                                            <div class="cart_single_caption pl-3">
-                                                                <p class="mb-0"><span class="text-muted small">Dresses</span></p>
-                                                                <h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-                                                                <p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-                                                                <h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="cart_single d-flex align-items-start mfliud-bot">
-                                                            <div class="cart_selected_single_thumb">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
-                                                                </a>
-                                                            </div>
-                                                            <div class="cart_single_caption pl-3">
-                                                                <p class="mb-0"><span class="text-muted small">Dresses</span></p>
-                                                                <h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-                                                                <p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-                                                                <h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    
-                                                    <td>
-                                                        <div class="fls_last TrashItem"><button class="close_slide gray"><i class="ti-close"></i></button></div>
-                                                    </td>
-                                                </tr>
                                                 
-                                                <tr class="br-bottom">
-                                                    <td>
-                                                        <div class="ProductPrice">
-                                                            <h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="ProductName">
-                                                            <h4 class="fs-sm ft-bold mb-0 lh-1">Product Name</h4>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="cart_single ProductImage d-flex align-items-start mfliud-bot">
-                                                            <div class="cart_selected_single_thumb" style="width: 100%">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
-                                                                </a>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="cart_single d-flex align-items-start mfliud-bot">
-                                                            <div class="cart_selected_single_thumb">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
-                                                                </a>
-                                                            </div>
-                                                            <div class="cart_single_caption pl-3">
-                                                                <p class="mb-0"><span class="text-muted small">Dresses</span></p>
-                                                                <h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-                                                                <p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-                                                                <h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="cart_single d-flex align-items-start mfliud-bot">
-                                                            <div class="cart_selected_single_thumb">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
-                                                                </a>
-                                                            </div>
-                                                            <div class="cart_single_caption pl-3">
-                                                                <p class="mb-0"><span class="text-muted small">Dresses</span></p>
-                                                                <h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-                                                                <p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-                                                                <h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    
-                                                    <td>
-                                                        <div class="fls_last TrashItem"><button class="close_slide gray"><i class="ti-close"></i></button></div>
-                                                    </td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
-<!--
-                                    <div class="row">
-                                        <div class="col-lg-1">
-                                            <div class="olh_flex">
-                                                <h6 class="mb-0 ft-medium">Product Price</h6>
-                                            </div>	
-                                        </div>
-                                        <div class="col-lg-1">
-                                            <div class="olh_flex">
-                                                <h6 class="mb-0 ft-medium">Product Name</h6>
-                                            </div>	
-                                        </div>
-                                        <div class="col-lg-1">
-                                            <div class="olh_flex">
-                                                <h6 class="mb-0 ft-medium">Product Image</h6>
-                                            </div>	
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="olh_flex">
-                                                <h6 class="mb-0 ft-medium">Front Design</h6>
-                                            </div>	
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="olh_flex">
-                                                <h6 class="mb-0 ft-medium">Back Design</h6>
-                                            </div>	
-                                        </div>
-                                        <div class="col-lg-1">
-                                            <div class="olh_flex">
-                                                <h6 class="mb-0 ft-medium"><i class="fas fa-trash-alt"></i></h6>
-                                            </div>	
-                                        </div>
-                                    </div>
-                                    
--->
                                     
 								</div>
-<!--
-								<div class="ord_list_body text-left">
-                                    <div class="row align-items-center justify-content-center m-0 py-4 br-bottom">
-                                        <div class="col-xl-1 col-lg-1 col-md-1 col-1">
-											<h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-										</div>
-										<div class="col-xl-3 col-lg-5 col-md-5 col-12">
-											<div class="cart_single d-flex align-items-start mfliud-bot">
-												<div class="cart_selected_single_thumb">
-													<a href="#">
-                                                        <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
-                                                    </a>
-												</div>
-												<div class="cart_single_caption pl-3">
-													<p class="mb-0"><span class="text-muted small">Dresses</span></p>
-													<h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-													<p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-													<h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-												</div>
-											</div>
-										</div>
-										<div class="col-xl-3 col-lg-5 col-md-5 col-12">
-											<div class="cart_single d-flex align-items-start mfliud-bot">
-												<div class="cart_selected_single_thumb">
-													<a href="#">
-                                                        <img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt="">
-                                                    </a>
-												</div>
-												<div class="cart_single_caption pl-3">
-													<p class="mb-0"><span class="text-muted small">Dresses</span></p>
-													<h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-													<p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-													<h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-												</div>
-											</div>
-										</div> 
-										<div class="col-xl-1 col-lg-1 col-md-1 col-1">
-											<div class="fls_last"><button class="close_slide gray"><i class="ti-close"></i></button></div>
-										</div>
-									</div>
-									
-								</div>
--->
+
 								<div class="ord_list_footer d-flex align-items-center justify-content-between br-top px-3">
 									<div class="col-xl-3 col-lg-3 col-md-4 olf_flex text-left px-0 py-2 br-right"><a href="javascript:void(0);" class="ft-medium fs-sm"><i class="ti-close mr-2"></i>Cleare Cart</a></div>
 									<div class="col-xl-9 col-lg-9 col-md-8 pr-0 py-2 olf_flex d-flex align-items-center justify-content-between">
-										<div class="olf_flex_inner hide_mob"><p class="m-0 p-0"><span class="text-muted medium">Paid using debit card ending with 6472</span></p></div>
-										<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Total: $4510</h5></div>
+										<div class="olf_flex_inner hide_mob"><p class="m-0 p-0"><span class="text-muted medium"></span></p></div>
+										<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Total: ${{product_card.total}}</h5></div>
 									</div>
 								</div>
 							</div>
@@ -339,22 +168,17 @@
 							<div class="card mb-4 gray">
 							  <div class="card-body">
 								<ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
+								 
 								  <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-									<span>Subtotal</span> <span class="ml-auto text-dark ft-medium">$98.12</span>
-								  </li>
-								  <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-									<span>Tax</span> <span class="ml-auto text-dark ft-medium">$10.10</span>
-								  </li>
-								  <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-									<span>Total</span> <span class="ml-auto text-dark ft-medium">$108.22</span>
+									<span>Total</span> <span class="ml-auto text-dark ft-medium">${{product_card.total}}</span>
 								  </li>
 								  
 								</ul>
 							  </div>
 							</div>
                            
-							
-							<a class="btn btn-block btn-dark mb-3" href="checkout.html">Place Your Order</a>
+                            <!--order url-->
+							<a class="btn btn-block btn-dark mb-3" href="#">Place Your Order</a>
 						</div>
 						
 					</div>

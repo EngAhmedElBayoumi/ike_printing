@@ -472,6 +472,17 @@ def get_quote(request):
 #login required
 @login_required() 
 def card(request):
+    #get product card
+    product_card = CartProduct.objects.filter(user=request.user)
+    
+    #calculate total price
+    total_price=0
+    for product in product_card:
+        total_price+=product.total_price
+        
+    #append total price to product card
+    product_card.total=total_price
+    
     #if request is post 
     if request.method == "POST":
         try:
@@ -484,16 +495,17 @@ def card(request):
             total_price = request.POST.get('total_price')
             frontcanvas = request.POST.get('frontcanvas')
             backcanvas = request.POST.get('backcanvas')
+            canvasBackgroundColor=request.POST.get('canvasBackgroundColor')
             #get product
             product = Product.objects.get(id=product_id)
             #get user
             user=request.user
             #create cart product
-            cart_product = CartProduct.objects.create(user=user, product=product, quantity=quantity, front_design_price=front_design_price, back_design_price=back_design_price, quantity_price=quantity_price, total_price=total_price, frontcanvas=frontcanvas, backcanvas=backcanvas)
+            cart_product = CartProduct.objects.create(user=user, product=product, quantity=quantity, front_design_price=front_design_price, back_design_price=back_design_price, quantity_price=quantity_price, total_price=total_price, frontcanvas=frontcanvas, backcanvas=backcanvas,product_color=canvasBackgroundColor)
             #return success
             return JsonResponse({"success": "success"})
         except Exception as e:
             #return error
             return JsonResponse({"error": str(e)})
 
-    return render(request, 'card.html', {})
+    return render(request, 'card.html', {'product_card':product_card})

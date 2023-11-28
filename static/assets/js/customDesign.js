@@ -457,6 +457,9 @@ document.getElementById("addToCard").addEventListener("click", function() {
     var quantity_price = document.getElementById("quantity_price").innerHTML;
     // get total price from input with id "total_price"
     var total_price = document.getElementById("total_price").innerHTML;
+    // get canvas background color 
+    var canvasBackgroundColor = document.getElementById("tshirt-div").style.backgroundColor;
+
     // convert front canvas as jpg data 
     canvas.discardActiveObject();
     canvas.renderAll();
@@ -480,9 +483,6 @@ document.getElementById("addToCard").addEventListener("click", function() {
         // return
         return;
     }
-
-    
-    
     // check if quantity not null or empty or 0
     if (quantity == "" || quantity == 0) {
         // alert to the user to enter quantity
@@ -490,7 +490,6 @@ document.getElementById("addToCard").addEventListener("click", function() {
         // return
         return;
     }
-
 
     // create form data
     var formData = new FormData();
@@ -503,6 +502,7 @@ document.getElementById("addToCard").addEventListener("click", function() {
     formData.append('frontcanvas', frontimageData);
     formData.append('backcanvas', backimageData);
     formData.append('csrfmiddlewaretoken', crftoken);
+    formData.append('canvasBackgroundColor', canvasBackgroundColor);
     // axios call to add to card
     axios.post(`${projecturl}product/add_to_card/`, formData, {
         withCredentials: true,
@@ -522,18 +522,13 @@ document.getElementById("addToCard").addEventListener("click", function() {
     
 });
 
-
-
-
-
-
 var designData={};
 
 // get element by id loaddesign , save-design
+
 document.getElementById("loaddesign").addEventListener("click", function() {
     loaddesign();
 });
-
 
 function saveDesign() {
     console.log("savedesign");
@@ -543,7 +538,6 @@ function saveDesign() {
     // get csrf_token from form with id has input  "csrf_token"
     var crftoken = document.getElementById("crftokenform").getElementsByTagName("input")[0].value;
     console.log(crftoken);
-
     // get front canvas as jpg data with original size
     canvas.discardActiveObject();
     canvas.renderAll();
@@ -558,16 +552,15 @@ function saveDesign() {
         // show message to the user to enter design name under input with id "design-name" and focus on it
         document.getElementById("design-name").focus();
         document.getElementById("design-name").placeholder = "Please enter design name";
-
         return;
     }
-
     var formData = new FormData();
     formData.append('front', JSON.stringify(canvas));
     formData.append('back', JSON.stringify(canvasBack));
     formData.append('frontcanvas', frontimageData);
     formData.append('name', designName);
     formData.append('csrfmiddlewaretoken', crftoken);
+
     // axios call to save design
     axios.post(`${projecturl}product/save_design/`, formData, {
         withCredentials: true,
@@ -580,12 +573,14 @@ function saveDesign() {
         alert("Design saved");
     })
     .catch(function (error) {
+
         // alert to the user that design not saved
         alert("Design not saved");
     });
 }
 function loaddesign(front, back) {
    console.log("set design"); 
+
    // set front canvas from front
     canvas.loadFromJSON(front, function () {
          canvas.renderAll();
