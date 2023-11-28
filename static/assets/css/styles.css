@@ -1609,7 +1609,7 @@ nav a:hover {
     border: none !important
 }
 .nav-menu.nav-menu-social>li:last-child a {
-    padding-right: 0;
+    padding-left: 0;
 }
 .navigation-portrait .nav-menu.nav-menu-social>li {
     width: auto
@@ -1903,7 +1903,7 @@ nav a:hover {
   content: "";
   width:22px;
   height:22px;
-  left:27px;
+  right:27px;
   top:-12px;
   position: absolute;
   -webkit-transform: rotate(45deg);
@@ -4863,7 +4863,7 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     display: block;
     height: 100%;
     overflow: auto;
-    max-height: 430px;
+    max-height: 535px;
 }
 .paymentWrap::-webkit-scrollbar-thumb {
     height: 16px;
@@ -5709,17 +5709,18 @@ background: radial-gradient(circle, rgba(234,201,122,1) 0%, rgba(115,69,18,1) 10
     width: 100%;
     background: #111;
     padding: 0px;
-    border: 1px solid #333;
+    border: 1px solid #eac97a;
     margin-bottom: 30px;
+    height: 545px;
 }
 
 
 .ClaenderBox{
             display: block;
     width: 100%;
-    background: #111;
+    background: #1110;
     padding: 15px;
-    border: 1px solid #333;
+    border: 1px solid #eac97a;
     margin-bottom: 30px;
 }
 .ClaenderBox .calendar-container header{
@@ -5731,7 +5732,7 @@ background: radial-gradient(circle, rgba(234,201,122,1) 0%, rgba(115,69,18,1) 10
     margin-bottom: 30px;
     display: block;
     height: auto;
-     border: 1px solid #333;
+     border: 1px solid #eac97a;
     padding: 15px;
 
 }
@@ -5875,11 +5876,8 @@ background: radial-gradient(circle, rgba(234,201,122,1) 0%, rgba(115,69,18,1) 10
     text-align: center;
     color: #fff;
     transition: all .4s ease-in-out;
-<<<<<<< HEAD
     width: max-content;
-=======
     width: 200px;
->>>>>>> f3215158c267f22773c46a7a98f3600d70e82212
     margin: auto;   
      background: linear-gradient(45deg, rgba(115,69,18,1) 0%, rgba(234,201,122,1) 100%);
 }
@@ -5946,8 +5944,7 @@ font-size: 16px;;
     object-fit: cover;
     object-position: center;
 }
-<<<<<<< HEAD
-=======
+
 
 
 .chosedesinerBox{
@@ -5987,6 +5984,49 @@ font-size: 16px;;
     background: linear-gradient(45deg, rgba(115,69,18,1) 0%, rgba(234,201,122,1) 100%);
 }
 
+.notsBoxCallEcpert{
+    margin-bottom: 15px;
+    display: block;
+    height: auto;
+    border: 1px solid #eac97a;
+    padding: 15px;
+}
+.notsBoxCallEcpert ul{
+    padding: 0;
+    margin: 0;
+}
+.notsBoxCallEcpert ul li{
+
+}
+.notsBoxCallEcpert ul li span{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(45deg, rgba(115,69,18,1) 0%, rgba(234,201,122,1) 100%);
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.notsBoxCallEcpert ul li p{
+    margin: 0;
+    font-size: 14px;
+    color: #aaa;
+    display: inline;
+}
+
+.datepicker .datepicker-switch:hover, .datepicker .next:hover, .datepicker .prev:hover, .datepicker tfoot tr th:hover{
+    background: #fff0 !important;
+
+}
+
+
+
+.datepicker table tr td.new, .datepicker table tr td.old{
+
+    color: #303030 !important;
+}
+.datepicker td, .datepicker th{
+    color: #fff;
+}
 
 
 
@@ -6027,20 +6067,6 @@ font-size: 16px;;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> f3215158c267f22773c46a7a98f3600d70e82212
 
 
 .chosedesinerBox{
@@ -6072,6 +6098,35 @@ font-size: 16px;;
 .chosedesinerBox .boxoxoBody .descriptionPara p{
     font-size: 15px;
 }
+
+.ord_list_wrap {
+    background: #0e0e0e;
+}
+.ord_list_head{
+
+}
+.ord_list_head h6{
+    color: #fff;
+}
+
+.ord_list_footer {
+
+}
+.ord_list_footer .ft-medium{
+    color: #b08947;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
