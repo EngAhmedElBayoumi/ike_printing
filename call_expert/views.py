@@ -45,18 +45,26 @@ def call_expert(request):
 #CallSeniorDesigner
 def call_senior_designer(request):
     if request.method == 'POST':
-        name=request.POST.get('name')
-        email=request.POST.get('email')
-        subject=request.POST.get('subject')
-        message=request.POST.get('message')
-        fromtime=request.POST.get('fromtime')
-        totime=request.POST.get('totime')
-        date=request.POST.get('data')
-        upload_file=request.FILES.get('upload_file')
+        name=request.POST.get('name') or None
+        email=request.POST.get('email') or None
+        subject=request.POST.get('subject') or None
+        message=request.POST.get('message') or None
+        fromtime=request.POST.get('fromtime') or None
+        totime=request.POST.get('totime') or None
+        date=request.POST.get('data') or None
+        upload_file=request.FILES.get('upload_file') or None
         
-        if not allowed_file(upload_file):
-            messages.error(request, "File type not supported.")
-            return render(request, 'CallSeniorDesigner.html', {})  
+        #validate all fields
+        if not name or not email or not subject or not message or not fromtime or not totime or not date or not upload_file:
+            messages.error(request, "All fields are required.")
+            return render(request, 'CallSeniorDesigner.html', {})
+        
+        #check if file is empty
+        if upload_file:
+            #validate file type
+            if not allowed_file(upload_file):
+                messages.error(request, "File type not supported.")
+                return render(request, 'CallSeniorDesigner.html', {})  
         
         #convert fromtime from string to time not datetime
         fromtime = datetime.strptime(fromtime, '%H:%M').time()
@@ -66,12 +74,17 @@ def call_senior_designer(request):
         #set meeting to senior dragon or senior unicorn if the time is available in senior unicorn or senior dragon
         #get all senior dragon meetings 
         unicorn_conflict = senior_unicorn_meeting.objects.filter(meeting_date=date, start_time__lte=totime, end_time__gte=fromtime).exists()
-        #get break time from working day to unicorn team
-        break_time_from = senior_unicorn_working_setting.objects.filter(day=date.strftime("%A")).first().break_time_from
-        break_time_to = senior_unicorn_working_setting.objects.filter(day=date.strftime("%A")).first().break_time_to
-        #check if time is in break time
-        if fromtime >= break_time_from and totime <= break_time_to:
-            #conflict true
+        
+        check = senior_unicorn_working_setting.objects.filter(day=date.strftime("%A")).first()
+        if check:
+            #get break time from working day to unicorn team
+            break_time_from = senior_unicorn_working_setting.objects.filter(day=date.strftime("%A")).first().break_time_from
+            break_time_to = senior_unicorn_working_setting.objects.filter(day=date.strftime("%A")).first().break_time_to
+            #check if time is in break time
+            if fromtime >= break_time_from and totime <= break_time_to:
+                #conflict true
+                unicorn_conflict = True
+        else:
             unicorn_conflict = True
         #check if the time is not exist in senior unicorn meetings add meeting to senior unicorn else check in senior dragon meetings 
         if not unicorn_conflict:
