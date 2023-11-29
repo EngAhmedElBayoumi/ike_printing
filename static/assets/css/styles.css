@@ -4977,7 +4977,7 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
   color: #fff;
 }
 .CheckOutPage .submit-page{
-        width: 90%;
+        width: 100%;
     margin: auto;
     padding: 35px;
     border: 1px solid #0e0e0e;
@@ -6136,6 +6136,54 @@ z-index: 9999;
 }
 
 
+.CallDesignserBoxxPage{
+margin-bottom: 20px;
+}
+.CallDesignserBoxxPage .ImageDesigneeer{
+    
+}
+.CallDesignserBoxxPage .ImageDesigneeer .mage{
+    display: block;
+    height: auto;
+    width: 100%;
+}
+.CallDesignserBoxxPage .ImageDesigneeer .mage img{
+    display: block;
+    height: auto;
+    width: 100%;
+}
+.CallDesignserBoxxPage .titileDescr{
+    
+}
+.CallDesignserBoxxPage .titileDescr h2{
+    text-align: start !important;
+    padding-bottom: 10px;
+    /* border-bottom: 1px double #eac97a; */
+    border-bottom-style: double;
+    color: #eac97a;
+    text-transform: uppercase;
+}
+.CallDesignserBoxxPage .titileDescr .descriptionPara{
+    width: 100%;
+}
+.CallDesignserBoxxPage .titileDescr .descriptionPara p{
+    text-align: start !important;
+}
+
+.bookTitle{
+    margin-bottom: 30px;
+}
+.bookTitle h2{
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 25px;
+    margin: 0;
+}
+.bookTitle p{
+    font-size: 17px;
+    margin: 0;
+    display: block;
+}
 
 
 
