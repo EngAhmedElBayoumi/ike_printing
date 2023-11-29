@@ -6503,6 +6503,19 @@ margin-bottom: 20px;
     .btn-group-vertical {
     display: block;
 }
+.FontDialog .categoryList a.category{
+    width: calc(100% - 20px);
+}
+.FontDialog .fontList .font{
+    width: calc(100% - 20px);
+}
+.chosedesinerBox {
+    margin-bottom: 30px;
+}
+.CallDesignserBoxxPage .ImageDesigneeer {
+    margin-bottom: 30px;
+}
+
 }
 
 
