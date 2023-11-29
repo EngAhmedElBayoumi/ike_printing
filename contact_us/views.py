@@ -25,8 +25,8 @@ def contact_us(request):
         #message
         messages.success(request, 'Your message has been sent successfully')
         #redirect to contact us page
-        return redirect("home:home")
-    return redirect("home:home")
+        return redirect("contact_us:contact_us")
+    return render(request,"contact_us.html")
     
 
     
