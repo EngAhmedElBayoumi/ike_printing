@@ -6116,11 +6116,24 @@ font-size: 16px;;
     color: #b08947;
 }
 
-
-
-
-
-
+.fixedBTNS{
+position: fixed;
+bottom: 50px;
+right: 5px;
+z-index: 9999;
+}
+.fixedBTNS .TwoBTNS{
+    
+}
+.fixedBTNS .TwoBTNS .cats_side_wrap{
+    
+}
+.fixedBTNS .TwoBTNS .cats_side_wrap .sl_cat_01{
+    
+}
+.fixedBTNS .TwoBTNS .cats_side_wrap .sl_cat_01{
+    
+}
 
 
 
