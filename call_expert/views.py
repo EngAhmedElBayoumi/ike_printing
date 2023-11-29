@@ -135,12 +135,12 @@ def call_designer(request):
     #get price from unicorn_working_setting
     unicorn_price = unicorn_working_setting.objects.first()
     if unicorn_price:
-        price = unicorn_price.price
+        price = unicorn_price.meeting_price
     else:
         #get price from dragon_working_setting
         dragon_price = dragon_working_setting.objects.first()
         if dragon_price:
-            price = dragon_price.price
+            price = dragon_price.meeting_price
         else:
             price = 6
     
@@ -199,7 +199,7 @@ def call_designer(request):
         else:
             unicorn_conflict = True
     # payment stage
-
+    
         #check if the time is not exist in senior unicorn meetings add meeting to senior unicorn else check in senior dragon meetings 
         if not unicorn_conflict:
             # No conflict: schedule with senior unicorn
@@ -248,6 +248,10 @@ def call_designer(request):
     paypal = PayPalPaymentsForm(initial=paypal_checkout)
     return render(request, 'callEpertTwo.html', {'paypal' : paypal })
 
+
+
+def payment(request):
+    pass
 
 def payment_success(request):
     form_data = request.session.get('form_data', None)
