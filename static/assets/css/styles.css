@@ -5940,7 +5940,7 @@ font-size: 16px;;
     height: calc(100% - 150px);
     top: 70px;
     left: 151px;
-    border: 1px solid #eee;
+    border: 0px solid #eee;
     object-fit: cover;
     object-position: center;
 }

@@ -36,8 +36,8 @@
 						<div class="col-lg-5 col-md-5 col-sm-12">
 							<div class="mockupsImagess">
 								<div class="mokUpImageItem">
-									<img class="imageMock" src="{% static 'assets/img/newImages/mockups/1t.png' %}">
-									<img class="imageUploaded" src="{% static 'assets/img/newImages/New_Products/8.png' %}" >
+									<img id="previewMockImage" class="imageMock" src="{% static 'assets/img/newImages/mockups/1t.png' %}">
+									<img id="previewImage" class="imageUploaded" src="{% static 'assets/img/newImages/New_Products/8.png' %}" >
 								</div>
 							</div>
 						</div>
@@ -128,7 +128,7 @@
 														<button type="submit" class="btn btn-md  bg-dark text-light fs-md ft-medium">Submit Now</button>
 													</div>
 													<div class="col-lg-6 col-md-6">
-														<button type="button" data-toggle="modal" data-target="#PreviewImage" class="btn btn-md PreviewBUTTON  fs-md ft-medium">Preview Poster</button>
+														<button onclick="previewImage()" type="button"  class="btn btn-md PreviewBUTTON  fs-md ft-medium">Preview Poster</button>
 													</div>
 												</div>
 											</div>
@@ -320,7 +320,7 @@
 
 
  			<!-- Log In Modal -->
-			 <div class="modal customModal fade" id="AddPannerAndBost" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+			 <!-- <div class="modal customModal fade" id="AddPannerAndBost" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
 				<div class="modal-dialog modal-lg login-pop-form" role="document">
 					<div class="modal-content" id="loginmodal">
 						<div class="modal-headers">
@@ -447,11 +447,11 @@
                         </div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- End Modal -->
             
             
-                <div class="modal customModal fade" id="PreviewImage" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+                <!-- <div class="modal customModal fade" id="PreviewImage" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
 				<div class="modal-dialog modal-lg login-pop-form" role="document">
 					<div class="modal-content">
 						<div class="modal-headers">
@@ -473,66 +473,98 @@
                         </div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- End Modal -->
 
 			{% block script %}
+
 			<script>
-				// Function to handle file input change
-	function previewImage(event) {
-		var input = event.target;
-		var preview = document.getElementById('imagePreview');
-	
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-	
-			reader.onload = function (e) {
-				preview.style.display = 'block';
-				preview.src = e.target.result;
-			};
-	
-			reader.readAsDataURL(input.files[0]);
-		} else {
-			preview.style.display = 'none';
-			preview.src = '#';
-		}
-	}
-	
-	// Event listener for file input change
-	document.getElementById('uploadPoster').addEventListener('change', previewImage);
-			</script>
+				function previewImage() {
+					var selectedSize = document.getElementById("imageSize").value;
+					var previewMockImage = document.getElementById("previewMockImage");
+					var previewImg = document.getElementById('previewImage');
 			
-			<script>
-				function changeImageSize() {
-		var selectBox = document.getElementById("imageSize");
-		var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-		var image = document.getElementById("imagePreviewBox");
-	
-		// Define image sizes in inches and pixels (example values)
-		var imageSizeMap = {
-			"16x20": { width: 16, height: 20 },
-			"18x24": { width: 18, height: 24 },
-			"22x28": { width: 22, height: 28 },
-			"24x36": { width: 24, height: 36 },
-			"36x48": { width: 36, height: 48 }
-			// Add more sizes as needed
-		};
-	
-		if (selectedValue in imageSizeMap) {
-			var newSize = imageSizeMap[selectedValue];
-			var containerWidth = 1000;
-			var newWidth = (newSize.width * 30) / containerWidth * 100; // Multiply width by 30
-			var newHeight = (newSize.height * 30) / containerWidth * 100; // Multiply height by 30
-	
-			image.style.width = newWidth + "%";
-			image.style.height = newHeight + "%";
-			selectedSizeDiv.innerText = `Selected Size: ${selectedValue} - Width: ${newWidth}px, Height: ${newHeight}px`;
-		} else {
-			// Handle default case or error condition
-			console.log("Invalid size selection");
-		}
-	}
+					switch (selectedSize) {
+						case "16x20":
+							previewMockImage.src = "{% static 'assets/img/newImages/mockups/1t.png' %}";
+							previewImg.src = "{% static 'assets/img/newImages/New_Products/16x20.png' %}";
+							previewImg.style.width = '162px';
+							previewImg.style.height = 'calc(100% - 150px)';
+							previewImg.style.top = '70px';
+							previewImg.style.left = '151px';
+							break;
+						case "18x24":
+							previewMockImage.src = "{% static 'assets/img/newImages/mockups/2t.png' %}";
+							previewImg.src = "{% static 'assets/img/newImages/New_Products/18x24.png' %}";
+							previewImg.style.width = '265px';
+							previewImg.style.height = 'calc(100% - 135px)';
+							previewImg.style.top = '74px';
+							previewImg.style.left = '102px';
+							break;
+						case "22x28":
+						previewMockImage.src = "{% static 'assets/img/newImages/mockups/3t.png' %}";
+							previewImg.src = "{% static 'assets/img/newImages/New_Products/18x24.png' %}";
+							previewImg.style.width = '202px';
+							previewImg.style.height = 'calc(100% - 190px)';
+							previewImg.style.top = '72px';
+							previewImg.style.left = '47px';
+							break;
+							break;
+						case "24x36":
+							previewMockImage.src = "{% static 'assets/img/newImages/mockups/4t.png' %}";
+							previewImg.src = "{% static 'assets/img/newImages/New_Products/18x24.png' %}";
+							previewImg.style.width = 'calc(33% + 15px)';
+							previewImg.style.height = 'calc(76% - 173px)';
+							previewImg.style.top = '71px';
+							previewImg.style.left = '152px';
+							break;
+							break;
+						case "36x48":
+							previewMockImage.src = "{% static 'assets/img/newImages/mockups/4t.png' %}";
+							previewImg.src = "{% static 'assets/img/newImages/New_Products/18x24.png' %}";
+							previewImg.style.width = 'calc(33% + 15px)';
+							previewImg.style.height = 'calc(76% - 173px)';
+							previewImg.style.top = '71px';
+							previewImg.style.left = '152px';
+							break;
+							break;
+						default:
+							previewImg.style.width = '150px';
+							previewImg.style.height = 'calc(100% - 150px)';
+							previewImg.style.top = '10px';
+							previewImg.style.left = '20px';
+							break;
+					}
+			
+					const fileInput = document.getElementById('uploadPoster');
+					const reader = new FileReader();
+			
+					reader.onloadend = function () {
+						previewImg.src = reader.result;
+					};
+			
+					const file = fileInput.files[0];
+					if (file) {
+						reader.readAsDataURL(file);
+					} else {
+						previewImg.src = "{% static 'assets/img/newImages/New_Products/8.png' %}";
+					}
+				}
 			</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 			{% endblock %}
 
