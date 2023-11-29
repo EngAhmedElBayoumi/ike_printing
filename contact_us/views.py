@@ -10,7 +10,6 @@ from .models import ContactUs
 # Create your views here.
 
 
-@login_required(login_url='accounts:login')
 def contact_us(request):
     if request.method=="POST":
         #get name , email , subject , message
@@ -26,7 +25,7 @@ def contact_us(request):
         messages.success(request, 'Your message has been sent successfully')
         #redirect to contact us page
         return redirect("contact_us:contact_us")
-    return render(request,"contact_us.html")
+    return render(request,"contact.html")
     
 
     

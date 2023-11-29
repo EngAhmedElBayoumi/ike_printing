@@ -75,7 +75,9 @@
 								<li><a href="{% url 'product:self_customization' %}">Customization</a></li>
 								<li><a href="{% url 'banner_and_posters:banner_and_posters' %}">Signs and posters</a></li>
 								<li><a href="{% url 'call_expert:call_expert' %}">Call A Designer</a></li>
-								<li><a href="{% url 'product:ordaring' %}">Ordring</a></li>								
+								<li><a href="{% url 'product:ordaring' %}">Ordring</a></li>	
+								<li><a href="{% url 'contact_us:contact_us' %}">Contact</a></li>	
+
 							</ul>
 							<ul class="nav-menu nav-menu-social align-to-right">
 								{% if user.is_authenticated %}
