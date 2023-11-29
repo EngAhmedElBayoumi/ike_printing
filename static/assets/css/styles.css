@@ -6160,8 +6160,9 @@ margin-bottom: 20px;
     padding-bottom: 10px;
     /* border-bottom: 1px double #eac97a; */
     border-bottom-style: double;
-    color: #eac97a;
-    text-transform: uppercase;
+    color: #ffffff;
+    text-transform: capitalize;
+    border-color: #eac97a;
 }
 .CallDesignserBoxxPage .titileDescr .descriptionPara{
     width: 100%;

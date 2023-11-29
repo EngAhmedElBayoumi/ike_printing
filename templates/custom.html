@@ -2442,15 +2442,15 @@
 				<div class="TwoBTNS">
 					<div class="cats_side_wrap text-center mx-auto mb-1">
 						<div class="sl_cat_01">
-							<div class="d-inline-flex align-items-center justify-content-center p-3 circle mb-2" title="Support">
-								<a href="javascript:void(0);" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/support.png' %}" class="img-fluid" width="30" alt=""></a>
+							<div class="d-inline-flex align-items-center justify-content-center p-3 circle mb-2" data-toggle="tooltip" data-placement="left" title="Call Center">
+								<a href="{% url 'contact_us:contact_us' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/support.png' %}" class="img-fluid" width="30" alt=""></a>
 							</div>
 						</div>
 					</div>
 					<div class="cats_side_wrap text-center mx-auto mb-2">
 						<div class="sl_cat_01">
-							<div class="d-inline-flex align-items-center justify-content-center p-3 circle mb-2" title="call A Designer">
-								<a href="javascript:void(0);" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/designer.png' %}" class="img-fluid" width="30" alt=""></a>
+							<div class="d-inline-flex align-items-center justify-content-center p-3 circle mb-2" data-toggle="tooltip" data-placement="left" title="Call A Designer">
+								<a href="{% url 'call_expert:call_expert' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/designer.png' %}" class="img-fluid" width="30" alt=""></a>
 							</div>
 						</div>
 					</div>
@@ -2685,6 +2685,12 @@
     <script src="{% static 'assets/js/jQuery.style.switcher.js' %}"></script>
     <script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script>
+			var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+			var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+			  return new bootstrap.Tooltip(tooltipTriggerEl)
+			})
+		  </script>
 
     <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'assets/libs/ion-rangeslider/js/ion.rangeSlider.min.js' %}"></script>
