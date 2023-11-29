@@ -131,10 +131,23 @@ def call_senior_designer(request):
 
 #call designer 6$ 
 def call_designer(request):
+    #get price from unicorn_working_setting if not found get price from dragon_working_setting
+    #get price from unicorn_working_setting
+    unicorn_price = unicorn_working_setting.objects.first()
+    if unicorn_price:
+        price = unicorn_price.price
+    else:
+        #get price from dragon_working_setting
+        dragon_price = dragon_working_setting.objects.first()
+        if dragon_price:
+            price = dragon_price.price
+        else:
+            price = 6
+    
     host = request.get_host() # Host 
     paypal_checkout = {
             'business' : settings.PAYPAL_RECEIVER, 
-            'amount' : 6, 
+            'amount' : price, 
             'item_name' : 'Fast Design Reservation', 
             'invoice' : uuid.uuid4(), 
             'currency' : 'USD', 
@@ -145,39 +158,46 @@ def call_designer(request):
         # Render Form 
       
     if request.method == 'POST':
-        name=request.POST.get('name')
-        email=request.POST.get('email')
-        subject=request.POST.get('subject')
-        message=request.POST.get('message')
-        fromtime=request.POST.get('fromtime')
-        totime=request.POST.get('totime')
-        date=request.POST.get('data')
-        upload_file=request.FILES.get('upload_file')
+        name=request.POST.get('name') or None
+        email=request.POST.get('email') or None
+        subject=request.POST.get('subject') or None
+        message=request.POST.get('message') or None
+        fromtime=request.POST.get('fromtime') or None
+        totime=request.POST.get('totime') or None
+        date=request.POST.get('data') or None
+        upload_file=request.FILES.get('upload_file') or None
         
-        if not allowed_file(upload_file):
-            messages.error(request, "File type not supported.")
-            return render(request, 'callEpertTwo.html', {})
-        print(date)
+        #validate all fields
+        if not name or not email or not subject or not message or not fromtime or not totime or not date or not upload_file:
+            messages.error(request, "All fields are required.")
+            return render(request, 'CallSeniorDesigner.html', {})
+        
+        #check if file is empty
+        if upload_file:
+            #validate file type
+            if not allowed_file(upload_file):
+                messages.error(request, "File type not supported.")
+                return render(request, 'CallSeniorDesigner.html', {})  
+        
         #convert fromtime from string to time not datetime
         fromtime = datetime.strptime(fromtime, '%H:%M').time()
         #convert totime from string to time not datetime
         totime = datetime.strptime(totime, '%H:%M').time()
         date = datetime.strptime(date, '%Y-%m-%d').date()
-        print(date)
-        #set meeting to senior dragon or senior unicorn if the time is available in senior unicorn or senior dragon
         #get all senior dragon meetings 
         unicorn_conflict = unicorn_meeting.objects.filter(meeting_date=date, start_time__lt=totime, end_time__gt=fromtime).exists()        
         
         #get break time from working day to unicorn team
-        break_time_from = unicorn_working_setting.objects.filter(day=date.strftime("%A")).first().break_time_from
-        break_time_to = unicorn_working_setting.objects.filter(day=date.strftime("%A")).first().break_time_to
-        #check if time is in break time
-        if fromtime >= break_time_from and totime <= break_time_to:
-            #conflict true
+        check=unicorn_working_setting.objects.filter(day=date.strftime("%A")).first()
+        if check:
+            break_time_from = unicorn_working_setting.objects.filter(day=date.strftime("%A")).first().break_time_from
+            break_time_to = unicorn_working_setting.objects.filter(day=date.strftime("%A")).first().break_time_to
+            #check if time is in break time
+            if fromtime >= break_time_from and totime <= break_time_to:
+                #conflict true
+                unicorn_conflict = True
+        else:
             unicorn_conflict = True
-        
-    
-        
     # payment stage
 
         #check if the time is not exist in senior unicorn meetings add meeting to senior unicorn else check in senior dragon meetings 
