@@ -4977,7 +4977,7 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
   color: #fff;
 }
 .CheckOutPage .submit-page{
-        width: 90%;
+        width: 100%;
     margin: auto;
     padding: 35px;
     border: 1px solid #0e0e0e;
@@ -5927,11 +5927,12 @@ font-size: 16px;;
     width: 100%;
     height: auto;
     position: relative;
+    overflow: auto;
 }
 .BannerAndBosterMockup .mockupsImagess .mokUpImageItem .imageMock{
     display: block;
-    width: 100%;
-    height: auto;
+    width: 470px;
+    height: 533px;
 }
 .BannerAndBosterMockup .mockupsImagess .mokUpImageItem .imageUploaded{
     position: absolute;
@@ -5940,7 +5941,7 @@ font-size: 16px;;
     height: calc(100% - 150px);
     top: 70px;
     left: 151px;
-    border: 1px solid #eee;
+    border: 0px solid #eee;
     object-fit: cover;
     object-position: center;
 }
@@ -6136,6 +6137,55 @@ z-index: 9999;
 }
 
 
+.CallDesignserBoxxPage{
+margin-bottom: 20px;
+}
+.CallDesignserBoxxPage .ImageDesigneeer{
+    
+}
+.CallDesignserBoxxPage .ImageDesigneeer .mage{
+    display: block;
+    height: auto;
+    width: 100%;
+}
+.CallDesignserBoxxPage .ImageDesigneeer .mage img{
+    display: block;
+    height: auto;
+    width: 100%;
+}
+.CallDesignserBoxxPage .titileDescr{
+    
+}
+.CallDesignserBoxxPage .titileDescr h2{
+    text-align: start !important;
+    padding-bottom: 10px;
+    /* border-bottom: 1px double #eac97a; */
+    border-bottom-style: double;
+    color: #ffffff;
+    text-transform: capitalize;
+    border-color: #eac97a;
+}
+.CallDesignserBoxxPage .titileDescr .descriptionPara{
+    width: 100%;
+}
+.CallDesignserBoxxPage .titileDescr .descriptionPara p{
+    text-align: start !important;
+}
+
+.bookTitle{
+    margin-bottom: 30px;
+}
+.bookTitle h2{
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 25px;
+    margin: 0;
+}
+.bookTitle p{
+    font-size: 17px;
+    margin: 0;
+    display: block;
+}
 
 
 
@@ -6453,6 +6503,21 @@ z-index: 9999;
     }
     .btn-group-vertical {
     display: block;
+}
+.FontDialog .categoryList a.category{
+    width: calc(100% - 20px);
+}
+.FontDialog .fontList .font{
+    width: calc(100% - 20px);
+}
+.chosedesinerBox {
+    margin-bottom: 30px;
+}
+.CallDesignserBoxxPage .ImageDesigneeer {
+    margin-bottom: 30px;
+}
+.BannerAndBosterMockup .mockupsImagess .mokUpImageItem{
+    overflow: auto;
 }
 }
 
