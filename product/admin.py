@@ -90,7 +90,7 @@ class ProductDesignAdmin(admin.ModelAdmin):
     search_fields = ['name']
     #display image
     def display_image(self, obj):
-        return format_html('<img src="{}" width="50" height="50" />', obj.frontimage.url)
+        return format_html('<img src="{}" style="width:50%; height=50%;" />', obj.frontimage)
     
     display_image.short_description = 'image'
 
@@ -110,18 +110,37 @@ class UserImageAdmin(admin.ModelAdmin):
 #CartProduct display
 class CartProductAdmin(admin.ModelAdmin):
     #display name , image
-    list_display = ('user','product','quantity','total_price','dispaly_front_design','display_back_design')
+    list_display = ('user','product','display_product_image','quantity','total_price','dispaly_front_design','display_back_design')
     #search bar
     search_fields = ['user']
     #display image
     def dispaly_front_design(self, obj):
-        return format_html('<img src="{}" width="50" height="50" />', obj.front_design.url)
+        return format_html('<img src="{}" width="50" height="50" />', obj.frontcanvas)
     dispaly_front_design.short_description = 'front_design'
     
     #display image
     def display_back_design(self, obj):
-        return format_html('<img src="{}" width="50" height="50" />', obj.back_design.url)
+        return format_html('<img src="{}" width="50" height="50" />', obj.frontcanvas)
     display_back_design.short_description = 'back_design'
+
+    #display image
+    def display_product_image(self, obj):
+        return format_html('<img src="{}" width="50" height="50" />', obj.product.frontimage.url)
+    
+    #export
+    def export_as_csv(self, request, queryset):
+        meta = self.model._meta
+        field_names = [field.name for field in meta.fields]
+        response = HttpResponse(content_type='text/csv')
+        
+        response['Content-Disposition'] = f'attachment; filename={meta}.csv'
+        writer = csv.writer(response)
+        
+        writer.writerow(field_names)
+        for obj in queryset:
+            row = writer.writerow([getattr(obj, field) for field in field_names])
+        
+        return response
     
     
     
@@ -137,7 +156,7 @@ admin.site.register(Color,ColorAdmin)
 admin.site.register(Size,SizeAdmin)
 admin.site.register(ProductDesign,ProductDesignAdmin)
 admin.site.register(UserImage,UserImageAdmin)
-admin.site.register(CartProduct)
+admin.site.register(CartProduct,CartProductAdmin)
 
 
 

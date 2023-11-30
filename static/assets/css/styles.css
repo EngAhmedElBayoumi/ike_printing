@@ -5643,10 +5643,11 @@ background: radial-gradient(circle, rgba(234,201,122,1) 0%, rgba(115,69,18,1) 10
 .customModal .modal-body .customForm .form-group .form-control{
     
 }
-.customModal .modal-body .customForm .form-group button{
-        display: block;
+.customModal .modal-body .customForm .form-group button{    
+    display: block;
     margin: auto;
     margin-top: 20px;
+    width: 100%;
 }
 .customModal .modal-body .customForm .form-group .PreviewBUTTON{
         background: #eac97a;
@@ -5695,7 +5696,6 @@ background: radial-gradient(circle, rgba(234,201,122,1) 0%, rgba(115,69,18,1) 10
 
 
 .product-taps-active-sub{
-    background: #fff;
     padding: 10px;
     border: 2px solid #edb003;
     margin: 0px !important;
@@ -5950,6 +5950,9 @@ font-size: 16px;;
 
 .chosedesinerBox{
 
+    border-bottom: 2px solid #debc70;
+    border-radius: 20%;
+
 }
 .chosedesinerBox .titile{
     
@@ -5957,10 +5960,11 @@ font-size: 16px;;
 .chosedesinerBox .titile h2{
     background: linear-gradient(45deg, rgba(115,69,18,1) 0%, rgba(234,201,122,1) 100%);
     color: #fff;
-    font-size: 20px;
-    padding: 7px 15px;
+    font-size: 30px;
+    padding: 15px 15px;
     text-align: center;
     margin: 0;
+    text-shadow: 2px 2px 0 BLACK;
 }
 .chosedesinerBox .titile h2 span{
     
@@ -5975,7 +5979,9 @@ font-size: 16px;;
     margin-bottom: 10px;
 }
 .chosedesinerBox .boxoxoBody .descriptionPara p{
-    font-size: 15px;
+    font-size: 20px;
+    font-weight: 700;
+    padding:30px 0 ;
 }
 
 .BG_Second_Dark{
@@ -5989,8 +5995,6 @@ font-size: 16px;;
     margin-bottom: 15px;
     display: block;
     height: auto;
-    border: 1px solid #eac97a;
-    padding: 15px;
 }
 .notsBoxCallEcpert ul{
     padding: 0;
@@ -6079,10 +6083,11 @@ font-size: 16px;;
 .chosedesinerBox .titile h2{
     background: linear-gradient(45deg, rgba(115,69,18,1) 0%, rgba(234,201,122,1) 100%);
     color: #fff;
-    font-size: 20px;
-    padding: 7px 15px;
+    font-size: 30px;
+    padding: 15px 15px;
     text-align: center;
     margin: 0;
+    text-shadow: 2px 2px 0 BLACK;
 }
 .chosedesinerBox .titile h2 span{
     
@@ -6097,7 +6102,10 @@ font-size: 16px;;
     margin-bottom: 10px;
 }
 .chosedesinerBox .boxoxoBody .descriptionPara p{
-    font-size: 15px;
+    font-size: 20px;
+    font-weight: 700;
+    padding:30px 0 ;
+
 }
 
 .ord_list_wrap {
@@ -6119,7 +6127,7 @@ font-size: 16px;;
 
 .fixedBTNS{
 position: fixed;
-bottom: 50px;
+bottom: 10px;
 right: 5px;
 z-index: 9999;
 }

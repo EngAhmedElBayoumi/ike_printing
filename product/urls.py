@@ -26,4 +26,6 @@ urlpatterns = [
     path("get_quote/",views.get_quote,name="get_quote"),   
     #add_to_card
     path("add_to_card/",views.card,name="card"),
+    #apply_copoun
+    path("apply_copoun/",views.apply_copoun,name="apply_copoun"),
 ]

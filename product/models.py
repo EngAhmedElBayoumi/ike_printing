@@ -80,13 +80,13 @@ class UserImage(models.Model):
 #product design user relation , product relation , front canvas , back canvas , sizeing 
 
 class ProductDesign(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ManyToManyField(User)
     name=models.CharField(max_length=50)
     frontcanvas = models.TextField()
     backcanvas = models.TextField()
     frontimage=models.ImageField(upload_to='product/productdesign_image',blank=True,null=True)
     def __str__(self):
-        return self.user.username
+        return self.name
     
     #get front canvas data
     def get_frontcanvas(self):

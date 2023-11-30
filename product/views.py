@@ -307,93 +307,92 @@ def get_user_product_design(request):
 
 
 
-def get_quote(request):
-
-
-
-    #get form front_design_height , back_design_height , quantity ,quantity_price
-    front_design_height = request.POST.get('front_design_height')
-    back_design_height = request.POST.get('back_design_height')
-    quantity = request.POST.get('quantity')
-    quantity_price = request.POST.get('quantity_price')
+# def get_quote(request):
+#     #get form front_design_height , back_design_height , quantity ,quantity_price
+#     front_design_height = request.POST.get('front_design_height')
+#     back_design_height = request.POST.get('back_design_height')
+#     quantity = request.POST.get('quantity')
+#     quantity_price = request.POST.get('quantity_price')
+#     #check if quantity is 0 or null
+#     if quantity == "0" or quantity == "":
+#         #return error
+#         return JsonResponse({"error":"quantity is 0"})
     
-    #check if quantity is 0 or null
-    if quantity == "0" or quantity == "":
-        #return error
-        return JsonResponse({"error":"quantity is 0"})
+#     #get price for design depend on height
+#     front_design_price = PrintingPrice.objects.filter(min_size__lte=front_design_height, max_size__gte=front_design_height).first()
+#     #check if front_design_price is null
+#     if front_design_price == None:
+#         #return error
+#         return JsonResponse({"error":"front design price not found"})
+#     front_design_price=front_design_price.price
+#     back_design_price = PrintingPrice.objects.filter(min_size__lte=back_design_height, max_size__gte=back_design_height).first()
+#     #check if back_design_price is null
+#     if back_design_price == None:
+#         #return error
+#         return JsonResponse({"error":"back design price not found"})
+#     back_design_price=back_design_price.price
     
+#     #----------------
+#     #get discount for design depend on quantity
+#     front_design_discount = PrintingDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
+#     #check if there are discount for front design
+#     if front_design_discount:
+#         front_design_discount=front_design_discount.discount
+#         #apply discount
+#         front_design_price=front_design_price-(front_design_price*(front_design_discount/100))
     
-    
-    
-    #get price for design depend on height
-    front_design_price = PrintingPrice.objects.filter(min_size__lte=front_design_height, max_size__gte=front_design_height).first()
-    #check if front_design_price is null
-    if front_design_price == None:
-        #return error
-        return JsonResponse({"error":"front design price not found"})
-    front_design_price=front_design_price.price
-    back_design_price = PrintingPrice.objects.filter(min_size__lte=back_design_height, max_size__gte=back_design_height).first()
-    #check if back_design_price is null
-    if back_design_price == None:
-        #return error
-        return JsonResponse({"error":"back design price not found"})
-    back_design_price=back_design_price.price
-    
-    #----------------
-    #get discount for design depend on quantity
-    front_design_discount = PrintingDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
-    #check if there are discount for front design
-    if front_design_discount:
-        front_design_discount=front_design_discount.discount
-        #apply discount
-        front_design_price=front_design_price-(front_design_price*(front_design_discount/100))
-    
-    back_design_discount = PrintingDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
-    #check if there are discount for back design
-    if back_design_discount:
-        back_design_discount=back_design_discount.discount
-        #apply discount
-        back_design_price=back_design_price-(back_design_price*(back_design_discount/100))
+#     back_design_discount = PrintingDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
+#     #check if there are discount for back design
+#     if back_design_discount:
+#         back_design_discount=back_design_discount.discount
+#         #apply discount
+#         back_design_price=back_design_price-(back_design_price*(back_design_discount/100))
         
-    #----------------
-    #get discount for quantity
-    quantity_discount = ProductDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
-    #check if there are discount for quantity
-    if quantity_discount:
-        quantity_discount=quantity_discount.discount
-        #apply discount
-        quantity_price=quantity_price-(quantity_price*(quantity_discount/100))
+#     #----------------
+#     #get discount for quantity
+#     quantity_discount = ProductDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
+#     #check if there are discount for quantity
+#     if quantity_discount:
+#         quantity_discount=quantity_discount.discount
+#         #apply discount
+#         quantity_price=quantity_price-(quantity_price*(quantity_discount/100))
         
-    #----------------
-    #convert quantity , front_design_price , back_design_price to int
-    quantity=int(quantity)
-    front_design_price=float(front_design_price)
-    back_design_price=float(back_design_price)
-    quantity_price=float(quantity_price)
-    total_price = front_design_price + back_design_price + quantity_price
+#     #----------------
+#     #convert quantity , front_design_price , back_design_price to int
+#     quantity=int(quantity)
+#     front_design_price=float(front_design_price)
+#     back_design_price=float(back_design_price)
+#     quantity_price=float(quantity_price)
+#     total_price = front_design_price + back_design_price + quantity_price
     
-    #----------------
-    #get general discount
-    general_discount = GeneralDiscount.objects.first()
-    #check if there are general discount
-    if general_discount:
-        general_discount=general_discount.discount
-        #apply discount
-        total_price=total_price-(total_price*(general_discount/100))
+#     #----------------
+#     #get general discount
+#     general_discount = GeneralDiscount.objects.first()
+#     #check if there are general discount
+#     if general_discount:
+#         general_discount=general_discount.discount
+#         #apply discount
+#         total_price=total_price-(total_price*(general_discount/100))
         
-    #create json data with front_design_price , back_design_price , quantity_price , total_price
-    data = {
-        "front_design_price": front_design_price,
-        "back_design_price": back_design_price,
-        "quantity_price": quantity_price,
-        "total_price": total_price,
-    }
-    #return data
-    return JsonResponse(data)
+#     #create json data with front_design_price , back_design_price , quantity_price , total_price
+#     data = {
+#         "front_design_price": front_design_price,
+#         "back_design_price": back_design_price,
+#         "quantity_price": quantity_price,
+#         "total_price": total_price,
+#     }
+#     if request.method=="POST":
+#         #return data
+#         print(data)
+#         return JsonResponse(data)
+    
+#     #return data
+#     return JsonResponse(data)
+# #------------------------------
 
 
-#------------------------------
 
+#validate positive integer
 def validate_positive_integer(value, field_name):
     try:
         validated_value = int(value)
@@ -403,7 +402,11 @@ def validate_positive_integer(value, field_name):
     except ValueError:
         raise ValueError(f"{field_name} should be a valid positive integer.")
 
+#front and back design price
 def get_front_back_design_price(front_design_height, back_design_height, quantity):
+    #convert quantity to decimal
+    quantity = validate_positive_integer(quantity, "Quantity")
+        
     # Validate and set default values if height is null
     front_design_height = validate_positive_integer(front_design_height, "Front Design Height") or 0
     back_design_height = validate_positive_integer(back_design_height, "Back Design Height") or 0
@@ -411,18 +414,20 @@ def get_front_back_design_price(front_design_height, back_design_height, quantit
     # Get front and back design prices
     front_design_price = PrintingPrice.objects.filter(min_size__lte=front_design_height, max_size__gte=front_design_height).first()
     if front_design_price:
-        front_design_price=front_design_price.price
+        front_design_price=front_design_price.price * quantity
     else:
         front_design_price=0
     back_design_price = PrintingPrice.objects.filter(min_size__lte=back_design_height, max_size__gte=back_design_height).first()
-    if back_design_price:   
-        back_design_price=back_design_price.price
+    if back_design_price:  
+         
+        back_design_price=back_design_price.price * quantity
     else:
         back_design_price=0
     
 
     return front_design_price, back_design_price
 
+#general discount
 def get_general_discounted_price(total_price):
     # Get and apply general discount
     general_discount = GeneralDiscount.objects.first()
@@ -432,12 +437,32 @@ def get_general_discounted_price(total_price):
 
     return total_price
 
+#printing discount depend on quantity
+def get_printing_discounted_price(quantity, design_price):
+    # Get and apply printing discount
+    printing_discount = PrintingDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
+    if printing_discount:
+        printing_discount = printing_discount.discount
+        design_price -= design_price * (printing_discount / 100)
+
+    return design_price
+
+#quantity discount
+def get_quantity_discounted_price(quantity, quantity_price):
+    # Get and apply quantity discount
+    quantity_discount = ProductDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
+    if quantity_discount:
+        quantity_discount = quantity_discount.discount
+        quantity_price -= quantity_price * (quantity_discount / 100)
+
+    return quantity_price
+
 def get_quote(request):
     front_design_height = request.POST.get('front_design_height')
     back_design_height = request.POST.get('back_design_height')
     quantity = request.POST.get('quantity')
     quantity_price = request.POST.get('quantity_price')
-
+    
     try:
         # Validate and get front, back, and quantity prices
         front_design_price, back_design_price = get_front_back_design_price(
@@ -450,8 +475,15 @@ def get_quote(request):
         back_design_price = float(back_design_price)
         quantity_price = float(quantity_price)
 
+        #Apply printing discount
+        front_design_price = get_printing_discounted_price(quantity, front_design_price)
+        back_design_price = get_printing_discounted_price(quantity, back_design_price)
+
+        # Apply quantity discount
+        total_price_quantity = get_quantity_discounted_price(quantity, quantity_price)
+
         # Calculate total price
-        total_price = front_design_price + back_design_price + quantity_price
+        total_price = front_design_price + back_design_price + total_price_quantity
 
         # Apply general discount
         total_price = get_general_discounted_price(total_price)
@@ -463,11 +495,39 @@ def get_quote(request):
             "quantity_price": quantity_price,
             "total_price": total_price,
         }
+        print(data)
+
 
         return JsonResponse(data)
 
     except ValueError as e:
         return JsonResponse({"error": str(e)})
+    
+    
+#apply copoun
+def apply_copoun(request):
+    #get copoun code
+    copoun_code=request.POST.get('copoun_code')
+    #get copoun
+    copoun=Copoun.objects.filter(copoun_name=copoun_code).first()
+        #get total price
+    total_price_str=request.POST.get('total_price')
+    #convert total price to float
+    total_price=float(total_price_str)
+    #check if copoun is null
+    if copoun == None:
+        #return error
+        return JsonResponse({"total_price":total_price})
+    #get copoun discount
+    copoun_discount=copoun.discount
+
+
+    #apply discount
+    total_price=total_price-(total_price*(copoun_discount/100))
+    #return total price
+    return JsonResponse({"total_price":total_price})
+    
+    
     
 #login required
 @login_required() 

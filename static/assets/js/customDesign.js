@@ -162,8 +162,12 @@ function changeUnderline(){
 //add image function by src
 function addImage(imageURL){
     fabric.Image.fromURL(imageURL, function (img) {
-        img.scaleToHeight(150);
-        img.scaleToWidth(150);
+        // get image width and height
+        var imageWidth = img.width;
+        var imageHeight = img.height;
+
+        img.scaleToHeight(imageHeight);
+        img.scaleToWidth(imageWidth);
         activecanvas.add(img);
     });
 }
@@ -261,9 +265,10 @@ document.getElementById('tshirt-custompicture').addEventListener("change", funct
         // When the picture loads, create the image in Fabric.js
         imgObj.onload = function () {
             var img = new fabric.Image(imgObj);
-
-            img.scaleToHeight(300);
-            img.scaleToWidth(300); 
+            var imageWidth = img.width;
+            var imageHeight = img.height;
+            img.scaleToHeight(imageHeight);
+            img.scaleToWidth(imageWidth); 
             activecanvas.centerObject(img);
             activecanvas.add(img);
             activecanvas.renderAll();
@@ -291,6 +296,8 @@ document.addEventListener("keydown", function(e) {
         activecanvas.remove(activecanvas.getActiveObject());
     }
 }, false);
+
+
 
 
 
@@ -389,12 +396,13 @@ function calculateTotalArea(objects) {
     return totalArea;
 }
 
+var hidden_total_price =0;
+
 // function take frontdesign and backdesign height and quantity and call ajax to get price
 function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) {
     
     // check if quantity not null or empty or 0
     if (quantity == "" || quantity == 0) {
-        // alert to the user to enter quantity
         alert("Please enter quantity");
         // return
         return;
@@ -422,18 +430,81 @@ function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) 
         var back_design_price = response.data.back_design_price;
         var total_price = response.data.total_price;
         var quantity_price = response.data.quantity_price;
+        // total_price = round total_price
+        total_price = Math.round(total_price);
+        total_price= '$'+total_price;
         // get front_price by id
-        document.getElementById("front_price").innerHTML = front_design_price;
-        // get back_price by id
-        document.getElementById("back_price").innerHTML = back_design_price;
+        // document.getElementById("front_price").innerHTML = front_design_price;
+        // // get back_price by id
+        // document.getElementById("back_price").innerHTML = back_design_price;
         // get quantity_price by id
         document.getElementById("quantity_price").innerHTML = quantity_price;
         // get total_price by id
         document.getElementById("total_price").innerHTML = total_price;
+        hidden_total_price = total_price;
     })
     .catch(function (error) {
         console.log(error);
     });
+}
+
+
+// function apply_copoun 
+function apply_copoun() {
+    // get copoun code from input with id "copoun_code"
+    var copoun_code = document.getElementById("copoun_code").value;
+    // check if copoun_code is null or empty
+    if (copoun_code == "") {
+        // alert to the user to enter copoun code
+        alert("Please enter copoun code");
+        // return
+        return;
+    }
+    // get total_price from input with id "total_price"
+    var total_price = document.getElementById("total_price").innerHTML;
+
+    // check if total_price is null or empty
+    if (total_price == "") {
+        // alert to the user to enter quantity
+        alert("Please enter quantity");
+        // return
+        return;
+    }
+    total_price = hidden_total_price;
+    // remove $ from total_price
+    total_price = total_price.replace("$", "");
+
+
+    // get csrf_token from form with id has input  "csrf_token"
+    var crftoken = document.getElementById("crftokenform").getElementsByTagName("input")[0].value;
+    // create form data
+    var formData = new FormData();
+    formData.append('copoun_code', copoun_code);
+    formData.append('csrfmiddlewaretoken', crftoken);
+    // apply total_price
+    formData.append('total_price', total_price);
+    // axios call to apply copoun
+    axios.post(`${projecturl}product/apply_copoun/`, formData, {
+        withCredentials: true,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+    .then(function (response) {
+        var total_price = response.data.total_price;
+        // add $ to total_price
+        total_price = '$' + total_price;
+        // get copoun_code by id
+        document.getElementById("copoun_code").value = copoun_code;
+        // get total_price by id
+        document.getElementById("total_price").innerHTML = total_price;
+    }
+    )
+    .catch(function (error) {
+        // alert to the user that copoun code not valid
+        alert("Copoun code not valid");
+    });
+
 }
 
 
@@ -442,9 +513,6 @@ function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) 
 
 // add to card
 document.getElementById("addToCard").addEventListener("click", function() {
-
-
-
     // get product id from input with id "product_id"
     var product_id = document.getElementById("product_id").value;
     // get quantity from input with id "product_size"
@@ -457,6 +525,8 @@ document.getElementById("addToCard").addEventListener("click", function() {
     var quantity_price = document.getElementById("quantity_price").innerHTML;
     // get total price from input with id "total_price"
     var total_price = document.getElementById("total_price").innerHTML;
+    // remove $ from total_price
+    total_price = total_price.replace("$", "");
     // get canvas background color 
     var canvasBackgroundColor = document.getElementById("tshirt-div").style.backgroundColor;
 
@@ -503,6 +573,10 @@ document.getElementById("addToCard").addEventListener("click", function() {
     formData.append('backcanvas', backimageData);
     formData.append('csrfmiddlewaretoken', crftoken);
     formData.append('canvasBackgroundColor', canvasBackgroundColor);
+    // append backimageData , frontimageData 
+    formData.append('front_design', backimageData);
+    formData.append('back_design', frontimageData);
+
     // axios call to add to card
     axios.post(`${projecturl}product/add_to_card/`, formData, {
         withCredentials: true,
@@ -513,6 +587,7 @@ document.getElementById("addToCard").addEventListener("click", function() {
     .then(function (response) {
         // alert to the user that product added to card
         alert("Product added to your card");
+        console.log(response)
     }
     )
     .catch(function (error) {

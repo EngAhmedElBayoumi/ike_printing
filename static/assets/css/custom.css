@@ -71,7 +71,6 @@ width: 100%;
 }
 .CustomTapsDesign .CustomTapsbody{
     border: 1px solid #eac97a;
-    padding: 10px;
     background: #0e0e0e;
 }
 .CustomTapsDesign .CustomTapsbody .TapsHeaders{
@@ -98,7 +97,7 @@ width: 100%;
 }
 .CustomTapsDesign .CustomTapsbody .TapsHeaders ul li .nav-link img{
         display: block;
-    width: 20px;
+    width: 30px;
     height: auto;
     margin: auto;
     filter: grayscale(0);
@@ -136,7 +135,7 @@ font-size: 12px;
     
 }
 .CustomTapsDesign .CustomTapsbody .TapsContentBody .tab-content{
-    max-height: 450px;
+    max-height: 750px;
     overflow: auto;
 }
 
@@ -232,11 +231,10 @@ font-size: 12px;
 .CustomTapsDesign .ProductTap .accordion-body .ProductItems .ProItem .Image{
     display: flex;
     height: 110px;
-    border: 1px solid #eac97a;
     width: 100%;
     align-items: center;
     padding: 0;
-    background: #fff;
+    background: #0e0e0e;
     margin-bottom: 5px;
 }
 .CustomTapsDesign .ProductTap .accordion-body .ProductItems .ProItem.active .Image{
@@ -244,11 +242,13 @@ font-size: 12px;
     height: 120px;
     border-bottom: 0;
     margin-bottom: 0;
+    background: #0e0e0e;
 }
 .CustomTapsDesign .ProductTap .accordion-body .ProductItems .ProItem .Image img{
     height: 90%;
     width: max-content;
     margin: auto;
+    background: white;
 }
 
 .CustomTapsDesign .ProductTap .accordion-body .ProductColor{

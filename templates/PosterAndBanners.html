@@ -82,7 +82,7 @@
 												<div class="col-lg-6">
 													<div class="form-group">
 														<label>Size</label>
-														<select id="imageSize" class="form-control" onchange="changeImageSize()" required>
+														<select id="imageSize" class="form-control" onchange="changeAndPreview()" required>
 															<option value="">Select Size</option>
 															<option value="16x20">16In X 20In</option>
 															<option value="18x24">18In X 24In</option>
@@ -124,12 +124,10 @@
 											</div>
 											<div class="form-group">
 												<div class="row">
-													<div class="col-lg-6 col-md-6">
+													<div class="col-lg-12">
 														<button type="submit" class="btn btn-md  bg-dark text-light fs-md ft-medium">Submit Now</button>
 													</div>
-													<div class="col-lg-6 col-md-6">
-														<button onclick="previewImage()" type="button"  class="btn btn-md PreviewBUTTON  fs-md ft-medium">Preview Poster</button>
-													</div>
+													
 												</div>
 											</div>
 										</form>
@@ -550,6 +548,11 @@
 						previewImg.src = "{% static 'assets/img/newImages/New_Products/8.png' %}";
 					}
 				}
+				function changeAndPreview() {
+					//changeImageSize();
+					previewImage();
+				}
+
 			</script>
 
 
