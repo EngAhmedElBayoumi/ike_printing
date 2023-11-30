@@ -7,21 +7,45 @@ from .models import Product , Matireal , Category , Color , Size , ProductDesign
 # Register your models here.
 
 
-class ProductAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-    list_display = ('name','display_image', 'category', 'display_matireals')
-    list_filter = ('category',)
-    
-    def display_matireals(self, obj):
-        matireals_info = [f"{matireal.name} : {matireal.percentage}%" for matireal in obj.matireal.all()]
-        return ", ".join(matireals_info)
 
-    display_matireals.short_description = 'Matireals'
+class ProductAdmin(admin.ModelAdmin):
+    # Display name, description, and other fields
+    def display_product_info(self, obj):
+        return format_html(
+            '<strong>Name:</strong> {}<br>'
+            '<strong>Description:</strong> {}<br>'
+            '<strong>Height:</strong> {}<br>'
+            '<strong>Category:</strong> {}<br>'
+            '<strong>Colors:</strong> {}<br>'
+            '<strong>Sizes:</strong> {}<br>'
+            '<strong>Matireals:</strong> {}<br>',
+            obj.name,
+            obj.description,
+            obj.height,
+            obj.category,
+            ', '.join(str(color) for color in obj.colors.all()),
+            ', '.join(str(size) for size in obj.sizes.all()),
+            ', '.join(str(matireal) for matireal in obj.matireal.all()),
+        )
+    display_product_info.short_description = 'Product Info'
+
+    # Display front and back images
+    def display_product_images(self, obj):
+        return format_html(
+            '<div style="display: flex; align-items: center; justify-content: center;">'
+            '   <img src="{}" style="max-width: 100%; max-height: 100%;object-fit: scale-down;" />'
+            '   <img src="{}" style="max-width: 100%; max-height: 100%;object-fit: scale-down;" />'
+            '</div>',
+            obj.frontimage.url,
+            obj.backimage.url,
+        )
+    display_product_images.short_description = 'Images'
+
+    list_display = ('display_product_info', 'display_product_images')
+    #search bar
+    search_fields = ['name','description','height','category__name','colors__name','sizes__name','matireal__name']
     
-    def display_image(self, obj):
-        return format_html('<img src="{}" width="50" height="50" />', obj.frontimage.url)
     
-    display_image.short_description = 'frontimage'
 
 # Register the model with the custom admin class
 
@@ -142,11 +166,6 @@ class CartProductAdmin(admin.ModelAdmin):
         
         return response
     
-    
-    
-    
-
-
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Matireal,MatirealAdmin)
