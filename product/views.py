@@ -60,13 +60,13 @@ def self_customization(request):
         products.append(Product.objects.filter(category=category).first())
 
         
-    products_data = serialize('json', products)
+    products_data = serialize('json', [p for p in products if p is not None]) 
     size_data = serialize('json', Size.objects.all())    
     
        
     #get related products that have the same category get first 10 products
     #check if products is not empty
-    if products:
+    if products and products[0] is not None:
         related_products = Product.objects.filter(category=products[0].category).exclude(id=products[0].id).distinct()[:10]
     else:
         related_products = []
