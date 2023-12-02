@@ -33,8 +33,8 @@ class ProductAdmin(admin.ModelAdmin):
     def display_product_images(self, obj):
         return format_html(
             '<div style="display: flex; align-items: center; justify-content: center;">'
-            '   <img src="{}" style="max-width: 100%; max-height: 100%;object-fit: scale-down;" />'
-            '   <img src="{}" style="max-width: 100%; max-height: 100%;object-fit: scale-down;" />'
+            '   <img src="{}" style="max-width: 100px; max-height: 100px;object-fit: scale-down;" />'
+            '   <img src="{}" style="max-width: 100px; max-height: 100p;object-fit: scale-down;" />'
             '</div>',
             obj.frontimage.url,
             obj.backimage.url,
