@@ -6194,8 +6194,15 @@ margin-bottom: 20px;
     margin: 0;
     display: block;
 }
+.mediaProductionDescriptuion{
 
-
+}
+.mediaProductionDescriptuion h1{
+    text-align: center;
+    color: #fff;
+    font-size: 25px;
+    margin-top: 10px;
+}
 
 
 

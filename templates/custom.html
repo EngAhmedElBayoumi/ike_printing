@@ -2611,24 +2611,11 @@
 
     <!-- subscribeModal -->
 
-    <div
-      class="modal customModal fade"
-      id="subscribeModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="subscribeModal"
-      aria-hidden="true"
-    >
+    <div class="modal customModal fade" id="subscribeModal" tabindex="-1" role="dialog" aria-labelledby="subscribeModal" aria-hidden="true" >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-headers">
-            <button
-              type="button"
-              class="close"
-              id="closseModlSub"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" id="closseModlSub" data-dismiss="modal" aria-label="Close" >
               <span class="ti-close"></span>
             </button>
           </div>
@@ -2662,6 +2649,35 @@
         </div>
       </div>
     </div>
+
+
+    <div class="modal customModal fade" id="MediaLocatonOffer" tabindex="-1" role="dialog" aria-labelledby="MediaLocatonOffer" aria-hidden="true" >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-headers">
+          <button type="button" id="Close_MediaLocatonOffer" class="close" id="closseModlSub" data-dismiss="modal" aria-label="Close" >
+          <span class="ti-close"></span>
+          </button>
+        </div>
+    
+        <div class="modal-body">
+          <div class="customForm">
+          <div class="form-group">
+            <div class="row">
+            <div class="col-lg-12 col-md-12">
+              <div class="mediaProductionDescriptuion">
+              <h1>Description</h1>
+              </div>
+            </div>
+            
+            </div>
+          </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      </div>
+
     <!-- end modal -->
 
     <!-- ============================================================== -->
@@ -3192,6 +3208,7 @@
       }
     </script>
 
+
     <script>
       // when user try to leave the page 
       window.onbeforeunload = function() {
@@ -3239,6 +3256,19 @@
           $("#subscribeModal").modal("hide");
         });
     </script>
+
+<script>
+  setTimeout(function() {
+    $("#MediaLocatonOffer").modal("show")
+  }, 0);
+
+  document.getElementById("Close_MediaLocatonOffer").addEventListener("click", function () {
+    // get the modal
+    var modal = document.getElementById("MediaLocatonOffer");
+    // close the modal
+    $("#MediaLocatonOffer").modal("hide");
+  });
+</script>
   </body>
 
   <!-- Mirrored from themezhub.net/kumo-demo-2/kumo/shop-single-v4.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 31 Oct 2023 17:06:12 GMT -->
