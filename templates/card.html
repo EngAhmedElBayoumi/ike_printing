@@ -188,7 +188,7 @@
 							</div>
                            
                             <!--order url-->
-							<a class="btn btn-block btn-dark mb-3" href="#">Place Your Order</a>
+							<button class="btn btn-block btn-dark mb-3" id="pay_for_order" >Place Your Order</button>
 						</div>
 						
 					</div>
@@ -197,4 +197,28 @@
 			</section>
 			<!-- ======================= Product Detail End ======================== -->
 			
+
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        $("#pay_for_order").click(function(){
+            var url = "{% url 'product:order' %}";
+            // ajax call get request
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response){
+                    console.log(response);
+                },
+                error: function(response){
+                    console.log(response);
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

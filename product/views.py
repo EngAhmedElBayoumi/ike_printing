@@ -1,6 +1,6 @@
 from django.shortcuts import render
 #get product , Matireal , color , size , category model
-from .models import Product , Matireal , Color , Size , Category ,ClipArt ,UserImage ,ProductDesign ,FavoriteProduct ,CartProduct
+from .models import Product , Matireal , Color , Size , Category ,ClipArt ,UserImage ,ProductDesign ,FavoriteProduct ,CartProduct , CardSize , Order
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -8,6 +8,7 @@ from django.core.serializers import serialize
 from pricing.models import ProductDiscountQuantity ,PrintingDiscountQuantity ,PrintingPrice ,GeneralDiscount ,Copoun
 #import login required
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 # Create your views here.
 
 def product(request):
@@ -556,12 +557,41 @@ def card(request):
             frontcanvas = request.POST.get('frontcanvas')
             backcanvas = request.POST.get('backcanvas')
             canvasBackgroundColor=request.POST.get('canvasBackgroundColor')
+            #get size array
+            size_array = request.POST.get('size')
+            
+            #check if canvasBackgroundColor is null
+            if canvasBackgroundColor == "":
+                #assign white to canvasBackgroundColor
+                canvasBackgroundColor="#ffffff"
+            
+            # Convert the JSON string to a Python list
+            size_data = json.loads(size_array)
+
+            # Create a list to store size objects
+            sizes = []
+
+            # Loop through the size_data and create Size objects
+            for size_item in size_data:
+                symbol = size_item.get('symbol')
+                size_quantity = size_item.get('quality')
+                size = CardSize.objects.create(symbol=symbol, quantity=size_quantity)
+                sizes.append(size)
             #get product
             product = Product.objects.get(id=product_id)
             #get user
             user=request.user
             #create cart product
-            cart_product = CartProduct.objects.create(user=user, product=product, quantity=quantity, front_design_price=front_design_price, back_design_price=back_design_price, quantity_price=quantity_price, total_price=total_price, frontcanvas=frontcanvas, backcanvas=backcanvas,product_color=canvasBackgroundColor)
+            cart_product = CartProduct.objects.create( product=product, quantity=quantity, front_design_price=front_design_price, back_design_price=back_design_price, quantity_price=quantity_price, total_price=total_price, frontcanvas=frontcanvas, backcanvas=backcanvas,product_color=canvasBackgroundColor)
+            #set user
+            cart_product.user.set([user])
+            #set sizes
+            cart_product.sizes.set(sizes)
+            #save cart product
+            cart_product.save()
+            
+            print(quantity)
+            
             #return success
             return JsonResponse({"success": "success"})
         except Exception as e:
@@ -569,3 +599,30 @@ def card(request):
             return JsonResponse({"error": str(e)})
 
     return render(request, 'card.html', {'product_card':product_card})
+
+
+def order(request):
+    # Get product card
+    product_card = CartProduct.objects.filter(user=request.user)
+
+    # Calculate total price
+    total_price = sum(product.total_price for product in product_card)
+
+    # Use a transaction to ensure data consistency
+    with transaction.atomic():
+        # Create a new order
+        order = Order.objects.create(user=request.user, total_price=total_price)
+
+        # Add products to the order
+        order.cart_product.set(product_card)
+
+        # Clear the user field in each product_card
+        for product in product_card:
+            product.user.remove(request.user)
+
+    # If the order is created successfully, return success
+    if order:
+        return JsonResponse({"success": "success"})
+    
+    # Return error if something went wrong
+    return JsonResponse({"error": "error"})

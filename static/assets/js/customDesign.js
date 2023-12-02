@@ -353,16 +353,20 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
     // loop through all SizeItem
     var totalSizePrice = 0;
     var quality = 0;
+    var size = [];
     SizeItem.forEach(function(SizeItem) {
         // get data-size-price
         var SizeItemPrice = SizeItem.getAttribute("data-size-price");
-        console.log(SizeItem);
+        // get data-size
+        var SizeItemSize = SizeItem.getAttribute("data-size-symbol");
         var SizeItemNumber = SizeItem.getElementsByTagName("input")[0].value;
         // check if SizeItemInput is null
         if (SizeItemNumber == "") {
             // set SizeItemInput to 0
             SizeItemNumber = 0;
         }
+        // create object size with size and number
+        size.push({symbol:SizeItemSize,quality:SizeItemNumber});
         // set quality to 
         quality = Number(SizeItemNumber) + quality;
         // calculate totalSizePrice
@@ -530,6 +534,23 @@ document.getElementById("addToCard").addEventListener("click", function() {
     // get canvas background color 
     var canvasBackgroundColor = document.getElementById("tshirt-div").style.backgroundColor;
 
+    // get size sybmol and quality from input with class "SizeItem"
+    var SizeItem = document.querySelectorAll(".SizeItem");
+    // loop through all SizeItem
+    var size = [];
+    SizeItem.forEach(function(SizeItem) {
+        // get data-size
+        var SizeItemSize = SizeItem.getAttribute("data-size-symbol");
+        var SizeItemNumber = SizeItem.getElementsByTagName("input")[0].value;
+        // check if SizeItemInput is null
+        if (SizeItemNumber == "") {
+            // set SizeItemInput to 0
+            SizeItemNumber = 0;
+        }
+        // create object size with size and number
+        size.push({symbol:SizeItemSize,quality:SizeItemNumber});
+    });
+
     // convert front canvas as jpg data 
     canvas.discardActiveObject();
     canvas.renderAll();
@@ -561,6 +582,7 @@ document.getElementById("addToCard").addEventListener("click", function() {
         return;
     }
 
+    console.log("add to card=> " , quantity);
     // create form data
     var formData = new FormData();
     formData.append('product_id', product_id);
@@ -576,6 +598,8 @@ document.getElementById("addToCard").addEventListener("click", function() {
     // append backimageData , frontimageData 
     formData.append('front_design', backimageData);
     formData.append('back_design', frontimageData);
+    // append size
+    formData.append('size', JSON.stringify(size));
 
     // axios call to add to card
     axios.post(`${projecturl}product/add_to_card/`, formData, {
@@ -666,6 +690,9 @@ function loaddesign(front, back) {
     });
     
 }
+
+
+
 
 
 

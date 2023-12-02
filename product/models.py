@@ -119,9 +119,19 @@ class FavoriteProduct(models.Model):
         return self.user.username
     
     
+    
+#card_size
+class CardSize(models.Model):
+    symbol = models.CharField(max_length=50)
+    quantity = models.IntegerField()
+    
+    def __str__(self):
+        return self.symbol
+    
+    
 #cart product
 class CartProduct(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ManyToManyField(User)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     quantity = models.IntegerField()
     front_design_price = models.FloatField()
@@ -131,8 +141,9 @@ class CartProduct(models.Model):
     frontcanvas = models.TextField()
     backcanvas = models.TextField()
     product_color = models.CharField(max_length=50)
+    sizes = models.ManyToManyField(CardSize)
     def __str__(self):
-        return self.user.username
+        return self.product.name
     
     #get front canvas data
     def get_frontcanvas(self):
@@ -149,8 +160,15 @@ class CartProduct(models.Model):
     #set back canvas data
     def set_backcanvas(self):
         self.backcanvas=json.dumps(self.backcanvas)
-        
-            
+             
+#order
+class Order(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    cart_product = models.ManyToManyField(CartProduct)
+    total_price = models.FloatField()
+    order_date = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.user.username
     
     
 

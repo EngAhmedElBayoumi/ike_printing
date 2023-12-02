@@ -28,4 +28,6 @@ urlpatterns = [
     path("add_to_card/",views.card,name="card"),
     #apply_copoun
     path("apply_copoun/",views.apply_copoun,name="apply_copoun"),
+    #order
+    path("order/",views.order,name="order"),
 ]

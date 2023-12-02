@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.utils.html import format_html
 
 #from .models import Product , matireal , category 
-from .models import Product , Matireal , Category , Color , Size , ProductDesign , UserImage , ClipArt , FavoriteProduct ,CartProduct
+from .models import Product , Matireal , Category , Color , Size , ProductDesign , UserImage , ClipArt , FavoriteProduct ,CartProduct, Order
+
 
 # Register your models here.
 
@@ -131,42 +132,120 @@ class UserImageAdmin(admin.ModelAdmin):
     
     display_image.short_description = 'image'
 
-#CartProduct display
+#CartProduct display all fields in admin panel in multiple line
 class CartProductAdmin(admin.ModelAdmin):
-    #display name , image
-    list_display = ('user','product','display_product_image','quantity','total_price','dispaly_front_design','display_back_design')
+    # Display name, description, and other fields
+    def display_cart_product_info(self, obj):
+        size_info = [f"{size.symbol} ({size.quantity})" for size in obj.sizes.all()]
+        
+        return format_html(
+            
+            '<strong>User:</strong> {}<br>'
+            '<strong>Product:</strong> {}<br>'
+            '<strong>Color:</strong> {}<br>'
+            '<strong>Sizes:</strong> {}<br>'
+            '<strong>Quantity:</strong> {}<br>'
+            '<strong>Price:</strong> {}<br>',
+            obj.user,
+            obj.product,
+            obj.product_color,
+            ', '.join(size_info),  # Join size info strings with a comma
+            obj.quantity,
+            obj.total_price,
+        )
+    display_cart_product_info.short_description = 'Cart Product Info'
+
+    # Display front and back images
+    def display_cart_product_images(self, obj):
+        return format_html(
+            '<div style="display: flex; align-items: center; justify-content: center;">'
+            '   <img src="{}" style="max-width: 100px; max-height: 100px;object-fit: scale-down;" />'
+            '   <img src="{}" style="max-width: 100px; max-height: 100p;object-fit: scale-down;" />'
+            '</div>',
+            obj.product.frontimage.url,
+            obj.product.backimage.url,
+        )
+    display_cart_product_images.short_description = 'Images'
+
+    list_display = ('display_cart_product_info', 'display_cart_product_images')
     #search bar
-    search_fields = ['user']
-    #display image
-    def dispaly_front_design(self, obj):
-        return format_html('<img src="{}" width="50" height="50" />', obj.frontcanvas)
-    dispaly_front_design.short_description = 'front_design'
-    
-    #display image
-    def display_back_design(self, obj):
-        return format_html('<img src="{}" width="50" height="50" />', obj.frontcanvas)
-    display_back_design.short_description = 'back_design'
+    search_fields = ['product__name','color__name','size__name','matireal__name','quantity','price']
 
-    #display image
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('display_user_details', 'display_cart_products','display_product_image','display_product_designs' , 'total_price', 'order_date')
+
+    def display_user_details(self, obj):
+        return format_html(
+            '<strong>Username:</strong> {}<br>'
+            '<strong>First Name:</strong> {}<br>'
+            '<strong>Last Name:</strong> {}<br>'
+            '<strong>Phone:</strong> {}<br>'
+            
+            '<strong>Email:</strong> {}<br>'
+            '<strong>Address:</strong> {}<br>'
+            '<strong>Postal code:</strong> {}<br>'
+            ,
+            
+            obj.user.username,
+            obj.user.first_name,
+            obj.user.last_name,
+            obj.user.profile.phone,
+            obj.user.email,
+            obj.user.profile.country + ', ' + obj.user.profile.state ,
+            obj.user.profile.postal_code,
+            
+            
+        )
+
+
+    def display_cart_products(self, obj):
+        # Display all details in each cart product
+        cart_products = obj.cart_product.all()
+        return format_html(
+            '<br>'.join(
+                f'<strong>Product:</strong> {cart_product.product.name}<br>'
+                f'<strong>Color:</strong>   <span style="background:{cart_product.product_color};width:20px;height:20px;">{cart_product.product_color}</span><br>'
+                #size info symbol and quantity
+                f'<strong>Sizes:</strong> {", ".join(f"{size.symbol} ({size.quantity})" for size in cart_product.sizes.all())}<br>'
+                f'<strong>Quantity:</strong> {cart_product.quantity}<br>'
+                f'<strong>Price:</strong> {cart_product.total_price}<br>'
+                for cart_product in cart_products
+            )
+        )
+    
     def display_product_image(self, obj):
-        return format_html('<img src="{}" width="50" height="50" />', obj.product.frontimage.url)
-    
-    #export
-    def export_as_csv(self, request, queryset):
-        meta = self.model._meta
-        field_names = [field.name for field in meta.fields]
-        response = HttpResponse(content_type='text/csv')
+        # Display all details in each cart product
+        cart_products = obj.cart_product.all()
+        return format_html(
+            '<br>'.join(
+                #front
+                f'<img src="{cart_product.product.frontimage.url}" style="max-width: 100px; max-height: 100px;object-fit: scale-down;margin-right:10px; margin-top:20px" />'
+                #back
+                f'<img src="{cart_product.product.backimage.url}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-top:20px" />'
+                for cart_product in cart_products
+            )
+        )
         
-        response['Content-Disposition'] = f'attachment; filename={meta}.csv'
-        writer = csv.writer(response)
-        
-        writer.writerow(field_names)
-        for obj in queryset:
-            row = writer.writerow([getattr(obj, field) for field in field_names])
-        
-        return response
-    
+    def display_product_designs(self, obj):
+        # Display all details in each cart product
+        cart_products = obj.cart_product.all()
+        return format_html(
+            '<br>'.join(
+                #front
+                f'<img src="{cart_product.frontcanvas}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-right:10px; margin-top:40px" />'
+                #back
+                f'<img src="{cart_product.backcanvas}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-top:40px" />'
+                for cart_product in cart_products
+            )
+        )
+    display_user_details.short_description = 'User Details'
+    display_cart_products.short_description = 'Products'
+    display_product_image.short_description = 'Product Image'
+    display_product_designs.short_description = 'Product Designs'
 
+
+admin.site.register(Order, OrderAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Matireal,MatirealAdmin)
 admin.site.register(ClipArt,ClipArtAdmin)
