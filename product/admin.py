@@ -37,7 +37,7 @@ class ProductResource(resources.ModelResource):
 
 
 
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     # Display name, description, and other fields
     def display_product_info(self, obj):
         return format_html(
@@ -200,7 +200,7 @@ class CartProductAdmin(admin.ModelAdmin):
     search_fields = ['product__name','color__name','size__name','matireal__name','quantity','price']
 
 
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ('display_user_details', 'display_cart_products','display_product_image','display_product_designs' , 'total_price', 'order_date')
 
     def display_user_details(self, obj):

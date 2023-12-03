@@ -220,5 +220,5 @@ JAZZMIN_SETTINGS = {
     
 }
 
-PAYPAL_RECEIVER = 'alsajedtradingqatar@gmail.com'
+PAYPAL_RECEIVER = 'info@ikeprint.com'
 PAYPAL_TEST=False
