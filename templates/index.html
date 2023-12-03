@@ -104,36 +104,42 @@
 					<div class="row align-items-center justify-content-center">
 						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
 							<div class="cats_side_wrap text-center mx-auto mb-3">
-								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="javascript:void(0);" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/selfcustomize.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
-								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Custmization</a></h6></div>
+								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'product:self_customization' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/selfcustomize.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
+								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'product:self_customization' %}">Custmization</a></h6></div>
 							</div>
 						</div>
 						
 						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
 							<div class="cats_side_wrap text-center mx-auto mb-3">
-								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="javascript:void(0);" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/banner.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
-								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Posters & Banners</a></h6></div>
+								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'banner_and_posters:banner_and_posters' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/banner.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
+								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'banner_and_posters:banner_and_posters' %}">Posters & Banners</a></h6></div>
 							</div>
 						</div>
 						
 						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
 							<div class="cats_side_wrap text-center mx-auto mb-3">
-								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="javascript:void(0);" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/designer.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
-								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Call A Designer</a></h6></div>
+								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'call_expert:callEpertTwo' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/designer.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
+								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'call_expert:callEpertTwo' %}">Call A Designer</a></h6></div>
 							</div>
 						</div>
 						
 						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
 							<div class="cats_side_wrap text-center mx-auto mb-3">
-								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="javascript:void(0);" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/senior.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
-								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Call Senior Designer</a></h6></div>
+								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'call_expert:call_senior_designer' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/senior.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
+								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'call_expert:call_senior_designer' %}">Call Senior Designer</a></h6></div>
 							</div>
 						</div>
 						
 						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
 							<div class="cats_side_wrap text-center mx-auto mb-3">
-								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="javascript:void(0);" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/orderin.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
-								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Ordring</a></h6></div>
+								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'product:ordaring' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/orderin.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
+								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'product:ordaring' %}">Ordring</a></h6></div>
+							</div>
+						</div>
+						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
+							<div class="cats_side_wrap text-center mx-auto mb-3">
+								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'product:product' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/orderin.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
+								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'product:product' %}">All Products</a></h6></div>
 							</div>
 						</div>
 	
@@ -178,7 +184,7 @@
 						
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 							<div class="single_cats">
-								<a href="#" class="cards card-overflow card-scale lg_height">
+								<a href="{% url 'product:self_customization' %}" class="cards card-overflow card-scale lg_height">
 									<div class="bg-image" style="background:url({% static 'assets/img/newImages/img_26_11/upper.png' %})no-repeat;"></div>
 									<div class="ct_body">
 										<div class="ct_body_caption left">	
@@ -193,7 +199,7 @@
 							</div>
 							
 							<div class="single_cats">
-								<a href="#" class="cards card-overflow card-scale md_height">
+								<a href="{% url 'banner_and_posters:banner_and_posters' %}" class="cards card-overflow card-scale md_height">
 									<div class="bg-image" style="background:url({% static 'assets/img/newImages/img_26_11/poster.png' %})no-repeat;"></div>
 									<div class="ct_body">
 										<div class="ct_body_caption left">	
@@ -215,7 +221,7 @@
 								
 								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 									<div class="single_cats">
-										<a href="#" class="cards card-overflow card-scale md_height">
+										<a href="{% url 'product:self_customization' %}" class="cards card-overflow card-scale md_height">
 											<div class="bg-image" style="background:url({% static 'assets/img/newImages/img_26_11/small-item.png' %})no-repeat;"></div>
 											<div class="ct_body">
 												<div class="ct_body_caption left">	
@@ -229,7 +235,7 @@
 										</a>
 									</div>
 									<div class="single_cats">
-										<a href="#" class="cards card-overflow card-scale lg_height">
+										<a href="{% url 'call_expert:call_senior_designer' %}" class="cards card-overflow card-scale lg_height">
 											<div class="bg-image" style="background:url({% static 'assets/img/newImages/img_26_11/meet.png' %})no-repeat;"></div>
 											<div class="ct_body">
 												<div class="ct_body_caption left">	
@@ -257,7 +263,7 @@
 								
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
 									<div class="single_cats">
-										<a href="#" class="cards card-overflow card-scale mid_height">
+										<a href="{% url 'product:self_customization' %}" class="cards card-overflow card-scale mid_height">
 											<div class="bg-image" style="background:url({% static 'assets/img/newImages/img_26_11/business.png' %})no-repeat;"></div>
 											<div class="ct_body">
 												<div class="ct_body_caption left">
@@ -275,7 +281,7 @@
 								
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
 									<div class="single_cats">
-										<a href="#" class="cards card-overflow card-scale mid_height">
+										<a href="{% url 'call_expert:call_expert' %}" class="cards card-overflow card-scale mid_height">
 											<div class="bg-image" style="background:url({% static 'assets/img/newImages/img_26_11/flyers-and-bc.png' %})no-repeat;"></div>
 											<div class="ct_body">
 												<div class="ct_body_caption left">	
@@ -293,7 +299,7 @@
 								
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
 									<div class="single_cats">
-										<a href="#" class="cards card-overflow card-scale mid_height">
+										<a href="{% url 'call_expert:call_expert' %}" class="cards card-overflow card-scale mid_height">
 											<div class="bg-image" style="background:url({% static 'assets/img/newImages/img_26_11/call-a-designer.png' %})no-repeat;"></div>
 											<div class="ct_body">
 												<div class="ct_body_caption left">	

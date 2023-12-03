@@ -6204,8 +6204,28 @@ margin-bottom: 20px;
     margin-top: 10px;
 }
 
+.paypaleBoxInputs form input:last-child{
+    display: block;
+    width: 100%;
+    height: 50px;
+    background: #000;
+    position: relative;
+    color: #fff;
+    text-align: center;
 
-
+}
+.paypaleBoxInputs form input:last-child::before{
+    content: 'Book Date & Time Now';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: #fff;
+    line-height: 50px;
+    font-size: 16px;
+}
 
 
 /*--------------------------------------------------

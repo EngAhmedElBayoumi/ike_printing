@@ -238,7 +238,9 @@ color: #000;
 													</div>
 												</form>
 												<div class=" col col-md-12">
-													{{ paypal.render }}
+													<div class="paypaleBoxInputs">
+														{{ paypal.render }}
+													</div>
 												</div>
 												<!--/row -->
 											</div>
@@ -282,7 +284,16 @@ color: #000;
 			<!-- ============================================================== -->
 			<!-- This page plugins -->
 			<!-- ============================================================== -->	
-	
+	<script>
+var form = document.querySelector('.paypaleBoxInputs form');
+if (form) {
+    var inputElements = form.querySelectorAll('input[type="image"]');
+    if (inputElements.length > 0) {
+        var lastImageInput = inputElements[inputElements.length - 1];        
+        lastImageInput.removeAttribute('src');
+    }
+}
+		</script>
 		
 		
 			<script>
