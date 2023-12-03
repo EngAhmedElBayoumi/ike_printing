@@ -187,12 +187,18 @@
 							  </div>
 							</div>
                            
+                            {% if product_card %}
                             <!--order url-->
 							<button class="btn btn-block btn-dark mb-3" id="pay_for_order" >Place Your Order</button>
                             <!--paypal-->
-                            {% if product_card %}
                             {{ paypal.render }}
+
+                            {% else %}
+
+                            <button class="btn btn-block btn-dark mb-3" disabled>Place Your Order</button>
                             {% endif %}
+
+
 						</div>
 						
 					</div>
@@ -217,6 +223,9 @@
                 type: 'GET',
                 success: function(response){
                     console.log(response);
+                    // refresh the page
+                    location.reload();
+                    alert('Order Placed Successfully');
                 },
                 error: function(response){
                     console.log(response);

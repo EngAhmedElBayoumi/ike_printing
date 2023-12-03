@@ -84,7 +84,7 @@
 								<li>
                                     <a class="ProfileLinkHeader">
 										
-										{% if user.profile.image %}
+										{% if user.profile.image.url and user.profile.image.url != "/media/False"  %}
 										<img class="UserProfileImages" src="{{ user.profile.image.url }}">
 										{% else %}
 										<!--user icon-->

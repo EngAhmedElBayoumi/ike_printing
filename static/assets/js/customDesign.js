@@ -163,15 +163,21 @@ function changeUnderline(){
 function addImage(imageURL){
     fabric.Image.fromURL(imageURL, function (img) {
         // get image width and height
-        var imageWidth = img.width;
-        var imageHeight = img.height;
-
-        img.scaleToHeight(imageHeight);
-        img.scaleToWidth(imageWidth);
+        scaleImageToFitCanvas(img, activecanvas);
         activecanvas.add(img);
     });
 }
 
+
+function scaleImageToFitCanvas(image, canvas) {
+    var canvasAspectRatio = canvas.width / canvas.height;
+    var imageAspectRatio = image.width / image.height;
+    var scaleRatio = imageAspectRatio > canvasAspectRatio 
+                     ? canvas.width / image.width 
+                     : canvas.height / image.height;
+
+    image.scale(scaleRatio);
+}
 
 
 // COPY , cut , paste functions 
@@ -265,8 +271,7 @@ document.getElementById('tshirt-custompicture').addEventListener("change", funct
         // When the picture loads, create the image in Fabric.js
         imgObj.onload = function () {
             var img = new fabric.Image(imgObj);
-            var imageWidth = img.width;
-            var imageHeight = img.height;
+            scaleImageToFitCanvas(img, activecanvas);
             img.scaleToHeight(imageHeight);
             img.scaleToWidth(imageWidth); 
             activecanvas.centerObject(img);
