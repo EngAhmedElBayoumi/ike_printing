@@ -30,4 +30,9 @@ urlpatterns = [
     path("apply_copoun/",views.apply_copoun,name="apply_copoun"),
     #order
     path("order/",views.order,name="order"),
+    #payment success
+    path("payment_success/",views.payment_success,name="payment_success"),
+    #payment failed
+    path("payment_failed/",views.payment_failed,name="payment_failed"),
+    
 ]

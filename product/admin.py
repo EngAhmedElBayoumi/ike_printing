@@ -3,9 +3,37 @@ from django.utils.html import format_html
 
 #from .models import Product , matireal , category 
 from .models import Product , Matireal , Category , Color , Size , ProductDesign , UserImage , ClipArt , FavoriteProduct ,CartProduct, Order
+#import django import export
+from import_export.admin import ImportExportModelAdmin
+from import_export import resources, fields
+from import_export.widgets import Widget
 
 
 # Register your models here.
+
+class ImageWidget(Widget):
+    """
+    Custom Widget to display images in export.
+    """
+
+    def render(self, value, obj=None):
+        return format_html('<img src="{}" width="50" height="50" />', value)
+
+
+class ProductResource(resources.ModelResource):
+    frontimage = fields.Field(column_name='Front Image', attribute='get_frontimage_url')
+    backimage = fields.Field(column_name='Back Image', attribute='get_backimage_url')
+
+    def get_frontimage_url(self, product):
+        return product.frontimage.url
+
+    def get_backimage_url(self, product):
+        return product.backimage.url
+
+    class Meta:
+        model = Product
+        fields = ('name', 'description', 'height', 'category', 'colors', 'sizes', 'matireal', 'frontimage', 'backimage')
+        export_order = ('name', 'description', 'height', 'category', 'colors', 'sizes', 'matireal', 'frontimage', 'backimage')
 
 
 
@@ -45,7 +73,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('display_product_info', 'display_product_images')
     #search bar
     search_fields = ['name','description','height','category__name','colors__name','sizes__name','matireal__name']
-    
+    resource_class = ProductResource  
     
 
 # Register the model with the custom admin class

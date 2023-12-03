@@ -189,6 +189,10 @@
                            
                             <!--order url-->
 							<button class="btn btn-block btn-dark mb-3" id="pay_for_order" >Place Your Order</button>
+                            <!--paypal-->
+                            {% if product_card %}
+                            {{ paypal.render }}
+                            {% endif %}
 						</div>
 						
 					</div>

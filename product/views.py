@@ -9,6 +9,15 @@ from pricing.models import ProductDiscountQuantity ,PrintingDiscountQuantity ,Pr
 #import login required
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from paypal.standard.forms import PayPalPaymentsForm 
+import uuid 
+#redirect
+from django.shortcuts import redirect
+#settings
+from django.conf import settings
+#reverse
+from django.urls import reverse
+
 # Create your views here.
 
 def product(request):
@@ -544,6 +553,17 @@ def card(request):
     #append total price to product card
     product_card.total=total_price
     
+    host = request.get_host() # Host 
+    paypal_checkout = {
+            'business' : settings.PAYPAL_RECEIVER, 
+            'amount' : total_price, 
+            'item_name' : 'payment for card products', 
+            'invoice' : uuid.uuid4(), 
+            'currency' : 'USD', 
+            'notify_url' : f'http://{host}{reverse("paypal-ipn")}/',
+            'return_url' : f'http://{host}{reverse("product:payment_success")}/',
+            'cancel_url' : f'http://{host}{reverse("product:payment_failed")}/',
+    }    
     #if request is post 
     if request.method == "POST":
         try:
@@ -597,11 +617,11 @@ def card(request):
         except Exception as e:
             #return error
             return JsonResponse({"error": str(e)})
-
-    return render(request, 'card.html', {'product_card':product_card})
-
+    paypal = PayPalPaymentsForm(initial=paypal_checkout)
+    return render(request, 'card.html', {'product_card':product_card,'paypal':paypal})
 
 def order(request):
+
     # Get product card
     product_card = CartProduct.objects.filter(user=request.user)
 
@@ -626,3 +646,39 @@ def order(request):
     
     # Return error if something went wrong
     return JsonResponse({"error": "error"})
+
+
+#payment success
+def payment_success(request):
+    # Get product card
+    product_card = CartProduct.objects.filter(user=request.user)
+
+    # Calculate total price
+    total_price = sum(product.total_price for product in product_card)
+
+    # Use a transaction to ensure data consistency
+    with transaction.atomic():
+        # Create a new order
+        order = Order.objects.create(user=request.user, total_price=total_price)
+
+        # Add products to the order
+        order.cart_product.set(product_card)
+
+        # Clear the user field in each product_card
+        for product in product_card:
+            product.user.remove(request.user)
+
+    #django messages
+    messages.success(request, "Your order has been placed successfully.")
+    
+    #return redirect to card
+    return redirect('product:card')
+
+
+#payment failed
+def payment_failed(request):
+    #django messages
+    messages.error(request, "Your order has been failed try again.")
+    
+    #return redirect to card
+    return redirect('product:card')

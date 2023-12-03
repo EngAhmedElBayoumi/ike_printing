@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'import_export',
     'corsheaders',
     'accounts',
     'banner_and_posters',
@@ -39,7 +40,8 @@ INSTALLED_APPS = [
     'dragon',
     'senior_dragon',
     'senior_unicorn',
-    'unicorn', 'paypal.standard.ipn', 
+    'unicorn', 
+    'paypal.standard.ipn', 
 ]
 
 MIDDLEWARE = [
