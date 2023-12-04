@@ -42,9 +42,11 @@ function addText(){
     var text = new fabric.Text(message, {
         left: 100,
         top: 100,
-        fontFamily: 'helvetica',
+        // arial
+        fontFamily: 'Arial' ,
         fill: '#000000',
-        fontSize: 20
+        fontSize: 20,
+        lockUniScaling: true // disable uniform scaling
     });
     activecanvas.add(text);
     activecanvas.setActiveObject(text);
@@ -168,15 +170,28 @@ function addImage(imageURL){
     });
 }
 
-
 function scaleImageToFitCanvas(image, canvas) {
     var canvasAspectRatio = canvas.width / canvas.height;
     var imageAspectRatio = image.width / image.height;
-    var scaleRatio = imageAspectRatio > canvasAspectRatio 
-                     ? canvas.width / image.width 
-                     : canvas.height / image.height;
+    var scaleRatio;
 
+    // Determine the scale ratio to maintain aspect ratio
+    if (imageAspectRatio > canvasAspectRatio) {
+        // Image is wider than canvas
+        scaleRatio = canvas.width / image.width;
+    } else {
+        // Image is taller than canvas
+        scaleRatio = canvas.height / image.height;
+    }
+
+    // Apply the scale ratio to the image
     image.scale(scaleRatio);
+
+    // Center the image on the canvas
+    image.set({
+        left: (canvas.width - image.width * scaleRatio) / 2,
+        top: (canvas.height - image.height * scaleRatio) / 2
+    });
 }
 
 
@@ -264,6 +279,7 @@ document.addEventListener("keydown", function(e) {
 document.getElementById('tshirt-custompicture').addEventListener("change", function(e){
     var reader = new FileReader();
     
+    console.log("change");
     reader.onload = function (event){
         var imgObj = new Image();
         imgObj.src = event.target.result;
@@ -272,8 +288,7 @@ document.getElementById('tshirt-custompicture').addEventListener("change", funct
         imgObj.onload = function () {
             var img = new fabric.Image(imgObj);
             scaleImageToFitCanvas(img, activecanvas);
-            img.scaleToHeight(imageHeight);
-            img.scaleToWidth(imageWidth); 
+        
             activecanvas.centerObject(img);
             activecanvas.add(img);
             activecanvas.renderAll();
