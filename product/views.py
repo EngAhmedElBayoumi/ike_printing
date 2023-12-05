@@ -67,7 +67,9 @@ def self_customization(request):
     categories = Category.objects.all()
     products = []
     for category in categories:
-        products.append(Product.objects.filter(category=category).first())
+        #check if there are product has this category
+        if Product.objects.filter(category=category).exists():
+            products.append(Product.objects.filter(category=category).first())
 
         
     products_data = serialize('json', [p for p in products if p is not None]) 
