@@ -7,6 +7,7 @@ from .models import Product , Matireal , Category , Color , Size , ProductDesign
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields
 from import_export.widgets import Widget
+from import_export import fields, resources
 
 
 # Register your models here.
@@ -199,19 +200,25 @@ class CartProductAdmin(admin.ModelAdmin):
     #search bar
     search_fields = ['product__name','color__name','size__name','matireal__name','quantity','price']
 
+        
+    
 
 class OrderAdmin(ImportExportModelAdmin,admin.ModelAdmin):
-    list_display = ('display_user_details', 'display_cart_products','display_product_image','display_product_designs' , 'total_price', 'order_date')
+    list_display = ('display_order_number','display_user_details', 'display_cart_products','display_product_image','display_product_designs' ,'methods_of_receiving', 'total_price', 'order_date')
 
+    def display_order_number(self, obj):
+        return f'#{obj.pk}'
+    display_order_number.short_description = 'Order Number'
+    
     def display_user_details(self, obj):
         return format_html(
             '<strong>Username:</strong> {}<br>'
             '<strong>First Name:</strong> {}<br>'
             '<strong>Last Name:</strong> {}<br>'
             '<strong>Phone:</strong> {}<br>'
-            
             '<strong>Email:</strong> {}<br>'
-            '<strong>Address:</strong> {}<br>'
+            '<strong>Address :</strong> {}<br>'
+            '<strong>Cuntry and state:</strong> {}<br>'
             '<strong>Postal code:</strong> {}<br>'
             ,
             
@@ -220,6 +227,7 @@ class OrderAdmin(ImportExportModelAdmin,admin.ModelAdmin):
             obj.user.last_name,
             obj.user.profile.phone,
             obj.user.email,
+            obj.user.profile.address,
             obj.user.profile.country + ', ' + obj.user.profile.state ,
             obj.user.profile.postal_code,
             
@@ -254,6 +262,9 @@ class OrderAdmin(ImportExportModelAdmin,admin.ModelAdmin):
                 for cart_product in cart_products
             )
         )
+        
+    def  methods_of_receiving(self, obj):
+        return f'{obj.methods_of_receiving}'
         
     def display_product_designs(self, obj):
         # Display all details in each cart product

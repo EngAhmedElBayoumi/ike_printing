@@ -537,6 +537,35 @@ def apply_copoun(request):
     #return total price
     return JsonResponse({"total_price":total_price})
     
+def order(request):
+
+    # Get product card
+    product_card = CartProduct.objects.filter(user=request.user)
+
+    # Calculate total price
+    total_price = sum(product.total_price for product in product_card)
+    #total price + tax 8.25%
+    total_price=total_price+(total_price*0.0825)
+
+    
+    # Use a transaction to ensure data consistency
+    with transaction.atomic():
+        # Create a new order
+        order = Order.objects.create(user=request.user, total_price=total_price)
+
+        # Add products to the order
+        order.cart_product.set(product_card)
+
+        # Clear the user field in each product_card
+        for product in product_card:
+            product.user.remove(request.user)
+
+    # If the order is created successfully, return success
+    if order:
+        return JsonResponse({"success": "success"})
+    
+    # Return error if something went wrong
+    return JsonResponse({"error": "error"})
     
     
 #login required
@@ -544,15 +573,24 @@ def apply_copoun(request):
 def card(request):
     #get product card
     product_card = CartProduct.objects.filter(user=request.user)
-    
     #calculate total price
-    total_price=0
+    subtotal=0
     for product in product_card:
-        total_price+=product.total_price
+        subtotal+=product.total_price
         
-    #append total price to product card
-    product_card.total=total_price
+    tax = subtotal * 8.25 / 100
+    transaction_fee = subtotal * 2.9 / 100 + 0.3
+    if subtotal == 0:
+        tax = 0
+        transaction_fee = 0
     
+    
+    total_price = subtotal + tax + transaction_fee
+    #append total price to product card
+    product_card.subtotal=subtotal
+    product_card.tax=tax
+    product_card.transaction_fee=transaction_fee
+    product_card.total_price=total_price
     host = request.get_host() # Host 
     paypal_checkout = {
             'business' : settings.PAYPAL_RECEIVER, 
@@ -620,33 +658,6 @@ def card(request):
     paypal = PayPalPaymentsForm(initial=paypal_checkout)
     return render(request, 'card.html', {'product_card':product_card,'paypal':paypal})
 
-def order(request):
-
-    # Get product card
-    product_card = CartProduct.objects.filter(user=request.user)
-
-    # Calculate total price
-    total_price = sum(product.total_price for product in product_card)
-
-    # Use a transaction to ensure data consistency
-    with transaction.atomic():
-        # Create a new order
-        order = Order.objects.create(user=request.user, total_price=total_price)
-
-        # Add products to the order
-        order.cart_product.set(product_card)
-
-        # Clear the user field in each product_card
-        for product in product_card:
-            product.user.remove(request.user)
-
-    # If the order is created successfully, return success
-    if order:
-        return JsonResponse({"success": "success"})
-    
-    # Return error if something went wrong
-    return JsonResponse({"error": "error"})
-
 
 #payment success
 def payment_success(request):
@@ -659,7 +670,7 @@ def payment_success(request):
     # Use a transaction to ensure data consistency
     with transaction.atomic():
         # Create a new order
-        order = Order.objects.create(user=request.user, total_price=total_price)
+        order = Order.objects.create(user=request.user, total_price=total_price,methods_of_receiving="pickup")
 
         # Add products to the order
         order.cart_product.set(product_card)

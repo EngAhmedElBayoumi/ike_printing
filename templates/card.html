@@ -163,7 +163,7 @@
 									<div class="col-xl-3 col-lg-3 col-md-4 olf_flex text-left px-0 py-2 br-right"><a href="javascript:void(0);" class="ft-medium fs-sm"><i class="ti-close mr-2"></i>Cleare Cart</a></div>
 									<div class="col-xl-9 col-lg-9 col-md-8 pr-0 py-2 olf_flex d-flex align-items-center justify-content-between">
 										<div class="olf_flex_inner hide_mob"><p class="m-0 p-0"><span class="text-muted medium"></span></p></div>
-										<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Total: ${{product_card.total}}</h5></div>
+										<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Subtotal: ${{product_card.total}}</h5></div>
 									</div>
 								</div>
 							</div>
@@ -180,9 +180,26 @@
 								<ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
 								 
 								  <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-									<span>Total</span> <span class="ml-auto text-dark ft-medium">${{product_card.total}}</span>
+									<span>Subtotal</span> <span class="ml-auto text-dark ft-medium">${{product_card.subtotal}}</span>
 								  </li>
-								  
+								  <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+									<span>Tax</span> <span class="ml-auto text-dark ft-medium">${{product_card.tax}} </span>
+								  </li>
+								  <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+									<span>Transaction fees</span> <span class="ml-auto text-dark ft-medium">${{product_card.transaction_fee}} </span>
+								  </li>
+                                  <!--methods_of_receiving-->
+                                  <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+                                    <span>Method of Receiving</span> 
+                                    <select name="method_of_receiving" id="method_of_receiving" class="ml-auto text-dark ft-medium">
+                                        <option value="pickup">Pickup</option>
+                                        <option value="delivery">Delivery</option>
+                                    </select>
+                                   </li>
+                                  <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+									<span>Total Price</span> <span class="ml-auto text-dark ft-medium">${{product_card.total_price}} </span>
+								  </li>
+                                  
 								</ul>
 							  </div>
 							</div>
@@ -191,7 +208,9 @@
                             <!--order url-->
 							<button class="btn btn-block btn-dark mb-3" id="pay_for_order" >Place Your Order</button>
                             <!--paypal-->
-                            {{ paypal.render }}
+                            <div class="paypaleBoxInputs">
+                                {{ paypal.render }}
+                            </div>
 
                             {% else %}
 
@@ -214,6 +233,16 @@
 
 {% block script %}
 <script>
+    var form = document.querySelector('.paypaleBoxInputs form');
+    if (form) {
+        var inputElements = form.querySelectorAll('input[type="image"]');
+        if (inputElements.length > 0) {
+            var lastImageInput = inputElements[inputElements.length - 1];        
+            lastImageInput.removeAttribute('src');
+        }
+    }
+</script>
+<script>
     $(document).ready(function(){
         $("#pay_for_order").click(function(){
             var url = "{% url 'product:order' %}";
@@ -233,5 +262,5 @@
             });
         });
     });
-</script>
+</script>            
 {% endblock %}

@@ -1141,42 +1141,29 @@
                                   </div>
                                 </div>
                               </div>
+                              <div class="elementItem">
+                                <div class="IconTitle">
+                                  <img
+                                    src="{% static 'assets/img/newImages/icons/blur.png' %}"
+                                  />
+                                  <span>Border width</span>
+                                </div>
+                                <div class="InputElement">
+                                  <div class="InputRange">
+                                    <input
+                                      type="text"
+                                      id="range_width"
+                                      min="0"
+                                      max="4"
+                                      value="0"
+                                      onchange="changeStrokeWidth(this.value)"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
                               <div class="row" style="    align-items: center;">
                                 <div class="col-lg-10 col-md-10">
-                                  <div class="elementItem" style="width: 80%;">
-                                    <div class="IconTitle">
-                                      <img
-                                        src="{% static 'assets/img/newImages/icons/width.png' %}"
-                                      />
-                                      <span>Width</span>
-                                    </div>
-                                    <div class="InputElement">
-                                      <div class="InputRange">
-                                        <input
-                                          type="text"
-                                          id="range_width"
-                                          onchange="changeFontSize(this.value)"
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="elementItem" style="width: 80%;">
-                                    <div class="IconTitle">
-                                      <img
-                                        src="{% static 'assets/img/newImages/icons/height.png' %}"
-                                      />
-                                      <span>Height</span>
-                                    </div>
-                                    <div class="InputElement">
-                                      <div class="InputRange">
-                                        <input
-                                          type="text"
-                                          id="range_height"
-                                          onchange="changeFontSize(this.value)"
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
+                                  
                                 </div>
                                 <div class="col-lg-2 col-md-2">
                                   <div class="elementItem" style="cursor: pointer;">

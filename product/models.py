@@ -166,6 +166,8 @@ class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     cart_product = models.ManyToManyField(CartProduct)
     total_price = models.FloatField()
+    #methods of receiving
+    methods_of_receiving = models.CharField(max_length=50, default="pickup")
     order_date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.user.username

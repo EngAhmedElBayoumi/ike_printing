@@ -1,4 +1,5 @@
 projecturl = "http://127.0.0.1:8000/";
+//projecturl = "http://furydgp.com/";
 
 let canvas = new fabric.Canvas('tshirt-canvas-front');
 let canvasBack = new fabric.Canvas('tshirt-canvas-back');
@@ -159,6 +160,14 @@ function changeUnderline(){
     activecanvas.getActiveObject().set("underline", isUnderline ? "" : "underline");
     activecanvas.renderAll();
 }
+// function to change text stroke width with 
+function changeStrokeWidth(strokeWidth){
+    strokeWidth = parseInt(strokeWidth, 10) || 1;
+    activecanvas.getActiveObject().set("strokeWidth", strokeWidth);
+    activecanvas.renderAll();
+    
+}
+
 
 
 //add image function by src

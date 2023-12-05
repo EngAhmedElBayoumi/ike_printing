@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Profile , STATE_CHOICES , COUNTRY_CHOICES
 from product.models import UserImage , ProductDesign
+from product.models import Order
 
 # Create your views here.
 def log_in(request):
@@ -58,6 +59,7 @@ def register(request):
         address = request.POST['address']
         country = request.POST['country']
         state = request.POST['state']
+        postal_code=request.POST['postal_code']
         #check if passwords match
         if password1 != password2:
             #message
@@ -74,7 +76,7 @@ def register(request):
         
         #create user and profile
         user = User.objects.create_user(username=username, password=password1, email=email, first_name=first_name, last_name=last_name)
-        profile = Profile.objects.create(user=user, phone=phone, address=address, country=country, state=state)
+        profile = Profile.objects.create(user=user, phone=phone, address=address, country=country, state=state, postal_code=postal_code)
         
         #login
         login(request, user)
@@ -111,11 +113,12 @@ def profile(request):
         phone = request.POST['phone']
         state = request.POST['state']
         country = request.POST['country']
-        print(country)
         image = request.FILES.get('image',False)
         password1 = request.POST['password1']
         password2 = request.POST['password2']
         postal_code=request.POST['postal_code']
+        #address
+        address = request.POST['address']
         #check if passwords match
         if password1 != password2:
             #message
@@ -129,7 +132,7 @@ def profile(request):
         user.save()
         #if myprofile not exist create it
         if not myprofile:
-            myprofile = Profile.objects.create(user=user, phone=phone, country=country, state=state, image=image, postal_code=postal_code)
+            myprofile = Profile.objects.create(user=user, phone=phone, country=country, state=state, image=image, postal_code=postal_code, address=address)
         else:
             myprofile.phone=phone
             myprofile.state=state
@@ -159,14 +162,18 @@ def my_orders(request):
         myprofile = Profile.objects.get(user=user)
     except Profile.DoesNotExist:
         myprofile = None     
-    #get state , country if user have profile
-        
+
+    #get orders
+    orders=Order.objects.filter(user=user)
     context={
         'state_choices':STATE_CHOICES,
         'country_choices':COUNTRY_CHOICES,
         'user':user,
         'profile':myprofile,
+        'orders':orders,
     }
+    
+    
     
     return render(request,'my-orders.html',context)
 
