@@ -442,6 +442,7 @@ function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) 
     }
     // get csrf_token from form with id has input  "csrf_token"
     var crftoken = document.getElementById("crftokenform").getElementsByTagName("input")[0].value;
+    var product_id = document.getElementById("product_id").value;
     // create form data
     var formData = new FormData();
     formData.append('front_design_height', frontDesignHeight);
@@ -449,6 +450,7 @@ function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) 
     formData.append('quantity', quantity);
     formData.append('quantity_price', quantity_price);
     formData.append('csrfmiddlewaretoken', crftoken);
+    formData.append('product_id', product_id);
 
     // axios call to get quote
     axios.post(`${projecturl}product/get_quote/`, formData, {

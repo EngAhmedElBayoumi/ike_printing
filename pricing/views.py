@@ -30,9 +30,10 @@ def calculate_price(request):
             front_design_height = Decimal(product_data.get('frontDesignHeight', 0))
             back_design_height = Decimal(product_data.get('backDesignHeight', 0))
             product_size = product_data.get('productSize', [])
+            product_id = product_data.get('product_id', 0)
 
             # Calculate product price
-            product_price = calculate_product_price(product_size)
+            product_price = calculate_product_price(product_size,product_id)
             # Calculate design price
             front_design_price = calculate_design_price(front_design_height,product_size,tshirt_height)
             back_design_price = calculate_design_price(back_design_height,product_size,tshirt_height)
@@ -62,14 +63,14 @@ def calculate_price(request):
     
 
 # Helper function to calculate product price
-def calculate_product_price(product_size):
+def calculate_product_price(product_size,product_id):
     total_price = Decimal(0)
     # Assuming discounts are based on quantity
     for size in product_size:
         size_quantity = int(size.get('sizeQuantity', 0))
         size_price = Decimal(size.get('sizePrice', 0))
         # Check if there's any applicable discount for this quantity
-        discount = get_discount_for_quantity(size_quantity)
+        discount = get_discount_for_quantity(size_quantity,product_id)
         # Apply discount if applicable
         discounted_price = apply_discount(size_price, discount)
         # Calculate the total price for this size
@@ -77,10 +78,11 @@ def calculate_product_price(product_size):
     return total_price
 
 # Helper function to get applicable discount for a quantity
-def get_discount_for_quantity(quantity):
+def get_discount_for_quantity(quantity,product_id):
     try:
         # Get the appropriate discount record from the database
         discount_quantity = ProductDiscountQuantity.objects.get(
+            Q(product_id=product_id) &
             Q(min_quantity__lte=quantity) & Q(max_quantity__gte=quantity)
         )
         return discount_quantity.discount

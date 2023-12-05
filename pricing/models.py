@@ -1,9 +1,12 @@
 from django.db import models
+from product.models import Product
 
 # Create your models here.
 
 #product discount quantity
 class ProductDiscountQuantity(models.Model):
+    #relation with product
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
     #minimum quantity
     min_quantity = models.IntegerField()
     #maximum quantity
