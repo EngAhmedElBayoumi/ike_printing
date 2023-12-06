@@ -388,6 +388,7 @@
                       >
                         <i class="fas fa-arrow-down"></i> backwared
                       </button>
+                     
                     </div>
                     <div class="tab-content pt-3 text-muted">
                       <div class="tab-pane active" id="Product" role="tabpanel">
@@ -544,7 +545,27 @@
                                             value="{{color.code}}"
                                           />
                                         </label>
-                                        {% endfor %} {% comment %}
+                                        {% endfor %}
+                                        <label
+                                        
+                                        for="color-null"
+                                        class="d-none"
+                                        style="background: #0e0e0e"
+                                      >
+                                        <span
+                                          class="IconCheck bx bx-check"
+                                          style="color: #0e0e0e"
+                                        ></span>
+                                        <input
+                                          checked
+                                          id="color-null"
+                                          class="ColorInputName"
+                                          type="radio"
+                                          name="colorName"
+                                          value="#0e0e0e"
+                                        />
+                                      </label>
+                                         {% comment %}
                                         <!-- color picker -->
                                         <label
                                           for="color_21"

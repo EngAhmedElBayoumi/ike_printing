@@ -321,7 +321,7 @@ document.getElementById('tshirt-custompicture').addEventListener("change", funct
 document.addEventListener("keydown", function(e) {
     var keyCode = e.keyCode;
     // delete on DEL key or backspace key
-    if(keyCode == 46 || keyCode == 8){
+    if(keyCode == 46){
         activecanvas.remove(activecanvas.getActiveObject());
     }
 }, false);
@@ -701,11 +701,13 @@ function saveDesign() {
     .then(function (response) {
         // alert to the user that design saved
         alert("Design saved");
+        console.log(response)
     })
     .catch(function (error) {
 
         // alert to the user that design not saved
         alert("Design not saved");
+        console.log(error);
     });
 }
 function loaddesign(front, back) {
@@ -736,41 +738,72 @@ function loaddesign(front, back) {
 // Function to save the current state of the canvas
 function saveState() {
     undoStack.push(JSON.stringify(activecanvas));
-    redoStack = []; // Clear redo stack when a new action is performed
+    redoStack = []; // If we add something after undoing, we cannot redo anymore
 }
 
 // Function to undo the last action
 function undo() {
-    if (undoStack.length > 1) {
-        redoStack.push(undoStack.pop()); // Move the current state to redo stack
-        activecanvas.loadFromJSON(undoStack[undoStack.length - 1], function () {
-            activecanvas.renderAll();
-        });
+    if (undoStack.length > 0) {
+        var lastAction = undoStack.pop();
+        redoStack.push(lastAction);
+
+        switch (lastAction.action) {
+            case 'add':
+                // Remove the object that was added
+                var object = activecanvas.getItemById(lastAction.object.id); // Implement getItemById
+                activecanvas.remove(object);
+                break;
+            case 'modify':
+                // Restore the object to its previous state
+                var object = activecanvas.getItemById(lastAction.object.id); // Implement getItemById
+                object.setOptions(lastAction.object);
+                break;
+            case 'remove':
+                // Add the object back to the canvas
+                activecanvas.add(new fabric[lastAction.object.type](lastAction.object));
+                break;
+            
+        }
+
+        activecanvas.renderAll();
     }
 }
 
 // Function to redo the last undone action
 function redo() {
+    console.log("redo");
     if (redoStack.length > 0) {
-        undoStack.push(redoStack.pop()); // Move the current state to undo stack
-        activecanvas.loadFromJSON(undoStack[undoStack.length - 1], function () {
+        var lastAction = redoStack.pop();
+        undoStack.push(lastAction); 
+        activecanvas.loadFromJSON(lastAction, function () {
             activecanvas.renderAll();
         });
+        
     }
 }
 
 
-// on modify canvas call saveState function
-activecanvas.on('object:modified', function () {
-    saveState();
+// on add canvas call saveState function
+canvas.on('object:added', function(e) {
+    saveState('add', e.target);
 });
 
-// ... (your existing code)
+// on remove canvas call saveState function
+canvas.on('object:removed', function(e) {
+    saveState('remove', e.target);
+});
+
+// on modify canvas call saveState function
+canvas.on('object:modified', function(e) {
+    saveState('modify', e.target);
+});
+
+
 
 // You can then call undo() and redo() functions as needed, for example, when a button is clicked.
 // For example, if you have undoButton and redoButton elements:
-document.getElementById('undoButton').addEventListener('click', undo);
-document.getElementById('redoButton').addEventListener('click', redo);
+document.getElementById('undoButton').addEventListener('click', undo());
+document.getElementById('redoButton').addEventListener('click', redo());
 
 
 

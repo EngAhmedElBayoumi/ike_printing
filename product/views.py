@@ -280,7 +280,9 @@ def save_design(request):
             csrf_token = request.POST.get('csrfmiddlewaretoken')
             #create product design
              # Create product design
-            product_design = ProductDesign.objects.create(user=user, name=name, frontcanvas=front_data, backcanvas=back_data, frontimage=front_canvas_data)
+            product_design = ProductDesign.objects.create(name=name, frontcanvas=front_data, backcanvas=back_data, frontimage=front_canvas_data)
+            # Set user
+            product_design.user.set([user])
 
             # Save canvas data using set_frontcanvas and set_backcanvas
             product_design.set_frontcanvas()
