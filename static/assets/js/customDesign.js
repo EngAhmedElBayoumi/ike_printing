@@ -436,7 +436,7 @@ function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) 
     
     // check if quantity not null or empty or 0
     if (quantity == "" || quantity == 0) {
-        alert("Please enter quantity");
+        swal.fire("Please enter quantity");
         // return
         return;
     }
@@ -491,7 +491,7 @@ function apply_copoun() {
     // check if copoun_code is null or empty
     if (copoun_code == "") {
         // alert to the user to enter copoun code
-        alert("Please enter copoun code");
+        swal.fire("Please enter copoun code");
         // return
         return;
     }
@@ -501,7 +501,7 @@ function apply_copoun() {
     // check if total_price is null or empty
     if (total_price == "") {
         // alert to the user to enter quantity
-        alert("Please enter quantity");
+        swal.fire("Please enter quantity");
         // return
         return;
     }
@@ -537,7 +537,7 @@ function apply_copoun() {
     )
     .catch(function (error) {
         // alert to the user that copoun code not valid
-        alert("Copoun code not valid");
+        swal.fire("Copoun code not valid");
     });
 
 }
@@ -608,7 +608,7 @@ document.getElementById("addToCard").addEventListener("click", function() {
     // check if quantity not null or empty or 0
     if (quantity == "" || quantity == 0) {
         // alert to the user to enter quantity
-        alert("Please enter quantity");
+        swal.fire("Please enter quantity");
         // return
         return;
     }
@@ -641,13 +641,13 @@ document.getElementById("addToCard").addEventListener("click", function() {
     })
     .then(function (response) {
         // alert to the user that product added to card
-        alert("Product added to your card");
+        swal.fire("Product added to your card");
         console.log(response)
     }
     )
     .catch(function (error) {
         // alert to the user that product not added to card
-        alert("Product not added to your card");
+        swal.fire("Product not added to your card");
     });
     
 });
@@ -700,13 +700,13 @@ function saveDesign() {
     })
     .then(function (response) {
         // alert to the user that design saved
-        alert("Design saved");
+        swal.fire("Design saved");
         console.log(response)
     })
     .catch(function (error) {
 
         // alert to the user that design not saved
-        alert("Design not saved");
+        swal.fire("Design not saved");
         console.log(error);
     });
 }

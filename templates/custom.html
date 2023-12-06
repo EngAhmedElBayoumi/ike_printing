@@ -25,6 +25,9 @@
     <!--cdn toaster-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
       >
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <!--cdn toaster-->
 
   </head>
@@ -2942,7 +2945,7 @@
         });
 
         if (!inputsNotEmpty) {
-          alert("Please fill in all input fields before adding a new item.");
+          swal.fire("Please fill in all input fields before adding a new item.");
           return;
         }
 
@@ -2996,7 +2999,7 @@
           if (num === '' || name === '') {
             isValid = false;
             // Optionally, you can alert the user about the empty fields
-            alert("Please fill in all input fields in all rows before saving.");
+            swal.fire("Please fill in all input fields in all rows before saving.");
             break;
           }
 
