@@ -25,6 +25,9 @@
     <!--cdn toaster-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
       >
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <!--cdn toaster-->
 
   </head>
@@ -388,6 +391,21 @@
                       >
                         <i class="fas fa-arrow-down"></i> backwared
                       </button>
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        onclick="redo()"
+                      >
+                        <i class="fas fa-arrow-up"></i>Redo
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        onclick="undo()"
+                      >
+                        <i class="fas fa-arrow-down"></i> Undo
+                      </button>
+                     
                     </div>
                     <div class="tab-content pt-3 text-muted">
                       <div class="tab-pane active" id="Product" role="tabpanel">
@@ -544,7 +562,27 @@
                                             value="{{color.code}}"
                                           />
                                         </label>
-                                        {% endfor %} {% comment %}
+                                        {% endfor %}
+                                        <label
+                                        
+                                        for="color-null"
+                                        class="d-none"
+                                        style="background: #0e0e0e"
+                                      >
+                                        <span
+                                          class="IconCheck bx bx-check"
+                                          style="color: #0e0e0e"
+                                        ></span>
+                                        <input
+                                          checked
+                                          id="color-null"
+                                          class="ColorInputName"
+                                          type="radio"
+                                          name="colorName"
+                                          value="#0e0e0e"
+                                        />
+                                      </label>
+                                         {% comment %}
                                         <!-- color picker -->
                                         <label
                                           for="color_21"
@@ -836,7 +874,7 @@
                                       
 
                                       <div class="ClipArts">
-                                        <div class="row otherrow">
+                                        <div class="row otherrow" id="user-images">
                                        {% if user.is_authenticated %}
                                           {% if user_images %} 
                                                     {% for user_image in user_images %}
@@ -1407,7 +1445,7 @@
                                   aria-labelledby="flush-heading_Save_Load_3"
                                   data-bs-parent="#accordionSave_Load_3"
                                 >
-                                  <div class="accordion-body text-muted d-flex">
+                                  <div class="accordion-body text-muted d-flex" id="load-design">
                                     {% for design in product_designs %}
                                     <div class="p-3">
                                       <img
@@ -2921,7 +2959,7 @@
         });
 
         if (!inputsNotEmpty) {
-          alert("Please fill in all input fields before adding a new item.");
+          swal.fire("Please fill in all input fields before adding a new item.");
           return;
         }
 
@@ -2975,7 +3013,7 @@
           if (num === '' || name === '') {
             isValid = false;
             // Optionally, you can alert the user about the empty fields
-            alert("Please fill in all input fields in all rows before saving.");
+            swal.fire("Please fill in all input fields in all rows before saving.");
             break;
           }
 
@@ -3033,8 +3071,25 @@
           processData: false, // Don't process the data
           contentType: false, // Don't set content type (it will be set automatically)
           success: function (data) {
-            console.log(data);
-            // Handle the response data (e.g., image URL)
+            swal.fire("Image Uploaded Successfully");
+            // get dev by id load-design
+            var load_design = document.getElementById("user-images");
+            // src = sended image file
+            load_design.innerHTML +=`
+            <div
+            class="col-lg-2 col-md-2 col-sm-6 col-xs-6 othercol"
+        >
+            <div class="ArtItem">
+            <div class="image">
+                <img
+                onclick="addImage(this.src)"
+                src="${data.image_url}"
+                />
+            </div>
+            </div>
+        </div>
+            `;
+            
           },
           error: function (data) {
             console.log(data);

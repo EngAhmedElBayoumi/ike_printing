@@ -67,7 +67,9 @@ def self_customization(request):
     categories = Category.objects.all()
     products = []
     for category in categories:
-        products.append(Product.objects.filter(category=category).first())
+        #check if there are product has this category
+        if Product.objects.filter(category=category).exists():
+            products.append(Product.objects.filter(category=category).first())
 
         
     products_data = serialize('json', [p for p in products if p is not None]) 
@@ -278,17 +280,28 @@ def save_design(request):
             csrf_token = request.POST.get('csrfmiddlewaretoken')
             #create product design
              # Create product design
-            product_design = ProductDesign.objects.create(user=user, name=name, frontcanvas=front_data, backcanvas=back_data, frontimage=front_canvas_data)
+            product_design = ProductDesign.objects.create(name=name, frontcanvas=front_data, backcanvas=back_data, frontimage=front_canvas_data)
+            # Set user
+            product_design.user.set([user])
 
             # Save canvas data using set_frontcanvas and set_backcanvas
             product_design.set_frontcanvas()
             product_design.set_backcanvas()
             product_design.save()
+            
+            #convert product design to json
+            product_design_data = {
+                "product_design": serializers.serialize('json', [product_design]),
+            }
+            #return product design data
+            return JsonResponse({"product_design": product_design_data})
+              
+            
+           
+        
 
-           
-           
-            #return product design id
-            return JsonResponse({"product_design_id": product_design.id})
+
+        
     except Exception as e:
         return JsonResponse({"error": str(e)})
         

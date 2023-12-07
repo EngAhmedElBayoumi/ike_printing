@@ -1,15 +1,18 @@
 from django.db import models
+from product.models import Product
 
 # Create your models here.
 
 #product discount quantity
 class ProductDiscountQuantity(models.Model):
+    #relation with product
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
     #minimum quantity
     min_quantity = models.IntegerField()
     #maximum quantity
     max_quantity = models.IntegerField()
     #discount percentage
-    discount = models.IntegerField()
+    discount = models.IntegerField(verbose_name="Discount %")
     
     #string representation
     def __str__(self):
@@ -23,7 +26,7 @@ class PrintingDiscountQuantity(models.Model):
     #maximum quantity
     max_quantity = models.IntegerField()
     #discount percentage
-    discount = models.IntegerField()
+    discount = models.IntegerField(verbose_name="Discount %")
     
     #string representation
     def __str__(self):
@@ -47,7 +50,7 @@ class GeneralDiscount(models.Model):
     #name
     discount_name = models.CharField(max_length=50)
     #discount percentage
-    discount = models.IntegerField()
+    discount = models.IntegerField(verbose_name="Discount %")
     
     #string representation
     def __str__(self):
@@ -58,7 +61,7 @@ class Copoun(models.Model):
     #name
     copoun_name = models.CharField(max_length=50)
     #discount percentage
-    discount = models.IntegerField()
+    discount = models.IntegerField(verbose_name="Discount %")
     
     #string representation
     def __str__(self):
