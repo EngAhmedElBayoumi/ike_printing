@@ -288,11 +288,20 @@ def save_design(request):
             product_design.set_frontcanvas()
             product_design.set_backcanvas()
             product_design.save()
+            
+            #convert product design to json
+            product_design_data = {
+                "product_design": serializers.serialize('json', [product_design]),
+            }
+            #return product design data
+            return JsonResponse({"product_design": product_design_data})
+              
+            
+           
+        
 
-           
-           
-            #return product design id
-            return JsonResponse({"product_design_id": product_design.id})
+
+        
     except Exception as e:
         return JsonResponse({"error": str(e)})
         

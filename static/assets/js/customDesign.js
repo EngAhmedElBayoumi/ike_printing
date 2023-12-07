@@ -3,9 +3,47 @@ projecturl = "http://127.0.0.1:8000/";
 
 let canvas = new fabric.Canvas('tshirt-canvas-front');
 let canvasBack = new fabric.Canvas('tshirt-canvas-back');
-// Initialize undo and redo stacks
-var undoStack = [];
-var redoStack = [];
+
+let canvasStates = [];
+let currentStateIndex = -1;
+
+// Function to save the current state of the canvas
+function saveCanvasState() {
+    currentStateIndex++;
+    if (currentStateIndex < canvasStates.length) {
+        canvasStates = canvasStates.slice(0, currentStateIndex);
+    }
+    canvasStates.push(JSON.stringify(activecanvas));
+}
+
+// Function to undo the last action on the canvas
+function undo() {
+    console.log("undo");
+    if (currentStateIndex > 0) {
+        console.log("undo inside");
+        currentStateIndex--;
+        activecanvas.clear();
+        activecanvas.loadFromJSON(canvasStates[currentStateIndex], function () {
+            activecanvas.renderAll();
+        });
+    }
+}
+
+// Function to redo the undone action on the canvas
+function redo() {
+    console.log("redo");
+    if (currentStateIndex < canvasStates.length - 1) {
+        console.log("redo inside");
+        currentStateIndex++;
+        activecanvas.clear();
+        activecanvas.loadFromJSON(canvasStates[currentStateIndex], function () {
+            activecanvas.renderAll();
+        });
+    }
+}
+
+
+
 //fuction to change color
 function changeColor(color) {
     document.getElementById("tshirt-div").style.backgroundColor = color;
@@ -53,6 +91,9 @@ function addText(){
     activecanvas.setActiveObject(text);
     text.bringToFront();
     document.getElementById("text-input").value="";
+    
+    // save canvas state
+    saveCanvasState();
 
 }
 
@@ -75,6 +116,31 @@ canvasBack.on('selection:cleared', function(options) {
     document.getElementById("text-input").value="";
 });
 
+// on select object set it in his layer not bring it to front
+canvas.on('object:selected', function(options) {
+    options.target.bringToFront = false;
+});
+
+
+// on add object on canvas update canvas state
+canvas.on('object:added', function(options) {
+    // save canvas state
+    saveCanvasState();
+});
+
+// on remove object on canvas update canvas state
+canvas.on('object:removed', function(options) {
+    // save canvas state
+    saveCanvasState();
+});
+
+// on move object on canvas update canvas state
+canvas.on('object:moving', function(options) {
+    // save canvas state
+    saveCanvasState();
+});
+
+
 
 
 // text-input onkeyup change text
@@ -92,23 +158,35 @@ document.getElementById("text-input").onkeyup = function() {
 function changeFontFamily(fontFamily){
     activecanvas.getActiveObject().set("fontFamily", fontFamily);
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
 }
 
 //function to change font size
 function changeFontSize(fontSize){
     activecanvas.getActiveObject().set("fontSize", fontSize);
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
 }
 
 //function to change font color
 function changeFontColor(fontColor){
     activecanvas.getActiveObject().set("fill", fontColor);
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
 }
 // change border color  
 function changeBorderColor(borderColor){
     activecanvas.getActiveObject().set("stroke", borderColor);
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
 }
 
 function changeShadowColor(shadowColor) {
@@ -119,6 +197,9 @@ function changeShadowColor(shadowColor) {
         activeObject.setShadow(shadow);
         activecanvas.renderAll();
     }
+
+    // save canvas state
+    saveCanvasState();
 }
 
 
@@ -127,18 +208,28 @@ function changeShadowColor(shadowColor) {
 function changeFontStyle(fontStyle){
     activecanvas.getActiveObject().set("fontStyle", fontStyle);
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
 }
 
 // change border color  
 function changeBorderColor(borderColor){
     activecanvas.getActiveObject().set("stroke", borderColor);
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
+
 }
 
 //function to change text leter space
 function changeTextLetterSpace(textLetterSpace){
     activecanvas.getActiveObject().set("charSpacing", textLetterSpace);
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
 }
 
 // function to change text to bold and unbold
@@ -146,6 +237,9 @@ function changeBold(){
     var isBold = activecanvas.getActiveObject().get("fontWeight") == "bold";
     activecanvas.getActiveObject().set("fontWeight", isBold ? "normal" : "bold");
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
 }
 
 // function to change text to italic and unitalic
@@ -153,12 +247,18 @@ function changeItalic(){
     var isItalic = activecanvas.getActiveObject().get("fontStyle") == "italic";
     activecanvas.getActiveObject().set("fontStyle", isItalic ? "normal" : "italic");
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
 }
 // change changeUnderline
 function changeUnderline(){
     var isUnderline = activecanvas.getActiveObject().get("underline") == "underline";
     activecanvas.getActiveObject().set("underline", isUnderline ? "" : "underline");
     activecanvas.renderAll();
+
+    // save canvas state
+    saveCanvasState();
 }
 // function to change text stroke width with 
 function changeStrokeWidth(strokeWidth){
@@ -166,6 +266,8 @@ function changeStrokeWidth(strokeWidth){
     activecanvas.getActiveObject().set("strokeWidth", strokeWidth);
     activecanvas.renderAll();
     
+    // save canvas state
+    saveCanvasState();
 }
 
 
@@ -177,6 +279,9 @@ function addImage(imageURL){
         scaleImageToFitCanvas(img, activecanvas);
         activecanvas.add(img);
     });
+
+    // save canvas state
+    saveCanvasState();
 }
 
 function scaleImageToFitCanvas(image, canvas) {
@@ -255,7 +360,14 @@ function bringForward() {
     if (activeObject) {
         
         activecanvas.bringForward(activeObject);
+        // unselect object
+        activecanvas.discardActiveObject();
+        
+        // save canvas state
+        saveCanvasState();
     }
+
+    
 }
 
 //send backward
@@ -263,6 +375,12 @@ function sendBackwards() {
     var activeObject = activecanvas.getActiveObject();
     if (activeObject) {
         activecanvas.sendBackwards(activeObject);
+
+        // unselect object
+        activecanvas.discardActiveObject();
+
+        // save canvas state
+        saveCanvasState();
     }
 }
 
@@ -276,6 +394,14 @@ document.addEventListener("keydown", function(e) {
         paste();
     } else if (e.ctrlKey && keyCode === 88) {
         cut();
+    }else if (e.ctrlKey && keyCode === 90) {
+        undo();
+    }else if (e.ctrlKey && keyCode === 89) {
+        redo();
+    }else if (e.ctrlKey && keyCode === 38) {
+        bringForward();
+    }else if (e.ctrlKey && keyCode === 40) {
+        sendBackwards();
     }
 }, false);
 
@@ -369,14 +495,6 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
     front_design_price.innerHTML = frontDesignHeightByInches;
     // set back_design_price to backDesignHeightByInches
     back_design_price.innerHTML = backDesignHeightByInches;
-
-
-
-
-
-
-
-
     // get all  SizeItem 
     var SizeItem = document.querySelectorAll(".SizeItem");
     // loop through all SizeItem
@@ -428,9 +546,7 @@ function calculateTotalArea(objects) {
     });
     return totalArea;
 }
-
 var hidden_total_price =0;
-
 // function take frontdesign and backdesign height and quantity and call ajax to get price
 function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) {
     
@@ -482,7 +598,6 @@ function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) 
         console.log(error);
     });
 }
-
 
 // function apply_copoun 
 function apply_copoun() {
@@ -541,11 +656,7 @@ function apply_copoun() {
     });
 
 }
-
-
-
 //------------------------
-
 // add to card
 document.getElementById("addToCard").addEventListener("click", function() {
     // get product id from input with id "product_id"
@@ -701,7 +812,27 @@ function saveDesign() {
     .then(function (response) {
         // alert to the user that design saved
         swal.fire("Design saved");
-        console.log(response)
+        // get product_designs_data
+        var product_designs = response.data.product_design.product_design;
+        // get dev by id load-design
+        var loadDesign = document.getElementById("load-design");
+        // append product_designs to loadDesign
+        // src = frontimageData
+        loadDesign.innerHTML += `
+        <div class="p-3">
+       <img
+        src="${frontimageData}"
+         alt=""
+         width="100px"
+         height="100px"
+         onclick="loaddesign(${product_designs.frontcanvas}, ${product_designs.backcanvas})"
+         id="loaddesign-${product_designs.id}"
+         class=""
+         />
+         </div>
+        
+        `;
+
     })
     .catch(function (error) {
 
@@ -725,83 +856,6 @@ function loaddesign(front, back) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-// Function to save the current state of the canvas
-function saveState() {
-    undoStack.push(JSON.stringify(activecanvas));
-    redoStack = []; // If we add something after undoing, we cannot redo anymore
-}
-
-// Function to undo the last action
-function undo() {
-    if (undoStack.length > 0) {
-        var lastAction = undoStack.pop();
-        redoStack.push(lastAction);
-
-        switch (lastAction.action) {
-            case 'add':
-                // Remove the object that was added
-                var object = activecanvas.getItemById(lastAction.object.id); // Implement getItemById
-                activecanvas.remove(object);
-                break;
-            case 'modify':
-                // Restore the object to its previous state
-                var object = activecanvas.getItemById(lastAction.object.id); // Implement getItemById
-                object.setOptions(lastAction.object);
-                break;
-            case 'remove':
-                // Add the object back to the canvas
-                activecanvas.add(new fabric[lastAction.object.type](lastAction.object));
-                break;
-            
-        }
-
-        activecanvas.renderAll();
-    }
-}
-
-// Function to redo the last undone action
-function redo() {
-    console.log("redo");
-    if (redoStack.length > 0) {
-        var lastAction = redoStack.pop();
-        undoStack.push(lastAction); 
-        activecanvas.loadFromJSON(lastAction, function () {
-            activecanvas.renderAll();
-        });
-        
-    }
-}
-
-
-// on add canvas call saveState function
-canvas.on('object:added', function(e) {
-    saveState('add', e.target);
-});
-
-// on remove canvas call saveState function
-canvas.on('object:removed', function(e) {
-    saveState('remove', e.target);
-});
-
-// on modify canvas call saveState function
-canvas.on('object:modified', function(e) {
-    saveState('modify', e.target);
-});
-
-
-
-// You can then call undo() and redo() functions as needed, for example, when a button is clicked.
-// For example, if you have undoButton and redoButton elements:
 document.getElementById('undoButton').addEventListener('click', undo());
 document.getElementById('redoButton').addEventListener('click', redo());
 
