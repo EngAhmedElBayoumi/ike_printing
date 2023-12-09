@@ -172,9 +172,6 @@
         </div>
       </div>
 
-      <button id="downloadFrontButton">Download Front T-Shirt</button>
-      <button id="downloadBackButton">Download Back T-Shirt</button>
-
 
       <!-- ======================= Top Breadcrubms ======================== -->
 
@@ -3316,49 +3313,7 @@
   });
 </script>
 
-<script>
-  // Function to handle the download process for the front t-shirt image
-  function downloadFrontTShirt() {
-    downloadTShirt("tshirt-canvas-front", "tshirt-backgroundpicture", "front");
-  }
 
-  // Function to handle the download process for the back t-shirt image
-  function downloadBackTShirt() {
-    downloadTShirt("tshirt-canvas-back", "tshirt-backgroundpicture-back", "back");
-  }
-
-  // Common function to handle the download process
-  function downloadTShirt(canvasId, backgroundImageId, fileNameSuffix) {
-    
-    // Get the background image and canvas element
-    var backgroundImage = document.getElementById(backgroundImageId);
-    var canvas = document.getElementById(canvasId);
-
-    // Create a new canvas to combine the images
-    var combinedCanvas = document.createElement("canvas");
-    combinedCanvas.width = canvas.width;
-    combinedCanvas.height = canvas.height;
-    var context = combinedCanvas.getContext("2d");
-
-    // Draw the t-shirt background image
-    context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-
-    // Draw the canvas design on top
-    context.drawImage(canvas, 0, 0);
-
-    // Create a download link for the combined image
-    var downloadLink = document.createElement("a");
-    downloadLink.href = combinedCanvas.toDataURL("image/png");
-    downloadLink.download = "tshirt_design_" + fileNameSuffix + ".png";
-
-    // Trigger the click event to initiate the download
-    downloadLink.click();
-  }
-
-  // Attach the download functions to the respective buttons
-  document.getElementById("downloadFrontButton").addEventListener("click", downloadFrontTShirt);
-  document.getElementById("downloadBackButton").addEventListener("click", downloadBackTShirt);
-</script>
 
 
 
