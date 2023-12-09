@@ -81,7 +81,13 @@
                       <i class="lni lni-user"></i>
                     </a>
                   </li>
+                  
                   {% endif %}
+                  <li>
+                    <a href="{% url 'product:card' %}" style="color: #fff;" >
+                      <i class="lni lni-shopping-basket"></i><span class="dn-counter theme-bg">1</span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -130,7 +136,7 @@
                 </li>
                 <li>
 									<a href="{% url 'product:card' %}" >
-										<i class="lni lni-shopping-basket"></i><span class="dn-counter theme-bg"></span>
+										<i class="lni lni-shopping-basket"></i><span class="dn-counter theme-bg">1</span>
 									</a>
 								</li>
 
@@ -183,6 +189,77 @@
             
             <div class="col-lg-5">
               <div class="AllFornt_BackImages">
+                <div
+                  class="nav product-tab-info justify-content-center"
+                  role="tablist"
+                >
+                  <button
+                    class="product-tab-info-link active"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-description"
+                    type="button"
+                    role="tab"
+                  >
+                  <i class="bx bx-layer"></i>
+                    Front
+                  </button>
+                  <button
+                    class="product-tab-info-link"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-additional-information"
+                    type="button"
+                    role="tab"
+                  >
+                  <i class="bx bx-layer"></i>
+                    Back
+                  </button>
+                </div>
+
+                
+                <div
+                  class="nav product-tab-info CustomButonsDesignnnn"
+                  role="tablist"
+                >
+                <button
+                type="button"
+                class="product-tab-info-link "
+                onclick="bringForward()"
+              >
+                <i class="bx bx-upvote"></i>
+                Layer Up
+              </button>
+              <button
+                type="button"
+                class="product-tab-info-link "
+                onclick="sendBackwards()"
+              >
+                <i class="bx bx-downvote"></i> 
+                Layer Down
+              </button>
+              
+              <button
+                type="button"
+                class="product-tab-info-link "
+                onclick="undo()"
+              >
+                <i class="bx bx-undo"></i> 
+                Undo
+              </button>
+              <button
+                type="button"
+                class="product-tab-info-link "
+                onclick="redo()"
+              >
+                <i class="bx bx-redo"></i>
+                Redo
+              </button>
+
+
+
+
+
+                </div>
+
                 <div class="tab-content">
                   <div
                     class="tab-pane fade show active"
@@ -249,29 +326,7 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  class="nav product-tab-info justify-content-center"
-                  role="tablist"
-                >
-                  <button
-                    class="product-tab-info-link active mr-5"
-                    data-bs-toggle="tab"
-                    data-bs-target="#nav-description"
-                    type="button"
-                    role="tab"
-                  >
-                    Front
-                  </button>
-                  <button
-                    class="product-tab-info-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#nav-additional-information"
-                    type="button"
-                    role="tab"
-                  >
-                    Back
-                  </button>
-                </div>
+                
               </div>
             </div>
             <div class="col-lg-5 col-sm-12">
@@ -374,7 +429,7 @@
                   </div>
 
                   <div class="TapsContentBody">
-                    <div
+                    <!-- <div
                       class="btn-group-vertical ForwardReforwrd"
                       role="group"
                       aria-label="Basic example"
@@ -409,6 +464,7 @@
                       </button>
                      
                     </div>
+                    -->
                     <div class="tab-content pt-3 text-muted">
                       <div class="tab-pane active" id="Product" role="tabpanel">
                         <div class="BodyTaps">
@@ -613,7 +669,7 @@
                                         <div class="row" id="product_sizes">
                                           {% for size in products.0.sizes.all %}
                                           <div
-                                            class="col-lg-4 col-md-4 col-sm-6 col-xs-6"
+                                            class="col-lg-2 col-md-2 col-sm-6 col-xs-6"
                                           >
                                             <div
                                               class="SizeItem"
@@ -917,7 +973,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="accordion-item">
+                              <!-- <div class="accordion-item">
                                 <h2
                                   class="accordion-header"
                                   id="flush-heading_AddDesign_4"
@@ -997,6 +1053,7 @@
                                   </div>
                                 </div>
                               </div>
+                              -->
                               <div class="accordion-item">
                                 <h2
                                   class="accordion-header"
@@ -1447,9 +1504,9 @@
                                   aria-labelledby="flush-heading_Save_Load_3"
                                   data-bs-parent="#accordionSave_Load_3"
                                 >
-                                  <div class="accordion-body text-muted d-flex" id="load-design">
+                                  <div class="accordion-body" id="load-design">
                                     {% for design in product_designs %}
-                                    <div class="p-3">
+                                    <div class=" loadDesignItem">
                                       <img
                                         src="{{ design.frontimage }}"
                                         alt=""
@@ -1770,7 +1827,7 @@
                           </div>
                           <div class="AddTextBodyTap AddDesignBodyTap">
                             
-                            <div class="row">
+                            <div class="row d-none">
                               <div class="col-8">
                                 <h3>front design Height</h3>
                               </div>
@@ -1786,7 +1843,7 @@
                                 <p class="lead" id="front_price"></p>
                               </div>
                             </div>
-                            <div class="row">
+                            <div class="row d-none">
                               <div class="col-8">
                                 <h3>Back design Height</h3>
                               </div>
@@ -1828,13 +1885,13 @@
                               </div>
                             </div>
                             <div class="row" id="total_price_dev">
-                              <div class="col-8">
-                                <input type="text" placeholder="add copoun" class="form-control" id="copoun_code">
+                              <div class="col-7">
+                                <input type="text" placeholder="add Copoun" class="form-control" id="copoun_code">
                               </div>
-                              <div class="col-4">
+                              <div class="col-5">
                                 <div class="">
                                   <button id="apply_copoun" onclick="apply_copoun()"  class="btn stretched-link borders"
-                                    >Apply Copoun</button>
+                                    >Apply</button>
                                 </div>
                               </div>
                             </div>
@@ -3177,7 +3234,7 @@
             // loop through the sizes array and print the sizes
             for (const size of sizesData) {
               single_size = `
-                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
                                 <div class="SizeItem"
                                 data-size-symbol="${size.fields.simbol}"
                                 
