@@ -630,6 +630,9 @@ def card(request):
             canvasBackgroundColor=request.POST.get('canvasBackgroundColor')
             #get size array
             size_array = request.POST.get('size')
+            #get front_tshirt_image , back_tshirt_image
+            front_tshirt_image = request.POST.get('front_tshirt_image')
+            back_tshirt_image = request.POST.get('back_tshirt_image')
             
             #check if canvasBackgroundColor is null
             if canvasBackgroundColor == "":
@@ -653,7 +656,7 @@ def card(request):
             #get user
             user=request.user
             #create cart product
-            cart_product = CartProduct.objects.create( product=product, quantity=quantity, front_design_price=front_design_price, back_design_price=back_design_price, quantity_price=quantity_price, total_price=total_price, frontcanvas=frontcanvas, backcanvas=backcanvas,product_color=canvasBackgroundColor)
+            cart_product = CartProduct.objects.create( product=product, quantity=quantity, front_design_price=front_design_price, back_design_price=back_design_price, quantity_price=quantity_price, total_price=total_price, frontcanvas=frontcanvas, backcanvas=backcanvas,product_color=canvasBackgroundColor,front_tshirt_image=front_tshirt_image,back_tshirt_image=back_tshirt_image)
             #set user
             cart_product.user.set([user])
             #set sizes

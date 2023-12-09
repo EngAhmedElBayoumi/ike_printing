@@ -142,6 +142,9 @@ class CartProduct(models.Model):
     backcanvas = models.TextField()
     product_color = models.CharField(max_length=50)
     sizes = models.ManyToManyField(CardSize)
+    front_tshirt_image = models.ImageField(upload_to='product/cartproduct_image',blank=True,null=True)
+    back_tshirt_image = models.ImageField(upload_to='product/cartproduct_image',blank=True,null=True)
+   
     def __str__(self):
         return self.product.name
     

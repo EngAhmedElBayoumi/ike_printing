@@ -656,6 +656,31 @@ function apply_copoun() {
     });
 
 }
+
+// Common function to handle the download process
+function getTShirtImage(canvasId, backgroundImageId) {
+    // Get the background image and canvas element
+    var backgroundImage = document.getElementById(backgroundImageId);
+    var canvas = document.getElementById(canvasId);
+
+    // Create a new canvas to combine the images
+    var combinedCanvas = document.createElement("canvas");
+    combinedCanvas.width = canvas.width;
+    combinedCanvas.height = canvas.height;
+    var context = combinedCanvas.getContext("2d");
+
+    // Draw the t-shirt background image
+    context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+
+    // Draw the canvas design on top
+    context.drawImage(canvas, 0, 0);
+
+    // Return the combined image data
+    return combinedCanvas.toDataURL("image/png");
+}
+
+
+
 //------------------------
 // add to card
 document.getElementById("addToCard").addEventListener("click", function() {
@@ -707,6 +732,10 @@ document.getElementById("addToCard").addEventListener("click", function() {
         format: 'jpeg',
         quality: 1
     });
+
+    var front_tshirt_image = getTShirtImage("tshirt-canvas-front", "tshirt-backgroundpicture"); 
+    var back_tshirt_image = getTShirtImage("tshirt-canvas-back", "tshirt-backgroundpicture-back");
+
     // get csrf_token from form with id has input  "csrf_token"
     var crftoken = document.getElementById("crftokenform").getElementsByTagName("input")[0].value;
     // confirm to the user to add to card
@@ -723,6 +752,9 @@ document.getElementById("addToCard").addEventListener("click", function() {
         // return
         return;
     }
+
+
+
 
     console.log("add to card=> " , quantity);
     // create form data
@@ -742,6 +774,9 @@ document.getElementById("addToCard").addEventListener("click", function() {
     formData.append('back_design', frontimageData);
     // append size
     formData.append('size', JSON.stringify(size));
+    // append front_tshirt_image , back_tshirt_image
+    formData.append('front_tshirt_image', front_tshirt_image);
+    formData.append('back_tshirt_image', back_tshirt_image);
 
     // axios call to add to card
     axios.post(`${projecturl}product/add_to_card/`, formData, {

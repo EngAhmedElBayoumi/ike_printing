@@ -188,11 +188,11 @@ class CartProductAdmin(admin.ModelAdmin):
     def display_cart_product_images(self, obj):
         return format_html(
             '<div style="display: flex; align-items: center; justify-content: center;">'
-            '   <img src="{}" style="max-width: 100px; max-height: 100px;object-fit: scale-down;" />'
-            '   <img src="{}" style="max-width: 100px; max-height: 100p;object-fit: scale-down;" />'
+            '   <img src="{}" style="max-width: 100px; height: 100px;object-fit: scale-down;" />'
+            '   <img src="{}" style="max-width: 100px; height: 100px;object-fit: scale-down;" />'
             '</div>',
-            obj.product.frontimage.url,
-            obj.product.backimage.url,
+            obj.front_tshirt_image,
+            obj.back_tshirt_image,
         )
     display_cart_product_images.short_description = 'Images'
 
@@ -256,9 +256,9 @@ class OrderAdmin(ImportExportModelAdmin,admin.ModelAdmin):
         return format_html(
             '<br>'.join(
                 #front
-                f'<img src="{cart_product.product.frontimage.url}" style="max-width: 100px; max-height: 100px;object-fit: scale-down;margin-right:10px; margin-top:20px" />'
+                f'<img src="{cart_product.front_tshirt_image}" style="max-width: 100px; max-height: 100px;object-fit: scale-down;margin-right:10px; margin-top:20px" />'
                 #back
-                f'<img src="{cart_product.product.backimage.url}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-top:20px" />'
+                f'<img src="{cart_product.back_tshirt_image}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-top:20px" />'
                 for cart_product in cart_products
             )
         )
