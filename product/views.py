@@ -223,10 +223,6 @@ def save_user_image(request):
     image=request.FILES['image']
     #name = image name
     name=image.name
-    #check image name if exist 
-    if UserImage.objects.filter(name=name).exists():
-        #return error
-        return JsonResponse({"error":"image name exist"})
     #save image
     userimage=UserImage.objects.create(user=user,name=name,image=image)
     #return image url
