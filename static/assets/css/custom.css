@@ -60,7 +60,9 @@ width: 100%;
 }
 #tshirt-canvas-back{
     width: auto !important;
-        height: 100% !important;
+    height: 100% !important;
+    top: auto !important;
+    left: auto !important;
 }
 .upper-canvas {
         width: auto !important;
@@ -768,4 +770,24 @@ img{
 }
 .stretched-link:after{
     display: none;
+}
+
+
+@media(max-width:768px){
+    .upper-canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+    #tshirt-canvas-front {
+        width: 100% !important;
+        height: auto !important;
+        top: auto !important;
+        left: auto !important;
+    }
+    #tshirt-canvas-back {
+        width: 100% !important;
+        height: auto !important;
+        top: auto !important;
+        left: auto !important;
+    }
 }
