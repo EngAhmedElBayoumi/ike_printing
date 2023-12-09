@@ -270,18 +270,22 @@ function changeStrokeWidth(strokeWidth){
     saveCanvasState();
 }
 
-
-
-//add image function by src
-function addImage(imageURL){
+function addImage(imageURL) {
     fabric.Image.fromURL(imageURL, function (img) {
-        // get image width and height
-        scaleImageToFitCanvas(img, activecanvas);
-        activecanvas.add(img);
-    });
+        // Set image width and height to 200px
+        img.scaleToWidth(600);
+        img.scaleToHeight(200);
 
-    // save canvas state
-    saveCanvasState();
+        // Adjust top and left to center the image vertically
+        img.set({
+            top: (activecanvas.height - img.height * img.scaleY) / 2,
+            left: (activecanvas.width - img.width * img.scaleX) / 2
+        });
+        // Add image to canvas
+        activecanvas.add(img);
+        // Save canvas state
+        saveCanvasState();
+    });
 }
 
 function scaleImageToFitCanvas(image, canvas) {
