@@ -6494,7 +6494,7 @@ margin-bottom: 20px;
     padding: 15px;
 }
     .paymentWrap .paymentBtnGroup .paymentMethod{
-        width: 85px;
+        width: 100%;
     }
     .CustomTapsDesign .CustomTapsbody .TapsHeaders ul li .nav-link{
         padding: 0;

@@ -8,7 +8,7 @@
 
                 <div class="item">
 					<div class="videoBanner">
-                        <video muted autoplay loop>
+                        <video autoplay="" loop="" muted="" playsinline="">
                             <source src="{% static 'assets/Videos/1.mp4' %}">
                         </video>
                     </div>
@@ -129,19 +129,19 @@
 								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'call_expert:call_senior_designer' %}">Call Senior Designer</a></h6></div>
 							</div>
 						</div>
-						
+						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
+							<div class="cats_side_wrap text-center mx-auto mb-3">
+								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'product:product' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/t-shirt.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
+								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'product:product' %}">All Products</a></h6></div>
+							</div>
+						</div>
 						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
 							<div class="cats_side_wrap text-center mx-auto mb-3">
 								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'product:ordaring' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/orderin.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
 								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'product:ordaring' %}">Ordring</a></h6></div>
 							</div>
 						</div>
-						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-							<div class="cats_side_wrap text-center mx-auto mb-3">
-								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'product:product' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/orderin.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
-								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'product:product' %}">All Products</a></h6></div>
-							</div>
-						</div>
+						
 	
 					</div>
 					
