@@ -29,6 +29,7 @@ class working_setting(models.Model):
     def __str__(self):
         return self.day
     
+    
 
 #reserving meeting data and time
 class meeting(models.Model):

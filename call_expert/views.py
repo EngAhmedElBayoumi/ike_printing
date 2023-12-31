@@ -10,6 +10,11 @@ from senior_dragon.models import working_setting as senior_dragon_working_settin
 from unicorn.models import working_setting as unicorn_working_setting , meeting as unicorn_meeting
 from senior_unicorn.models import working_setting as senior_unicorn_working_setting , meeting as senior_unicorn_meeting
 #import messages
+from django.contrib import messages
+#import zoom
+from zoomus import ZoomClient
+#import settings
+from django.conf import settings
 # Create your views here.
 
 
@@ -35,6 +40,32 @@ def allowed_file(file_name):
         return False
     
     
+def schedule_zoom_meeting(request):
+    API_KEY = settings.ZOOM_API_KEY
+    API_SECRET = settings.ZOOM_API_SECRET
+    api_account_id = 'HauKd7KdQkqSDQaDtQA69w'
+    
+    # Create Zoom client
+    client = ZoomClient(API_KEY, API_SECRET)
+    client.user.get(id=api_account_id)    
+
+    # Set up meeting details
+    meeting_info = {
+        'topic': 'Scheduled Meeting',
+        'type': 2,  # Scheduled meeting
+        'start_time': '2023-12-28T12:00:00Z',  # Replace with your desired start time
+        'duration': 30,  # Meeting duration in minutes
+    }
+
+    # Create Zoom meeting
+    response = client.meeting.create(**meeting_info)
+
+    # Extract meeting link from the response
+    meeting_link = response.get('join_url')
+
+    print('meeting link: '+meeting_link)
+    # Return meeting link or handle it as needed
+    return meeting_link
 
 
 def call_expert(request):
@@ -99,6 +130,7 @@ def call_senior_designer(request):
                 end_time=totime
             )
             messages.success(request, "Meeting scheduled with Senior Unicorn.")
+            
         else:
             # Check availability in senior dragon meetings
             dragon_conflict = senior_dragon_meeting.objects.filter(meeting_date=date, start_time__lte=totime, end_time__gte=fromtime).exists()
@@ -143,7 +175,6 @@ def call_designer(request):
             price = dragon_price.meeting_price
         else:
             price = 6
-    
     host = request.get_host() # Host 
     paypal_checkout = {
             'business' : settings.PAYPAL_RECEIVER, 

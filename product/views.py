@@ -22,7 +22,7 @@ from django.urls import reverse
 
 def product(request):
     #get all products
-    products = Product.objects.all()
+    products = Product.objects.filter(is_active=True)
     #get all matireals
     matireals = Matireal.objects.all()
     #add artubute number to matireals to use it in template to display how many products have this matireal
@@ -34,15 +34,18 @@ def product(request):
     sizes = Size.objects.all()
     #add artubute number to sizes to use it in template to display how many products have this size
     for size in sizes:
-        size.number = Product.objects.filter(sizes=size).count()
+        size.number = Product.objects.filter(sizes=size,is_active=True).count()
     #get all categories
     categories = Category.objects.all()
     #add artubute number to categories to use it in template to display how many products have this category
     for category in categories:
-        category.number = Product.objects.filter(category=category).count()
+        category.number = Product.objects.filter(category=category,is_active=True).count()
         
     #get size depend on simbol without duplicate
     sizes = Size.objects.values('simbol').distinct()
+    
+    #get color depend on code without duplicate
+    colors = Color.objects.values('code').distinct()
     
     context={
         'products':products,
@@ -71,8 +74,8 @@ def self_customization(request):
     products = []
     for category in categories:
         #check if there are product has this category
-        if Product.objects.filter(category=category).exists():
-            products.append(Product.objects.filter(category=category).first())
+        if Product.objects.filter(category=category,is_active=True).exists():
+            products.append(Product.objects.filter(category=category,is_active=True).first())
 
         
     products_data = serialize('json', [p for p in products if p is not None]) 
@@ -82,7 +85,7 @@ def self_customization(request):
     #get related products that have the same category get first 10 products
     #check if products is not empty
     if products and products[0] is not None:
-        related_products = Product.objects.filter(category=products[0].category).exclude(id=products[0].id).distinct()[:10]
+        related_products = Product.objects.filter(category=products[0].category,is_active=True).exclude(id=products[0].id).distinct()[:10]
     else:
         related_products = []
     
@@ -137,7 +140,7 @@ def getproductsbycategory(request, category_name):
     # Get category by name
     category = Category.objects.get(name=category_name)
     # Get products by category
-    products = Product.objects.filter(category=category)
+    products = Product.objects.filter(category=category,is_active=True)
     # Construct a list of product data to return as JSON
     product_data = []
     for product in products:
@@ -157,7 +160,7 @@ def getproductsbysize(request,size_name):
     # Get size by name
     size = Size.objects.get(name=size_name)
     # Get products by size
-    products = Product.objects.filter(sizes=size)
+    products = Product.objects.filter(sizes=size,is_active=True)
     # Construct a list of product data to return as JSON
     product_data = []
     for product in products:
@@ -177,7 +180,7 @@ def getproductsbymatireal(request,matireal_name):
     # Get matireal by name
     matireal = Matireal.objects.get(name=matireal_name)
     # Get products by matireal
-    products = Product.objects.filter(matireal=matireal)
+    products = Product.objects.filter(matireal=matireal,is_active=True)
     # Construct a list of product data to return as JSON
     product_data = []
     for product in products:
@@ -195,9 +198,9 @@ def getproductsbymatireal(request,matireal_name):
 ##getproductsbycolor name
 def getproductsbycolor(request,color_name):
     # Get color by name
-    color = Color.objects.get(name=color_name)
+    color = Color.objects.get(code=color_name)
     # Get products by color
-    products = Product.objects.filter(colors=color)
+    products = Product.objects.filter(colors=color,is_active=True)
     # Construct a list of product data to return as JSON
     product_data = []
     for product in products:

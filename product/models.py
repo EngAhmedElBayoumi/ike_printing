@@ -54,6 +54,8 @@ class Product(models.Model):
     colors = models.ManyToManyField(Color)
     sizes = models.ManyToManyField(Size)
     matireal=models.ManyToManyField(Matireal)
+    #deactive product
+    is_active = models.BooleanField(default=True)
     def __str__(self):
         return self.name
     

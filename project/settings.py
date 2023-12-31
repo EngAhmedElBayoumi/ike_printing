@@ -209,7 +209,6 @@ JAZZMIN_SETTINGS = {
     "show_ui_builder": True,
     "changeform_format": "horizontal_tabs",
     
-    
     #sidebar menu icon for product app
     "icons": {
         "product.Products": "fas fa-tshirt",
@@ -225,3 +224,8 @@ PAYPAL_TEST=False
 
 #500MB
 DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000
+
+
+#zoom api key
+ZOOM_API_KEY = 'cR46yQDR_6Q0SFzGqxAzw'
+ZOOM_API_SECRET = 'yRiJ2wF11XJzAatKebMluY65cm4B5XsQ'

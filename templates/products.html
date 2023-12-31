@@ -146,8 +146,8 @@
 														<div class="text-left">
                                                             {% for color in colors %}
 															<div class="form-check form-option form-check-inline mb-1">
-																<input class="form-check-input" type="radio" name="colora8" id="{{color.name}}" onchange="getproductsbycolor(this)" value="{{color.name}}">
-																<label class="form-option-label rounded-circle" for="{{color.name}}"><span class="form-option-color rounded-circle" style="background-color:{{color.code}}"></span></label>
+																<input class="form-check-input" type="radio" name="colora8" id="{{color.code}}" onchange="getproductsbycolor(this)" value="{{color.name}}">
+																<label class="form-option-label rounded-circle" for="{{color.code}}"><span class="form-option-color rounded-circle" style="background-color:{{color.code}}"></span></label>
 															</div>
                                                             {% endfor %}
 															
@@ -311,7 +311,8 @@
               
                 function getproductsbycolor(checked) {
                     if (checked.checked){
-                       var category=checked.value
+                       var category=checked.id
+                       console.log(category)
                        var link="{% url 'product:getproductsbycolor' 'placeholder' %}"
                         link=link.replace('placeholder',category)
                         $.ajax({
