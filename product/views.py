@@ -40,6 +40,9 @@ def product(request):
     #add artubute number to categories to use it in template to display how many products have this category
     for category in categories:
         category.number = Product.objects.filter(category=category).count()
+        
+    #get size depend on simbol without duplicate
+    sizes = Size.objects.values('simbol').distinct()
     
     context={
         'products':products,
