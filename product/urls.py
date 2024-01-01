@@ -39,4 +39,6 @@ urlpatterns = [
     #payment failed
     path("payment_failed/",views.payment_failed,name="payment_failed"),
     
+    path("order_page/",views.order_page,name="order_page"),
+    
 ]

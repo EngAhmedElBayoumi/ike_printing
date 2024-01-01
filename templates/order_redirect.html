@@ -1,0 +1,31 @@
+<!---redirct page to redirct to paypal by paypal django form-->
+<html>
+
+<head>
+    <title>PayPal redirct page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <div style="display:block;width:100%;height:100%">
+    <div style="display:flex; align-items:center;justify-content:center; margin:40vh">
+    <h1> Redirct to PayPal page .....</h1>
+        <div style="display:none">
+            {{paypal.render}}
+        </div>
+    </div>
+    </div>
+
+
+<script>
+    // document on load click on submit button
+
+    window.onload = function() {
+        // get the form element by name submit and click on it
+        document.getElementsByName("submit")[0].click();
+    };
+</script>
+
+</body>
+</html>

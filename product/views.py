@@ -557,27 +557,77 @@ def apply_copoun(request):
 def order(request):
     # Get product card
     product_card = CartProduct.objects.filter(user=request.user)
-    # Calculate total price
-    total_price = sum(product.total_price for product in product_card)
-    #total price + tax 8.25%
-    total_price=total_price+(total_price*0.0825)
+    #get total price from session
+    total_price = request.session['total_price']    
+
+    #put all data in session and return redirct page
+    request.session['product_card'] = list(product_card.values())
+    return redirect('product:order_page')
+
+    
+
+    # Return error if something went wrong
+    return JsonResponse({"error": "error"})
+ 
+def order_page(request):
+    #get product card
+    product_card = request.session['product_card']
+    #get total price
+    total_price = request.session['total_price']
+    
+    host = request.get_host() # Host 
+    paypal_checkout = {
+            'business' : settings.PAYPAL_RECEIVER, 
+            'amount' : total_price, 
+            'item_name' : 'payment for card products', 
+            'invoice' : uuid.uuid4(), 
+            'currency' : 'USD', 
+            'notify_url' : f'http://{host}{reverse("paypal-ipn")}/',
+            'return_url' : f'http://{host}{reverse("product:payment_success")}/',
+            'cancel_url' : f'http://{host}{reverse("product:payment_failed")}/',
+    }  
+    
+    paypal = PayPalPaymentsForm(initial=paypal_checkout)
+    
+    return render(request, 'order_redirect.html', {'product_card':product_card,'total_price':total_price,'paypal':paypal})
+  
+  
+#payment success
+def payment_success(request):
+    # Get product card
+    product_card = CartProduct.objects.filter(user=request.user)
+
+    # Get total price from session
+    total_price = request.session['total_price']
+
     # Use a transaction to ensure data consistency
     with transaction.atomic():
         # Create a new order
-        order = Order.objects.create(user=request.user, total_price=total_price)
+        order = Order.objects.create(user=request.user, total_price=total_price,methods_of_receiving="pickup")
+
         # Add products to the order
         order.cart_product.set(product_card)
+
         # Clear the user field in each product_card
         for product in product_card:
             product.user.remove(request.user)
-    # If the order is created successfully, return success
-    if order:
-        return JsonResponse({"success": "success"})
-    
-    # Return error if something went wrong
-    return JsonResponse({"error": "error"})
-    
 
+    #django messages
+    messages.success(request, "Your order has been placed successfully.")
+    
+    #return redirect to card
+    return redirect('product:card')
+
+
+#payment failed
+def payment_failed(request):
+    #django messages
+    messages.error(request, "Your order has been failed try again.")
+    
+    #return redirect to card
+    return redirect('product:card')
+  
+ 
 #login required
 @login_required() 
 def card(request):
@@ -593,25 +643,16 @@ def card(request):
     if subtotal == 0:
         tax = 0
         transaction_fee = 0
-    
-    
+
     total_price = subtotal + tax + transaction_fee
     #append total price to product card
     product_card.subtotal=subtotal
     product_card.tax=tax
     product_card.transaction_fee=transaction_fee
-    product_card.total_price=total_price
-    host = request.get_host() # Host 
-    paypal_checkout = {
-            'business' : settings.PAYPAL_RECEIVER, 
-            'amount' : total_price, 
-            'item_name' : 'payment for card products', 
-            'invoice' : uuid.uuid4(), 
-            'currency' : 'USD', 
-            'notify_url' : f'http://{host}{reverse("paypal-ipn")}/',
-            'return_url' : f'http://{host}{reverse("product:payment_success")}/',
-            'cancel_url' : f'http://{host}{reverse("product:payment_failed")}/',
-    }    
+    product_card.total_price=total_price  
+    #put total price in session
+    request.session['total_price'] = total_price
+    
     #if request is post 
     if request.method == "POST":
         try:
@@ -668,8 +709,7 @@ def card(request):
         except Exception as e:
             #return error
             return JsonResponse({"error": str(e)})
-    paypal = PayPalPaymentsForm(initial=paypal_checkout)
-    return render(request, 'card.html', {'product_card':product_card,'paypal':paypal})
+    return render(request, 'card.html', {'product_card':product_card})
 
 
 #remove from card
@@ -698,38 +738,3 @@ def clear_card(request):
     return JsonResponse({"success": "success"})
 
 
-
-#payment success
-def payment_success(request):
-    # Get product card
-    product_card = CartProduct.objects.filter(user=request.user)
-
-    # Calculate total price
-    total_price = sum(product.total_price for product in product_card)
-
-    # Use a transaction to ensure data consistency
-    with transaction.atomic():
-        # Create a new order
-        order = Order.objects.create(user=request.user, total_price=total_price,methods_of_receiving="pickup")
-
-        # Add products to the order
-        order.cart_product.set(product_card)
-
-        # Clear the user field in each product_card
-        for product in product_card:
-            product.user.remove(request.user)
-
-    #django messages
-    messages.success(request, "Your order has been placed successfully.")
-    
-    #return redirect to card
-    return redirect('product:card')
-
-
-#payment failed
-def payment_failed(request):
-    #django messages
-    messages.error(request, "Your order has been failed try again.")
-    
-    #return redirect to card
-    return redirect('product:card')
