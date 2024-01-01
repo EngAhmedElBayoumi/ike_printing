@@ -555,28 +555,21 @@ def apply_copoun(request):
     
 
 def order(request):
-
     # Get product card
     product_card = CartProduct.objects.filter(user=request.user)
-
     # Calculate total price
     total_price = sum(product.total_price for product in product_card)
     #total price + tax 8.25%
     total_price=total_price+(total_price*0.0825)
-
-    
     # Use a transaction to ensure data consistency
     with transaction.atomic():
         # Create a new order
         order = Order.objects.create(user=request.user, total_price=total_price)
-
         # Add products to the order
         order.cart_product.set(product_card)
-
         # Clear the user field in each product_card
         for product in product_card:
             product.user.remove(request.user)
-            
     # If the order is created successfully, return success
     if order:
         return JsonResponse({"success": "success"})
