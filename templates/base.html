@@ -76,13 +76,12 @@
 						<div class="nav-menus-wrapper" style="transition-property: none;">
 							<ul class="nav-menu">
 							     <li><a href="{% url 'home:home' %}">Home</a></li>
-								<li><a href="{% url 'product:self_customization' %}">Customization</a></li>
-								<li><a>Posters Comming Soon</a></li>
+								<li><a href="{% url 'product:self_customization' %}">customize</a></li>
 
-								<!-- <li><a href="{% url 'banner_and_posters:banner_and_posters' %}">Signs and posters</a></li> -->
+								<li><a href="{% url 'banner_and_posters:banner_and_posters' %}">Signs and posters</a></li>
 								
 								<li><a href="{% url 'call_expert:call_expert' %}">Call A Designer</a></li>
-								<li><a href="{% url 'product:ordaring' %}">Ordering</a></li>	
+								<li><a href="{% url 'product:ordaring' %}">Orders</a></li>	
 								<li><a href="{% url 'contact_us:contact_us' %}">Contact</a></li>	
 
 							</ul>
@@ -164,11 +163,13 @@
 
 									<div class="address mt-3">
 										<ul class="list-inline">
-											<li class="list-inline-item"><a href="#"><i class="lni lni-facebook-filled"></i></a></li>
-											<li class="list-inline-item"><a href="#"><i class="lni lni-twitter-filled"></i></a></li>
-											<li class="list-inline-item"><a href="#"><i class="lni lni-youtube"></i></a></li>
-											<li class="list-inline-item"><a href="#"><i class="lni lni-instagram-filled"></i></a></li>
-											<li class="list-inline-item"><a href="#"><i class="lni lni-linkedin-original"></i></a></li>
+											<li class="list-inline-item"><a href="https://www.facebook.com/furydigitalprinting"><i class="lni lni-facebook-filled"></i></a></li>
+											<!-- <li class="list-inline-item"><a href="#"><i class="lni lni-twitter-filled"></i></a></li>
+											<li class="list-inline-item"><a href="#"><i class="lni lni-youtube"></i></a></li> -->
+											<li class="list-inline-item">
+												<a href="https://www.instagram.com/fury_dgp/"><i class="lni lni-instagram-filled"></i></a>
+											  </li>
+											<!-- <li class="list-inline-item"><a href="#"><i class="lni lni-linkedin-original"></i></a></li> -->
 										</ul>
 									</div>
 								</div>
@@ -179,10 +180,10 @@
 								  <h4 class="widget_title">Site Map</h4>
 								  <ul class="footer-menu">
 									<li><a href="{% url 'home:home' %}">Home</a></li>
-									<li><a href="{% url 'product:self_customization' %}">Self Custmization</a></li>
-									<li><a >Poster Comming Soon</a></li>
+									<li><a href="{% url 'product:self_customization' %}">Customize</a></li>
+									<li><a href="{% url 'banner_and_posters:banner_and_posters' %}">Signs and posters page</a></li>
 									<li><a href="{% url 'call_expert:call_expert' %}">Call Design</a></li>
-									<li><a href="{% url 'product:ordaring' %}">Ordering</a></li>
+									<li><a href="{% url 'product:ordaring' %}">Orders</a></li>
 								  </ul>
 								</div>
 							  </div>
