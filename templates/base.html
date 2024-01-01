@@ -7,31 +7,23 @@
 		<meta charset="utf-8" />
 		<meta name="author" content="Themezhub" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		
-        <title>IKE Print</title>
-		 
+        <title>Fury Print</title>		 
         <!-- Custom CSS -->
         <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet">
-		
         {% block style %}
 
         {% endblock %}
-
-
     </head>
 	
     <body style="height:100%">
-	
-			 <!-- ============================================================== -->
+		<!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
 		<div class="preloader"></div>
-		
         <!-- ============================================================== -->
         <!-- Main wrapper - style you can find in pages.scss -->
         <!-- ============================================================== -->
         <div id="main-wrapper">
-		
             <!-- ============================================================== -->
             <!-- Top header  -->
             <!-- ============================================================== -->
@@ -50,7 +42,15 @@
 								{% if user.is_authenticated %}
                                 <li class="liProfillelee">
                                     <a class="ProfileLinkHeader">
-                                        <img class="UserProfileImages" src="{% static 'assets/img/team-1.jpg' %}">
+                                        {% if user.profile.image.url and user.profile.image.url != "/media/False"  %}
+										<img class="UserProfileImages" src="{{ user.profile.image.url }}">
+										{% else %}
+										<!--user icon-->
+										<i class="lni lni-user" style="color:rgb(182 144 76)"></i>
+										{{user.first_name }}
+										{{user.last_name }}
+										{% endif %}
+										{% comment %} first name for user {% endcomment %}
                                     </a>
                                     <ul class="nav-dropdown nav-submenu">
                                         <li><a href="{% url 'accounts:profile' %}">My Profile</a></li>
@@ -61,13 +61,13 @@
 
 								<li>
 									<a href="{% url 'accounts:login' %}" >
-										<i class="lni lni-user"></i>
+										<i class="lni lni-user text-white"></i>
 									</a>
 								</li>
 								{% endif %}
 								<li>
 									<a href="{% url 'product:card' %}" style="color: #fff;" >
-										<i class="lni lni-shopping-basket"></i><span class="dn-counter theme-bg">1</span>
+										<i class="lni lni-shopping-basket"></i><span class="dn-counter theme-bg"></span>
 									</a>
 								</li>
 								</ul>
@@ -118,7 +118,7 @@
 								{% else %}
 								<li>
 									<a href="{% url 'accounts:login' %}" >
-										<i class="lni lni-user"></i>
+										<i class="lni lni-user text-white"></i>
 									</a>
 								</li>
 								{% endif %}

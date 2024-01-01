@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 
 #from .models import Product , matireal , category 
-from .models import Product , Matireal , Category , Color , Size , ProductDesign , UserImage , ClipArt , FavoriteProduct ,CartProduct, Order
+from .models import Product , Matireal , Category , Color , Size , ProductDesign , UserImage , ClipArt , FavoriteProduct ,CartProduct, Order,DesignImage
 #import django import export
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields
@@ -472,7 +472,7 @@ admin.site.register(ProductDesign,ProductDesignAdmin)
 admin.site.register(UserImage,UserImageAdmin)
 admin.site.register(CartProduct,CartProductAdmin)
 
-
+admin.site.register(DesignImage)
 
 
 

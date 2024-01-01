@@ -1,6 +1,7 @@
 from django.shortcuts import render
 #get product , Matireal , color , size , category model
 from .models import Product , Matireal , Color , Size , Category ,ClipArt ,UserImage ,ProductDesign ,FavoriteProduct ,CartProduct , CardSize , Order
+from .models import DesignImage
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -118,6 +119,52 @@ def self_customization(request):
             products.append(Product.objects.filter(category=category,is_active=True).first())
 
         
+    products_data = serialize('json', [p for p in products if p is not None]) 
+    size_data = serialize('json', Size.objects.all())    
+    
+       
+    #get related products that have the same category get first 10 products
+    #check if products is not empty
+    if products and products[0] is not None:
+        related_products = Product.objects.filter(category=products[0].category,is_active=True).exclude(id=products[0].id).distinct()[:10]
+    else:
+        related_products = []
+    
+    
+    context={
+        'clip_arts':clip_arts,
+        'user_images':user_images,
+        'products':products,
+        'product_designs':product_designs,
+        'products_json': products_data,
+        'sizes_json': size_data,
+        'related_products': related_products,
+    }
+    
+    return render(request, 'custom.html', context)
+
+def self_customization_product(request,id):
+    #get all clip arts
+    clip_arts = ClipArt.objects.all()
+    #get all user images if user is authenticated
+    if request.user.is_authenticated:
+        user_images = UserImage.objects.filter(user=request.user)
+        product_designs = ProductDesign.objects.filter(user=request.user)
+    else:
+        user_images = []
+        product_designs=[]
+    #get 2 products for each category
+    categories = Category.objects.all()
+    products = []
+    #get product by id
+    product = Product.objects.get(id=id)
+    #append product to products
+    products.append(product)
+    for category in categories:
+        #check if there are product has this category
+        if Product.objects.filter(category=category,is_active=True).exists():
+            products.append(Product.objects.filter(category=category,is_active=True).first())
+
     products_data = serialize('json', [p for p in products if p is not None]) 
     size_data = serialize('json', Size.objects.all())    
     
@@ -675,7 +722,18 @@ def payment_failed(request):
     
     #return redirect to card
     return redirect('product:card')
-  
+ 
+ 
+def save_design_images(images_data):
+    design_images = []
+    
+    for image_data in images_data:
+        design_image = DesignImage.save_image(image_data)
+        if design_image:
+            design_images.append(design_image)
+
+    return design_images
+ 
  
 #login required
 @login_required() 
@@ -747,7 +805,12 @@ def card(request):
             #set user
             cart_product.user.set([user])
             #set sizes
-            cart_product.sizes.set(sizes)
+            cart_product.sizes.set(sizes)  
+            #save design images
+            design_images = save_design_images(request.POST.getlist('design_images[]'))
+            #set design images
+            cart_product.design_images.set(design_images)
+            
             #save cart product
             cart_product.save()
             

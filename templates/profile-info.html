@@ -108,23 +108,18 @@
 											<input type="text" class="form-control" name="address" value="{{ user.profile.address }}" />
 										</div>
 									</div>
+									<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+										<div class="form-group">
+											<label class=" text-dark ft-medium">address line 2 </label>
+											<input type="text" class="form-control" name="address_line2" value="{{ user.profile.address_line2 }}" />
+										</div>
+									</div>
                                     
                                     
                                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
 										<div class="form-group">
-											<label class=" text-dark ft-medium">Country*</label>
-											<select class="form-control" name="country" >
-                                                <option>Select Country</option>
-                                                <option selected value="{{profile.country}}" >{{profile.get_country_display}}</option>
-												{% for country_code,country_name in country_choices %}
-												{% comment %} check if country = profile.country not display it  {% endcomment %}
-												{% if country_code != profile.country %}
-												<option value="{{country_code}}">{{country_name}}</option>
-												{% endif %}
-												{% endfor %}
-
-                                                
-                                            </select>
+											<label class=" text-dark ft-medium">City*</label>
+											<input type="text" name="city" class="form-control" value="{{profile.city}}" />
 										</div>
 									</div>
                                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">

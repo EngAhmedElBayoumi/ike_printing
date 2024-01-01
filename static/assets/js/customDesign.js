@@ -769,36 +769,32 @@ document.getElementById("addToCard").addEventListener("click", function() {
 
 
     // loop on front canvas objects and back canvas objects and get all images with original size
-    // var frontObjects = canvas.getObjects();
-    // var backObjects = canvasBack.getObjects();
-    // // loop through all frontObjects
-    // frontObjects.forEach(function(object) {
-    //     // check if object type is image
-    //     if (object.type == "image") {
-    //         // get image src
-    //         var imageSrc = object.getSrc();
-    //         // put imageSrc in design_resource
-    //         design_resource.push(imageSrc);
-    //         // open new window with imageSrc
-    //         window.open(imageSrc);
-    //     }
-    // });
+    var frontObjects = canvas.getObjects();
+    var backObjects = canvasBack.getObjects();
+    // loop through all frontObjects
+    frontObjects.forEach(function(object) {
+        // check if object type is image
+        if (object.type == "image") {
+            // get image src
+            var imageSrc = object.getSrc();
+            // put imageSrc in design_resource
+            design_resource.push(imageSrc);
+            // open new window with imageSrc
+            window.open(imageSrc);
+        }
+    });
 
-    // // loop through all backObjects
-    // backObjects.forEach(function(object) {
-    //     // check if object type is image
-    //     if (object.type == "image") {
-    //         // get image src
-    //         var imageSrc = object.getSrc();
-    //         // put imageSrc in design_resource
-    //         design_resource.push(imageSrc);
-    //     }
+    // loop through all backObjects
+    backObjects.forEach(function(object) {
+        // check if object type is image
+        if (object.type == "image") {
+            // get image src
+            var imageSrc = object.getSrc();
+            // put imageSrc in design_resource
+            design_resource.push(imageSrc);
+        }
 
-    // });
-
-    // console.log("design_resource=> " , design_resource);
-
-
+    });
 
     // return;
 
@@ -825,6 +821,8 @@ document.getElementById("addToCard").addEventListener("click", function() {
     // append front_tshirt_image , back_tshirt_image
     formData.append('front_tshirt_image', front_tshirt_image);
     formData.append('back_tshirt_image', back_tshirt_image);
+    // append design_resource
+    formData.append('design_resource', JSON.stringify(design_resource));
 
     // axios call to add to card
     axios.post(`${projecturl}product/add_to_card/`, formData, {
