@@ -219,7 +219,13 @@ def edit_product_design(request,product_id):
 
 
 def ordaring(request):
-    return render(request, 'Ordaring.html', {})
+    #get user
+    if request.user.is_authenticated:
+        user=request.user
+        orders=Order.objects.filter(user=user)
+    else:
+        orders=[]
+    return render(request, 'Ordaring.html', {'orders':orders})
 
 
 

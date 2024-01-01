@@ -23,102 +23,68 @@
 			<section class="middle">
 				<div class="container">
 					<div class="row align-items-start justify-content-between">
-					
-						<div class="col-12 col-md-12 col-lg-12 col-xl-12 text-center">
-						
+						{% if user.is_authenticated %}
+						<div class="col-12 col-md-12 col-lg-8 col-xl-8 text-center">
+							{% if orders%}
+							{% for order in orders %}
 							<!-- Single Order List -->
-							<div class="ord_list_wrap mb-4 mfliud">
-								<div class="ord_list_head BG_Gold_Gradiant  d-flex align-items-center justify-content-between px-3 py-3">
+							<div class="ord_list_wrap border mb-4 mfliud">
+								<div class="ord_list_head gray d-flex align-items-center justify-content-between px-3 py-3">
 									<div class="olh_flex">
 										<p class="m-0 p-0"><span class="text-muted">Order Number</span></p>
-										<h6 class="mb-0 ft-medium">#1250004123</h6>
+										<h6 class="mb-0 ft-medium">#{{order.id}}</h6>
 									</div>	
-									
+										
 								</div>
+
+								
 								<div class="ord_list_body text-left">
-									<div class="row align-items-center justify-content-center m-0 py-4 br-bottom">
-                                        
+									<!-- First Product -->
+									{% for item in order.cart_product.all %}
+									<div class="row align-items-center  m-0 py-4 br-bottom">
 										<div class="col-xl-5 col-lg-5 col-md-5 col-12">
 											<div class="cart_single d-flex align-items-start mfliud-bot">
 												<div class="cart_selected_single_thumb">
-													<a href="#"><img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt=""></a>
+													<a href="#"><img src="{{item.product.frontimage.url}}" width="75" class="img-fluid rounded" alt=""></a>
 												</div>
 												<div class="cart_single_caption pl-3">
-													<p class="mb-0"><span class="text-muted small">Dresses</span></p>
-													<h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-													<p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-													<h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
+													<p class="mb-0"><span class="text-muted small">{{item.product.name}}</span></p>
+													<h4 class="product_title fs-sm ft-medium mb-1 lh-1">{{item.product.category}}</h4>
+													<p class="mb-2"><span class="text-dark medium">Size: {% for size in item.sizes.all %} <strong> {{size.symbol}} </strong> ({{size.quantity}})  {% endfor %}</p>
+													<h4 class="fs-sm ft-bold mb-0 lh-1">${{item.total_price}}</h4>
 												</div>
 											</div>
 										</div>
-										<div class="col-xl-3 col-lg-3 col-md-3 col-6">
-											<p class="mb-1 p-0"><span class="text-muted">Status</span></p>
-											<div class="delv_status"><span class="ft-medium small text-warning bg-light-warning rounded px-3 py-1">In Progress</span></div>
-										</div>
-										<div class="col-xl-4 col-lg-4 col-md-4 col-6">
-											<p class="mb-1 p-0"><span class="text-muted">Expected date by:</span></p>
-											<h6 class="mb-0 ft-medium fs-sm">22 September 2021</h6>
-										</div>
+										
 									</div>
-									
+									{% endfor %}
 								</div>
-								<div class="ord_list_footer d-flex align-items-center justify-content-between  px-3">
-									<div class="col-xl-3 col-lg-3 col-md-4 olf_flex text-left px-0 py-2 br-right"><a href="javascript:void(0);" class="ft-medium fs-sm"><i class="ti-close mr-2"></i>Cancel Order</a></div>
+								<div class="ord_list_footer d-flex align-items-center justify-content-between br-top px-3">
 									<div class="col-xl-9 col-lg-9 col-md-8 pr-0 py-2 olf_flex d-flex align-items-center justify-content-between">
-										<div class="olf_flex_inner hide_mob"><p class="m-0 p-0"><span class="text-muted medium">Paid using debit card ending with 6472</span></p></div>
-										<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Total: $4510</h5></div>
+										<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Total: {{order.total_price}}</h5></div>
+										<div class="olf_inner_left"><h5 class="mb-0 fs-sm ft-bold">Date:{{order.order_date}}</h5></div>
+
 									</div>
 								</div>
 							</div>
+							{% endfor %}
+							{% else %}
+							<div class="alert alert-info" role="alert">
+								<strong>Info!</strong> You have not made any order yet.
+							</div>
+							{% endif %}
 							<!-- End Order List -->
-														<!-- Single Order List -->
-														<div class="ord_list_wrap mb-4 mfliud">
-															<div class="ord_list_head BG_Gold_Gradiant  d-flex align-items-center justify-content-between px-3 py-3">
-																<div class="olh_flex">
-																	<p class="m-0 p-0"><span class="text-muted">Order Number</span></p>
-																	<h6 class="mb-0 ft-medium">#1250004123</h6>
-																</div>	
-																
-															</div>
-															<div class="ord_list_body text-left">
-																<div class="row align-items-center justify-content-center m-0 py-4 br-bottom">
-																	
-																	<div class="col-xl-5 col-lg-5 col-md-5 col-12">
-																		<div class="cart_single d-flex align-items-start mfliud-bot">
-																			<div class="cart_selected_single_thumb">
-																				<a href="#"><img src="{% static 'assets/img/product/4.jpg' %}" width="75" class="img-fluid rounded" alt=""></a>
-																			</div>
-																			<div class="cart_single_caption pl-3">
-																				<p class="mb-0"><span class="text-muted small">Dresses</span></p>
-																				<h4 class="product_title fs-sm ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-																				<p class="mb-2"><span class="text-dark medium">Size: 36</span>, <span class="text-dark medium">Color: Red</span></p>
-																				<h4 class="fs-sm ft-bold mb-0 lh-1">$129</h4>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="col-xl-3 col-lg-3 col-md-3 col-6">
-																		<p class="mb-1 p-0"><span class="text-muted">Status</span></p>
-																		<div class="delv_status"><span class="ft-medium small text-success bg-light-success rounded px-3 py-1">Completed</span></div>
-																	</div>
-																	<div class="col-xl-4 col-lg-4 col-md-4 col-6">
-																		<p class="mb-1 p-0"><span class="text-muted">Expected date by:</span></p>
-																		<h6 class="mb-0 ft-medium fs-sm">22 September 2021</h6>
-																	</div>
-																</div>
-																
-															</div>
-															<div class="ord_list_footer d-flex align-items-center justify-content-between  px-3">
-															
-																<div class="col-xl-12 col-lg-12 col-md-12 pr-0 py-2 olf_flex d-flex align-items-center justify-content-between">
-																	<div class="olf_flex_inner hide_mob"><p class="m-0 p-0"><span class="text-muted medium">Paid using debit card ending with 6472</span></p></div>
-																	<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Total: $4510</h5></div>
-																</div>
-															</div>
-														</div>
-														<!-- End Order List -->
-														
-		
+							
+							
+							
 						</div>
+						{% else %}
+						<div class="col-12 col-md-12 col-lg-8 col-xl-8 text-center">
+							<div class="alert alert-info" role="alert">
+								<strong>Info!</strong> Please login to view your orders.
+							</div>
+						</div>
+						{% endif %}
 						
 					</div>
 				</div>
