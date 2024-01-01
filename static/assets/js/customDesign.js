@@ -290,16 +290,8 @@ function addImage(imageURL) {
         activecanvas.add(img);
         // Save canvas state
         saveCanvasState();
-        // add this image to design resource with orignal destination 
-        // Add this image to design_resource with original destination
-        design_resource.push({
-            imageURL: imageURL.getSrc(),
-            top: img.top,
-            left: img.left,
-            width: img.width * img.scaleX,
-            height: img.height * img.scaleY
-            });
-        console.log(design_resource)
+
+        
     });
 }
 
@@ -446,7 +438,6 @@ document.getElementById('tshirt-custompicture').addEventListener("change", funct
             activecanvas.centerObject(img);
             activecanvas.add(img);
             activecanvas.renderAll();
-            // push image to design_resource
         
             
         };
@@ -476,26 +467,9 @@ document.addEventListener("keydown", function(e) {
         if (activeObject) {
             // Remove the active object from the canvas
             activecanvas.remove(activeObject);
-            saveCanvasState();
-
-            // Remove the image from design_resource based on its URL
-            removeImageFromResource(activeObject.getSrc());
         }
     }
 }, false);
-
-function removeImageFromResource(imageURL) {
-    // Find the index of the image in design_resource based on its imageURL
-    const indexToRemove = design_resource.findIndex(item => item.imageURL === imageURL);
-
-    // Remove the image from design_resource if found
-    if (indexToRemove !== -1) {
-        design_resource.splice(indexToRemove, 1);
-    }
-}
-
-
-
 
 
 
@@ -793,6 +767,40 @@ document.getElementById("addToCard").addEventListener("click", function() {
         return;
     }
 
+
+    // loop on front canvas objects and back canvas objects and get all images with original size
+    // var frontObjects = canvas.getObjects();
+    // var backObjects = canvasBack.getObjects();
+    // // loop through all frontObjects
+    // frontObjects.forEach(function(object) {
+    //     // check if object type is image
+    //     if (object.type == "image") {
+    //         // get image src
+    //         var imageSrc = object.getSrc();
+    //         // put imageSrc in design_resource
+    //         design_resource.push(imageSrc);
+    //         // open new window with imageSrc
+    //         window.open(imageSrc);
+    //     }
+    // });
+
+    // // loop through all backObjects
+    // backObjects.forEach(function(object) {
+    //     // check if object type is image
+    //     if (object.type == "image") {
+    //         // get image src
+    //         var imageSrc = object.getSrc();
+    //         // put imageSrc in design_resource
+    //         design_resource.push(imageSrc);
+    //     }
+
+    // });
+
+    // console.log("design_resource=> " , design_resource);
+
+
+
+    // return;
 
 
 
