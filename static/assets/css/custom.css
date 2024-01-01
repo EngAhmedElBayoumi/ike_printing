@@ -262,7 +262,7 @@ font-size: 12px;
     align-items: center;
 }
 .CustomTapsDesign .ProductTap .accordion-body .ProductItems .ProItem .Image img{
-    height: auto;
+    height: 100%;
     width: max-content;
     margin: auto;
     background: white;
