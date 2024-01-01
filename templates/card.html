@@ -216,7 +216,7 @@
                            
                             {% if product_card %}
                             <!--order url-->
-							<button class="btn btn-block btn-dark mb-3" id="pay_for_order" >Place Your Order</button>
+							<a href="{% url 'product:order' %}" class="btn btn-block btn-dark mb-3" id="pay_for_order" >Place Your Order</a>
                             <!--paypal-->
                             <div class="paypaleBoxInputs">
                                 {{ paypal.render }}
@@ -296,7 +296,7 @@
     }
 </script>
 <script>
-    $(document).ready(function(){
+    /**$(document).ready(function(){
         $("#pay_for_order").click(function(){
             var url = "{% url 'product:order' %}";
             // ajax call get request
@@ -314,6 +314,6 @@
                 }
             });
         });
-    });
+    });**/
 </script>            
 {% endblock %}
