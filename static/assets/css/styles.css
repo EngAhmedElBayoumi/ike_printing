@@ -5900,6 +5900,8 @@ margin-bottom: 50px;;
 .BannerAndBosterMockup .titileDescr h2{
     margin-bottom: 15px;
     text-align: center;
+    font-weight: 800;
+    font-size: 40px;
 }
 .BannerAndBosterMockup .titileDescr .descriptionPara{
     margin: auto;
@@ -6155,6 +6157,7 @@ margin-bottom: 20px;
     display: block;
     height: auto;
     width: 100%;
+    margin-top: 50px;
 }
 .CallDesignserBoxxPage .ImageDesigneeer .mage img{
     display: block;
@@ -6171,6 +6174,7 @@ margin-bottom: 20px;
     border-bottom-style: double;
     color: #ffffff;
     text-transform: capitalize;
+    font-size: 25px;
     border-color: #eac97a;
 }
 .CallDesignserBoxxPage .titileDescr .descriptionPara{
@@ -6178,6 +6182,8 @@ margin-bottom: 20px;
 }
 .CallDesignserBoxxPage .titileDescr .descriptionPara p{
     text-align: start !important;
+    margin: 0;
+    font-size: 15px;
 }
 
 .bookTitle{
@@ -6290,7 +6296,7 @@ margin-bottom: 20px;
 		transition: all 0.6s;
 		border-radius: 0;
 		position: relative;
-		height: 100vh;
+		height: 68vh;
 	}
 	.miliods {
 		padding-right: 2.5rem;
@@ -6310,7 +6316,7 @@ margin-bottom: 20px;
 		padding: 0 2rem;
 	}
 	.home-slider .item {
-		height: 100vh;
+		height: 68vh;
 	}
 	.lg-heading {
 		font-size: 65px;

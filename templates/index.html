@@ -9,7 +9,7 @@
                 <div class="item">
 					<div class="videoBanner">
                         <video autoplay="" loop="" muted="" playsinline="">
-                            <source src="{% static 'assets/Videos/1.mp4' %}">
+                            <source src="{% static 'assets/Videos/2.mp4' %}">
                         </video>
                     </div>
 				</div>
@@ -25,7 +25,7 @@
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 							<div class="sec_title position-relative text-center">
 								
-								<h1 class="ft-bold pt-3">Trending Categories</h1>
+								<h1 class="ft-bold pt-3">Fury Digital Printing</h1>
 							</div>
 						</div>
 					</div>
@@ -66,7 +66,7 @@
 						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
 							<div class="cats_side_wrap text-center mx-auto mb-3">
 								<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="{% url 'product:ordaring' %}" class="d-block"><img src="{% static 'assets/img/newImages/New_Icons/orderin.png' %}" class="img-fluid" width="40" alt=""></a></div></div>
-								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'product:ordaring' %}">Ordring</a></h6></div>
+								<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="{% url 'product:ordaring' %}">Orders</a></h6></div>
 							</div>
 						</div>
 						
@@ -293,7 +293,30 @@
                                                     </div>
                                                 </div>
 											</div>
-                                            
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-6">
+                                                <div class="product_grid card b-0">
+                                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
+													<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
+                                                    <div class="card-body p-0">
+                                                        <div class="shop_thumb position-relative">
+                                                            <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:product_with_category' category_id=3 %}">
+                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/4b.png' %}" alt="">
+                                                            </a>
+                                                            <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:product_with_category' category_id=3 %}">
+                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/4b.png' %}" alt="">
+                                                            </a>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
+                                                        <div class="text-left">
+                                                            <div class="text-center">
+                                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="{% url 'product:product_with_category' category_id=3 %}">Beautiful Design Dress</a></h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+											</div>
                                             
                                             <!-- Single -->
 											<div class="col-xl-3 col-lg-4 col-md-6 col-6">
@@ -321,87 +344,32 @@
                                                 </div>
 											</div>
                                             
-                                            <!-- Single -->
 											<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-                                                <div class="product_grid card b-0">
-                                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
+												<div class="product_grid card b-0">
+													<div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
 													<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
-                                                    <div class="card-body p-0">
-                                                        <div class="shop_thumb position-relative">
-                                                            <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:product_with_category' category_id=3 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/3b.png' %}" alt="">
-                                                            </a>
-                                                            <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:product_with_category' category_id=3 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/3b.png' %}" alt="">
-                                                            </a>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
-                                                        <div class="text-left">
-                                                            <div class="text-center">
-                                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="{% url 'product:product_with_category' category_id=3 %}">Beautiful Design Dress</a></h5>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+													<div class="card-body p-0">
+														<div class="shop_thumb position-relative">
+															<a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:product_with_category' category_id=7 %}">
+																<img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/7b.png' %}" alt="">
+															</a>
+															<a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:product_with_category' category_id=7 %}">
+																<img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/7b.png' %}" alt="">
+															</a>
+														</div>
+													</div>
+													<div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
+														<div class="text-left">
+															<div class="text-center">
+																<h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="{% url 'product:product_with_category' category_id=7 %}">Beautiful Design Dress</a></h5>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
-                                            
-                                            											<!-- Single -->
-											<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-                                                <div class="product_grid card b-0">
-                                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
-													<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
-                                                    <div class="card-body p-0">
-                                                        <div class="shop_thumb position-relative">
-                                                            <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:product_with_category' category_id=3 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/4b.png' %}" alt="">
-                                                            </a>
-                                                            <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:product_with_category' category_id=3 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/4b.png' %}" alt="">
-                                                            </a>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
-                                                        <div class="text-left">
-                                                            <div class="text-center">
-                                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="{% url 'product:product_with_category' category_id=3 %}">Beautiful Design Dress</a></h5>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-											</div>
-                                            
-                                            
-                                            <!-- Single -->
-											<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-                                                <div class="product_grid card b-0">
-                                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
-													<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
-                                                    <div class="card-body p-0">
-                                                        <div class="shop_thumb position-relative">
-                                                            <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:product_with_category' category_id=8 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/5b.png' %}" alt="">
-                                                            </a>
-                                                            <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:product_with_category' category_id=8 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/5b.png' %}" alt="">
-                                                            </a>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
-                                                        <div class="text-left">
-                                                            <div class="text-center">
-                                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="{% url 'product:product_with_category' category_id=8 %}">Beautiful Design Dress</a></h5>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-											</div>
-                                            
-                                            <!-- Single -->
-											<div class="col-xl-3 col-lg-4 col-md-6 col-6">
+
+											  <!-- Single -->
+											  <div class="col-xl-3 col-lg-4 col-md-6 col-6">
                                                 <div class="product_grid card b-0">
                                                     <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
 													<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
@@ -426,44 +394,18 @@
                                                 </div>
 											</div>
                                             
-                                            											<!-- Single -->
-											<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-                                                <div class="product_grid card b-0">
-                                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
-													<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
-                                                    <div class="card-body p-0">
-                                                        <div class="shop_thumb position-relative">
-                                                            <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:product_with_category' category_id=7 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/7b.png' %}" alt="">
-                                                            </a>
-                                                            <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:product_with_category' category_id=7 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/7b.png' %}" alt="">
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
-                                                        <div class="text-left">
-                                                            <div class="text-center">
-                                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="{% url 'product:product_with_category' category_id=7 %}">Beautiful Design Dress</a></h5>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-											</div>
-                                            
-                                            
-                                            <!-- Single -->
-											<div class="col-xl-3 col-lg-4 col-md-6 col-6">
+											  <!-- Single -->
+											  <div class="col-xl-3 col-lg-4 col-md-6 col-6">
                                                 <div class="product_grid card b-0">
                                                     <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
 													<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
                                                     <div class="card-body p-0">
                                                         <div class="shop_thumb position-relative">
                                                             <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:product_with_category' category_id=8 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/8b.png' %}" alt="">
+                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/5b.png' %}" alt="">
                                                             </a>
                                                             <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:product_with_category' category_id=8 %}">
-                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/8b.png' %}" alt="">
+                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/5b.png' %}" alt="">
                                                             </a>
                                                             
                                                         </div>
@@ -477,6 +419,70 @@
                                                     </div>
                                                 </div>
 											</div>
+                                            
+                                          
+                                            											<!-- Single -->
+								<!-- Single -->
+								
+                                            <!-- Single -->
+											<div class="col-xl-3 col-lg-4 col-md-6 col-6">
+                                                <div class="product_grid card b-0">
+                                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
+													<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
+                                                    <div class="card-body p-0">
+                                                        <div class="shop_thumb position-relative">
+                                                            <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:product_with_category' category_id=3 %}">
+                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/3b.png' %}" alt="">
+                                                            </a>
+                                                            <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:product_with_category' category_id=3 %}">
+                                                                <img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/3b.png' %}" alt="">
+                                                            </a>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
+                                                        <div class="text-left">
+                                                            <div class="text-center">
+                                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="{% url 'product:product_with_category' category_id=3 %}">Beautiful Design Dress</a></h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+											</div>
+                                            
+                                            											<!-- Single -->
+											
+																						
+                                            
+                                            
+                                          
+																						<div class="col-xl-3 col-lg-4 col-md-6 col-6">
+																							<div class="product_grid card b-0">
+																								<div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
+																								<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
+																								<div class="card-body p-0">
+																									<div class="shop_thumb position-relative">
+																										<a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:product_with_category' category_id=8 %}">
+																											<img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/8b.png' %}" alt="">
+																										</a>
+																										<a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:product_with_category' category_id=8 %}">
+																											<img class="card-img-top" src="{% static 'assets/img/newImages/Products_V5/8b.png' %}" alt="">
+																										</a>
+																										
+																									</div>
+																								</div>
+																								<div class="card-footer b-0 p-3 pb-0 bg-white d-flex align-items-start justify-content-center">
+																									<div class="text-left">
+																										<div class="text-center">
+																											<h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="{% url 'product:product_with_category' category_id=8 %}">Beautiful Design Dress</a></h5>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+                                            
+                                            
+                                            
 										</div>
 							
 
@@ -497,7 +503,7 @@
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 							<div class="sec_title position-relative text-center">
 					
-								<h1 class="ft-bold pt-3">Good Deals</h1>
+								<h1 class="ft-bold pt-3">Great Bargains</h1>
 							</div>
 						</div>
 					</div>
