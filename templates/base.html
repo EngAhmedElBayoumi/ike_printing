@@ -178,11 +178,11 @@
 								<div class="footer_widget">
 								  <h4 class="widget_title">Site Map</h4>
 								  <ul class="footer-menu">
-									<li><a href="#">Home</a></li>
-									<li><a href="#">Self Custmization</a></li>
-									<li><a href="#">Poster And Banners</a></li>
-									<li><a href="#">Call Design</a></li>
-									<li><a href="#">Ordering</a></li>
+									<li><a href="{% url 'home:home' %}">Home</a></li>
+									<li><a href="{% url 'product:self_customization' %}">Self Custmization</a></li>
+									<li><a >Poster Comming Soon</a></li>
+									<li><a href="{% url 'call_expert:call_expert' %}">Call Design</a></li>
+									<li><a href="{% url 'product:ordaring' %}">Ordering</a></li>
 								  </ul>
 								</div>
 							  </div>
@@ -204,8 +204,7 @@
 								  <h4 class="widget_title">Company</h4>
 								  <ul class="footer-menu">
 									<li><a href="#">About</a></li>
-									<li><a href="#">Policy</a></li>
-									<li><a href="#">Terms & Conditions</a></li>
+									<li><a href="{% url 'home:privacy' %}">Terms & Conditions - Security</a></li>
 								  </ul>
 								</div>
 							  </div>
@@ -237,7 +236,7 @@
 					<div class="container">
 						<div class="row align-items-center">
 							<div class="col-lg-12 col-md-12 text-center">
-								<p class="mb-0">© 2023 . Designd By <a href="#">IKE Print</a>.</p>
+								<p class="mb-0">© 2023 . Furydgp All Right Resived.</p>
 							</div>
 						</div>
 					</div>
