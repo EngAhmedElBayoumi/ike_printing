@@ -144,7 +144,7 @@ class ClipArtAdmin(admin.ModelAdmin):
 #category display
 class CategoryAdmin(admin.ModelAdmin):
     #display name , image
-    list_display = ('name','display_image')
+    list_display = ('id','name','display_image')
     #search bar
     search_fields = ['name']
     #display image

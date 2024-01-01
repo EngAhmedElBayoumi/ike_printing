@@ -59,6 +59,46 @@ def product(request):
 
 
 
+def product_with_category(request,category_id):
+    
+    #get  products by category id
+    products = Product.objects.filter(is_active=True,category=category_id)
+    #get all matireals
+    matireals = Matireal.objects.all()
+    #add artubute number to matireals to use it in template to display how many products have this matireal
+    for matireal in matireals:
+        matireal.number = Product.objects.filter(matireal=matireal).count()
+    #get all colors
+    colors = Color.objects.all()
+    #get all sizes
+    sizes = Size.objects.all()
+    #add artubute number to sizes to use it in template to display how many products have this size
+    for size in sizes:
+        size.number = Product.objects.filter(sizes=size,is_active=True).count()
+    #get all categories
+    categories = Category.objects.all()
+    #add artubute number to categories to use it in template to display how many products have this category
+    for category in categories:
+        category.number = Product.objects.filter(category=category,is_active=True).count()
+        
+    #get size depend on simbol without duplicate
+    sizes = Size.objects.values('simbol').distinct()
+    
+    #get color depend on code without duplicate
+    colors = Color.objects.values('code').distinct()
+    
+    context={
+        'products':products,
+        'matireals':matireals,
+        'colors':colors,
+        'sizes':sizes,
+        'categories':categories,
+    }
+    return render(request, 'products.html', context)
+
+
+
+
 def self_customization(request):
     #get all clip arts
     clip_arts = ClipArt.objects.all()
