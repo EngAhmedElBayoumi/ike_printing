@@ -552,6 +552,8 @@ def apply_copoun(request):
     #return total price
     return JsonResponse({"total_price":total_price})
     
+    
+
 def order(request):
 
     # Get product card
@@ -574,7 +576,7 @@ def order(request):
         # Clear the user field in each product_card
         for product in product_card:
             product.user.remove(request.user)
-
+            
     # If the order is created successfully, return success
     if order:
         return JsonResponse({"success": "success"})
@@ -582,7 +584,7 @@ def order(request):
     # Return error if something went wrong
     return JsonResponse({"error": "error"})
     
-    
+
 #login required
 @login_required() 
 def card(request):
@@ -675,6 +677,33 @@ def card(request):
             return JsonResponse({"error": str(e)})
     paypal = PayPalPaymentsForm(initial=paypal_checkout)
     return render(request, 'card.html', {'product_card':product_card,'paypal':paypal})
+
+
+#remove from card
+def remove_from_card(request,id):
+    #get product
+    product = Product.objects.get(id=id)
+    #get user
+    user=request.user
+    #get cart product
+    cart_product = CartProduct.objects.filter(product=product,user=user).first()
+    #delete cart product
+    cart_product.delete()
+    #return success
+    return JsonResponse({"success": "success"})
+
+#crear card 
+def clear_card(request):
+    user=request.user
+    
+    cart_product = CartProduct.objects.filter(user=user).first()
+    #delete cart product
+    if cart_product:
+        cart_product.delete()
+    
+    #return success
+    return JsonResponse({"success": "success"})
+
 
 
 #payment success

@@ -270,6 +270,11 @@ function changeStrokeWidth(strokeWidth){
     saveCanvasState();
 }
 
+
+// design_resource []
+var design_resource=[]
+
+
 function addImage(imageURL) {
     fabric.Image.fromURL(imageURL, function (img) {
         // Set image width and height to 200px
@@ -285,6 +290,16 @@ function addImage(imageURL) {
         activecanvas.add(img);
         // Save canvas state
         saveCanvasState();
+        // add this image to design resource with orignal destination 
+        // Add this image to design_resource with original destination
+        design_resource.push({
+            imageURL: imageURL.getSrc(),
+            top: img.top,
+            left: img.left,
+            width: img.width * img.scaleX,
+            height: img.height * img.scaleY
+            });
+        console.log(design_resource)
     });
 }
 
@@ -431,6 +446,9 @@ document.getElementById('tshirt-custompicture').addEventListener("change", funct
             activecanvas.centerObject(img);
             activecanvas.add(img);
             activecanvas.renderAll();
+            // push image to design_resource
+        
+            
         };
     };
 
@@ -450,13 +468,31 @@ document.getElementById('tshirt-custompicture').addEventListener("change", funct
 // The object will be removed !
 document.addEventListener("keydown", function(e) {
     var keyCode = e.keyCode;
+    
     // delete on DEL key or backspace key
     if(keyCode == 46){
-        activecanvas.remove(activecanvas.getActiveObject());
+        var activeObject = activecanvas.getActiveObject();
+
+        if (activeObject) {
+            // Remove the active object from the canvas
+            activecanvas.remove(activeObject);
+            saveCanvasState();
+
+            // Remove the image from design_resource based on its URL
+            removeImageFromResource(activeObject.getSrc());
+        }
     }
 }, false);
 
+function removeImageFromResource(imageURL) {
+    // Find the index of the image in design_resource based on its imageURL
+    const indexToRemove = design_resource.findIndex(item => item.imageURL === imageURL);
 
+    // Remove the image from design_resource if found
+    if (indexToRemove !== -1) {
+        design_resource.splice(indexToRemove, 1);
+    }
+}
 
 
 

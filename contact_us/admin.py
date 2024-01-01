@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import ContactUs
+from .models import ContactUs , ContactList
 
 
 class ContactUsAdmin(admin.ModelAdmin):
@@ -20,4 +20,9 @@ class ContactUsAdmin(admin.ModelAdmin):
 
 
     message_display.short_description = 'Message'
+    #firlter by is_read
+    list_filter = ['is_read']
+
 admin.site.register(ContactUs, ContactUsAdmin)
+admin.site.register(ContactList)
+

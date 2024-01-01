@@ -36,6 +36,11 @@
                                                 <tr>
                                                     <th>
                                                         <div class="olh_flex text-center">
+                                                            <h6 class="mb-0 ft-medium"><i class="fa fa-trash"></i></h6>
+                                                        </div>	
+                                                    </th>
+                                                    <th>
+                                                        <div class="olh_flex text-center">
                                                             <h6 class="mb-0 ft-medium">Price</h6>
                                                         </div>	
                                                     </th>
@@ -75,6 +80,11 @@
                                                 {% if product_card %}
                                                 {% for card in product_card %}
                                                 <tr class="br-bottom">
+                                                    <td>
+                                                        <div class="ProductPrice">
+                                                            <button onclick="remove_from_card({{ card.product.id }})" class="fs-sm ft-bold mb-0 lh-1 text-danger">delete</button>
+                                                        </div>
+                                                    </td>
                                                     <td>
                                                         <div class="ProductPrice">
                                                             <h4 class="fs-sm ft-bold mb-0 lh-1">{{ card.total_price }}</h4>
@@ -160,7 +170,7 @@
 								</div>
 
 								<div class="ord_list_footer d-flex align-items-center justify-content-between br-top px-3">
-									<div class="col-xl-3 col-lg-3 col-md-4 olf_flex text-left px-0 py-2 br-right"><a href="javascript:void(0);" class="ft-medium fs-sm"><i class="ti-close mr-2"></i>Cleare Cart</a></div>
+									<div class="col-xl-3 col-lg-3 col-md-4 olf_flex text-left px-0 py-2 br-right"><button  onclick="clear_card()" class="ft-medium fs-sm"><i class="ti-close mr-2"></i>Cleare Cart</button></div>
 									<div class="col-xl-9 col-lg-9 col-md-8 pr-0 py-2 olf_flex d-flex align-items-center justify-content-between">
 										<div class="olf_flex_inner hide_mob"><p class="m-0 p-0"><span class="text-muted medium"></span></p></div>
 										<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Subtotal: ${{product_card.total}}</h5></div>
@@ -232,6 +242,49 @@
 {% endblock %}
 
 {% block script %}
+    
+<script>
+    function remove_from_card(product_id){
+        var url = "{% url 'product:remove_from_card' 0 %}"
+        url = url.replace('0', product_id);
+        // ajax call get request
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response){
+                console.log(response);
+                // refresh the page
+                location.reload();
+                alert('Product Removed Successfully');
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+    }
+
+
+    function clear_card(){
+        var url = "{% url 'product:clear_card'  %}"
+        // ajax call get request
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response){
+                console.log(response);
+                // refresh the page
+                location.reload();
+                alert('card has cleared');
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+    }
+
+</script>
+
+
 <script>
     var form = document.querySelector('.paypaleBoxInputs form');
     if (form) {

@@ -26,6 +26,10 @@ urlpatterns = [
     path("get_quote/",views.get_quote,name="get_quote"),   
     #add_to_card
     path("add_to_card/",views.card,name="card"),
+    #remove_from_card by id
+    path("remove_from_card/<int:id>",views.remove_from_card,name="remove_from_card"),
+    #clear card
+    path("clear_card/",views.clear_card,name="clear_card"),
     #apply_copoun
     path("apply_copoun/",views.apply_copoun,name="apply_copoun"),
     #order

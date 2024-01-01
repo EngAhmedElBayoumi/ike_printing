@@ -8,18 +8,11 @@ from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields
 from import_export.widgets import Widget
 from import_export import fields, resources
-from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from PIL import Image
 import io
-from tablib import Dataset
 from django.http import HttpResponse
-from xhtml2pdf import pisa
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from reportlab.lib import colors
-import base64
 
 
 # Register your models here.
@@ -270,116 +263,116 @@ class CartProductAdmin(admin.ModelAdmin):
     #search bar
     search_fields = ['product__name','color__name','size__name','matireal__name','quantity','price']
 
-class OrderResource(resources.ModelResource):
-    user = fields.Field(column_name='user', attribute='user', widget=ForeignKeyWidget(User, 'username'))
-    total_price = fields.Field(column_name='total_price', attribute='total_price')
-    methods_of_receiving = fields.Field(column_name='methods_of_receiving', attribute='methods_of_receiving')
-    order_date = fields.Field(column_name='order_date', attribute='order_date')
+# class OrderResource(resources.ModelResource):
+#     user = fields.Field(column_name='user', attribute='user', widget=ForeignKeyWidget(User, 'username'))
+#     total_price = fields.Field(column_name='total_price', attribute='total_price')
+#     methods_of_receiving = fields.Field(column_name='methods_of_receiving', attribute='methods_of_receiving')
+#     order_date = fields.Field(column_name='order_date', attribute='order_date')
 
-    cart_product = fields.Field(column_name='cart_product', attribute='cart_product', widget=ManyToManyWidget(CartProduct, 'id'))
+#     cart_product = fields.Field(column_name='cart_product', attribute='cart_product', widget=ManyToManyWidget(CartProduct, 'id'))
 
-    front_tshirt_image = fields.Field(column_name='front_tshirt_image', attribute=None)
-    back_tshirt_image = fields.Field(column_name='back_tshirt_image', attribute=None)
+#     front_tshirt_image = fields.Field(column_name='front_tshirt_image', attribute=None)
+#     back_tshirt_image = fields.Field(column_name='back_tshirt_image', attribute=None)
 
-    frontcanvas = fields.Field(column_name='frontcanvas', attribute=None)
-    backcanvas = fields.Field(column_name='backcanvas', attribute=None)
+#     frontcanvas = fields.Field(column_name='frontcanvas', attribute=None)
+#     backcanvas = fields.Field(column_name='backcanvas', attribute=None)
 
-    class Meta:
-        model = Order
-        fields = ('id', 'user', 'cart_product', 'total_price', 'methods_of_receiving', 'order_date', 'front_tshirt_image', 'back_tshirt_image', 'frontcanvas', 'backcanvas')
-        export_order = ('id', 'user', 'cart_product', 'total_price', 'methods_of_receiving', 'order_date', 'front_tshirt_image', 'back_tshirt_image', 'frontcanvas', 'backcanvas')
+#     class Meta:
+#         model = Order
+#         fields = ('id', 'user', 'cart_product', 'total_price', 'methods_of_receiving', 'order_date', 'front_tshirt_image', 'back_tshirt_image', 'frontcanvas', 'backcanvas')
+#         export_order = ('id', 'user', 'cart_product', 'total_price', 'methods_of_receiving', 'order_date', 'front_tshirt_image', 'back_tshirt_image', 'frontcanvas', 'backcanvas')
 
-    def dehydrate_cart_product(self, order):
-        return ', '.join([f"{cp.product.name} ({cp.quantity})" for cp in order.cart_product.all()])
+#     def dehydrate_cart_product(self, order):
+#         return ', '.join([f"{cp.product.name} ({cp.quantity})" for cp in order.cart_product.all()])
 
-    def dehydrate_user(self, order):
-        return order.user.username
+#     def dehydrate_user(self, order):
+#         return order.user.username
 
-    def dehydrate_order_date(self, order):
-        return order.order_date.strftime('%Y-%m-%d %H:%M:%S')
+#     def dehydrate_order_date(self, order):
+#         return order.order_date.strftime('%Y-%m-%d %H:%M:%S')
 
-    def dehydrate_front_tshirt_image(self, order):
-        return ', '.join([str(cp.front_tshirt_image) for cp in order.cart_product.all()])
+#     def dehydrate_front_tshirt_image(self, order):
+#         return ', '.join([str(cp.front_tshirt_image) for cp in order.cart_product.all()])
 
-    def dehydrate_back_tshirt_image(self, order):
-        return ', '.join([str(cp.back_tshirt_image) for cp in order.cart_product.all()])
+#     def dehydrate_back_tshirt_image(self, order):
+#         return ', '.join([str(cp.back_tshirt_image) for cp in order.cart_product.all()])
 
-    def dehydrate_frontcanvas(self, order):
-        return ', '.join([str(cp.frontcanvas) for cp in order.cart_product.all()])
+#     def dehydrate_frontcanvas(self, order):
+#         return ', '.join([str(cp.frontcanvas) for cp in order.cart_product.all()])
 
-    def dehydrate_backcanvas(self, order):
-        return ', '.join([str(cp.backcanvas) for cp in order.cart_product.all()])
+#     def dehydrate_backcanvas(self, order):
+#         return ', '.join([str(cp.backcanvas) for cp in order.cart_product.all()])
 
-    def export_selected_html(modeladmin, request, queryset):
-        html_content = "<html><body>"
+#     def export_selected_html(modeladmin, request, queryset):
+#         html_content = "<html><body>"
 
-        for order in queryset:
-            html_content += f"<h2>Order #{order.pk}</h2>"
-            html_content += f"<p><strong>User:</strong> {order.user.username}</p>"
-            html_content += f"<p><strong>Total Price:</strong> {order.total_price}</p>"
+#         for order in queryset:
+#             html_content += f"<h2>Order #{order.pk}</h2>"
+#             html_content += f"<p><strong>User:</strong> {order.user.username}</p>"
+#             html_content += f"<p><strong>Total Price:</strong> {order.total_price}</p>"
 
-            for cart_product in order.cart_product.all():
-                html_content += f"<h3>Product: {cart_product.product.name}</h3>"
-                html_content += f"<p><strong>Front T-Shirt Image:</strong> <img src='{cart_product.front_tshirt_image}' style='max-width: 100px; max-height: 100px;'></p>"
-                html_content += f"<p><strong>Back T-Shirt Image:</strong> <img src='{cart_product.back_tshirt_image}' style='max-width: 100px; max-height: 100px;'></p>"
-                html_content += f"<p><strong>Front Canvas:</strong> <img src='{cart_product.frontcanvas}' style='max-width: 100px; max-height: 100px;'></p>"
-                html_content += f"<p><strong>Back Canvas:</strong> <img src='{cart_product.backcanvas}' style='max-width: 100px; max-height: 100px;'></p>"
-                html_content += f"<p><strong>Quantity:</strong> {cart_product.quantity}</p>"
-                html_content += f"<p><strong>Price:</strong> {cart_product.total_price}</p>"
+#             for cart_product in order.cart_product.all():
+#                 html_content += f"<h3>Product: {cart_product.product.name}</h3>"
+#                 html_content += f"<p><strong>Front T-Shirt Image:</strong> <img src='{cart_product.front_tshirt_image}' style='max-width: 100px; max-height: 100px;'></p>"
+#                 html_content += f"<p><strong>Back T-Shirt Image:</strong> <img src='{cart_product.back_tshirt_image}' style='max-width: 100px; max-height: 100px;'></p>"
+#                 html_content += f"<p><strong>Front Canvas:</strong> <img src='{cart_product.frontcanvas}' style='max-width: 100px; max-height: 100px;'></p>"
+#                 html_content += f"<p><strong>Back Canvas:</strong> <img src='{cart_product.backcanvas}' style='max-width: 100px; max-height: 100px;'></p>"
+#                 html_content += f"<p><strong>Quantity:</strong> {cart_product.quantity}</p>"
+#                 html_content += f"<p><strong>Price:</strong> {cart_product.total_price}</p>"
 
-            html_content += "<hr>"
+#             html_content += "<hr>"
 
-        html_content += "</body></html>"
+#         html_content += "</body></html>"
 
-        response = HttpResponse(content_type="text/html")
-        response["Content-Disposition"] = 'attachment; filename="selected_orders.html"'
-        response.write(html_content)
+#         response = HttpResponse(content_type="text/html")
+#         response["Content-Disposition"] = 'attachment; filename="selected_orders.html"'
+#         response.write(html_content)
 
-        return response
+#         return response
 
-    def embed_image_base64(image_data, max_width=100, max_height=100):
-        return f"<img src='data:image/png;base64,{image_data}' style='max-width: {max_width}px; max-height: {max_height}px;'>"
+#     def embed_image_base64(image_data, max_width=100, max_height=100):
+#         return f"<img src='data:image/png;base64,{image_data}' style='max-width: {max_width}px; max-height: {max_height}px;'>"
 
-    def export_selected_pdf(modeladmin, request, queryset):
-        html_content = "<html><body>"
+#     def export_selected_pdf(modeladmin, request, queryset):
+#         html_content = "<html><body>"
 
-        for order in queryset:
-            html_content += f"<h2>Order #{order.pk}</h2>"
-            html_content += f"<p><strong>User:</strong> {order.user.username}</p>"
-            html_content += f"<p><strong>Total Price:</strong> {order.total_price}</p>"
+#         for order in queryset:
+#             html_content += f"<h2>Order #{order.pk}</h2>"
+#             html_content += f"<p><strong>User:</strong> {order.user.username}</p>"
+#             html_content += f"<p><strong>Total Price:</strong> {order.total_price}</p>"
 
-            for cart_product in order.cart_product.all():
-                html_content += f"<h3>Product: {cart_product.product.name}</h3>"
-                html_content += f"<p><strong>Front T-Shirt Image:</strong> {embed_image_base64(cart_product.front_tshirt_image.read())}</p>"
-                html_content += f"<p><strong>Back T-Shirt Image:</strong> {embed_image_base64(cart_product.back_tshirt_image.read())}</p>"
-                html_content += f"<p><strong>Front Canvas:</strong> {embed_image_base64(cart_product.frontcanvas)}</p>"
-                html_content += f"<p><strong>Back Canvas:</strong> {embed_image_base64(cart_product.backcanvas)}</p>"
-                html_content += f"<p><strong>Quantity:</strong> {cart_product.quantity}</p>"
-                html_content += f"<p><strong>Price:</strong> {cart_product.total_price}</p>"
+#             for cart_product in order.cart_product.all():
+#                 html_content += f"<h3>Product: {cart_product.product.name}</h3>"
+#                 html_content += f"<p><strong>Front T-Shirt Image:</strong> {embed_image_base64(cart_product.front_tshirt_image.read())}</p>"
+#                 html_content += f"<p><strong>Back T-Shirt Image:</strong> {embed_image_base64(cart_product.back_tshirt_image.read())}</p>"
+#                 html_content += f"<p><strong>Front Canvas:</strong> {embed_image_base64(cart_product.frontcanvas)}</p>"
+#                 html_content += f"<p><strong>Back Canvas:</strong> {embed_image_base64(cart_product.backcanvas)}</p>"
+#                 html_content += f"<p><strong>Quantity:</strong> {cart_product.quantity}</p>"
+#                 html_content += f"<p><strong>Price:</strong> {cart_product.total_price}</p>"
 
-            html_content += "<hr>"
+#             html_content += "<hr>"
 
-        html_content += "</body></html>"
+#         html_content += "</body></html>"
 
-        response = HttpResponse(content_type="application/pdf")
-        response["Content-Disposition"] = 'attachment; filename="selected_orders.pdf"'
+#         response = HttpResponse(content_type="application/pdf")
+#         response["Content-Disposition"] = 'attachment; filename="selected_orders.pdf"'
 
-        buffer = BytesIO()
-        pisa.CreatePDF(html_content, dest=buffer)
+#         buffer = BytesIO()
+#         pisa.CreatePDF(html_content, dest=buffer)
 
-        pdf_content = buffer.getvalue()
-        buffer.close()
+#         pdf_content = buffer.getvalue()
+#         buffer.close()
 
-        response.write(pdf_content)
+#         response.write(pdf_content)
 
-        return response
-    export_selected_html.short_description = "Export selected orders to HTML"
-    export_selected_pdf.short_description = "Export selected orders to PDF"
+#         return response
+#     export_selected_html.short_description = "Export selected orders to HTML"
+#     export_selected_pdf.short_description = "Export selected orders to PDF"
 
 
 
 class OrderAdmin(admin.ModelAdmin):
-    resource_class = OrderResource
+    # resource_class = OrderResource
     list_display = ('display_order_number','display_user_details', 'display_cart_products','display_product_image','display_product_designs' ,'methods_of_receiving', 'total_price', 'order_date')
 
     def display_order_number(self, obj):
@@ -454,7 +447,8 @@ class OrderAdmin(admin.ModelAdmin):
                 for cart_product in cart_products
             )
         )
-    actions = [OrderResource.export_selected_html]
+    
+    # actions = [OrderResource.export_selected_html]
     
     
 
