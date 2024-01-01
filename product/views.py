@@ -612,6 +612,11 @@ def payment_success(request):
         for product in product_card:
             product.user.remove(request.user)
 
+    #clear session
+    request.session['product_card'] = []
+    request.session['total_price'] = 0
+    
+
     #django messages
     messages.success(request, "Your order has been placed successfully.")
     
@@ -621,6 +626,10 @@ def payment_success(request):
 
 #payment failed
 def payment_failed(request):
+    #clear session
+    request.session['product_card'] = []
+    request.session['total_price'] = 0
+    
     #django messages
     messages.error(request, "Your order has been failed try again.")
     

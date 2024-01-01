@@ -228,8 +228,8 @@ color: #000;
 	
 														<div class="col-lg-12 col-md-12 col-sm-12">
 															<div class="form-group text-center">
-																{% comment %} <button type="submit" id="submitbtn" class="btn BookBUTTON full-width" disabled>
-																	Book Date & Time Now</button>  {% endcomment %}
+																 <button type="submit" id="submitbtn" class="btn BookBUTTON full-width" disabled>
+																	Book Date & Time Now</button>  
 															</div>
 														</div>
 	
@@ -237,11 +237,11 @@ color: #000;
 	
 													</div>
 												</form>
-												<div class=" col col-md-12">
+												{% comment %} <div class=" col col-md-12">
 													<div class="paypaleBoxInputs">
 														{{ paypal.render }}
 													</div>
-												</div>
+												</div> {% endcomment %}
 												<!--/row -->
 											</div>
 							</div>

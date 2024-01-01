@@ -10,7 +10,7 @@ urlpatterns = [
     path("",views.call_expert,name="call_expert"),
     path("call_senior_designer/",views.call_senior_designer,name="call_senior_designer"),
     path("callEpertTwo/",views.call_designer,name="callEpertTwo"),
-    path("payment/success/",views.call_designer,name="payment-success"),
-    path("payment/failed/",views.call_designer,name="payment-failed"),
-    path("payment/",views.payment,name="payment"),
+    path("payment/success/",views.payment_success,name="payment_success"),
+    path("payment/failed/",views.payment_failed,name="payment_failed"),
+    path("redirect_to_payment/",views.redirect_to_payment,name="redirect_to_payment"),
 ]
