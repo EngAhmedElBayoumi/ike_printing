@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'senior_unicorn',
     'unicorn', 
     'paypal.standard.ipn', 
+    'shipping',
 ]
 
 MIDDLEWARE = [
@@ -213,10 +214,7 @@ JAZZMIN_SETTINGS = {
     "icons": {
         "product.Products": "fas fa-tshirt",
     },
-    
-    
-    
-    
+
 }
 
 PAYPAL_RECEIVER = 'info@ikeprint.com'
@@ -227,5 +225,16 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000
 
 
 #zoom api key
-ZOOM_API_KEY = 'cR46yQDR_6Q0SFzGqxAzw'
-ZOOM_API_SECRET = 'yRiJ2wF11XJzAatKebMluY65cm4B5XsQ'
+ZOOM_ACCOUNT_ID = 'U5ZZn5XxSueETFKBY70DZw'
+ZOOM_API_KEY = 'CI2GRWVlTHOC5MAqmj0QDg'
+ZOOM_API_SECRET = 'HfXLfCL4vbYRwq5Tq962MoZg3KoAS0ij'
+
+
+#email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'furydigitalprinting@gmail.com'
+EMAIL_HOST_PASSWORD = 'wpguepqckccxvcqs'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+

@@ -202,12 +202,13 @@
                                   <li class="list-group-item d-flex text-dark fs-sm ft-regular">
                                     <span>Method of Receiving</span> 
                                     <select name="method_of_receiving" id="method_of_receiving" class="ml-auto text-dark ft-medium">
-                                        <option value="pickup">Pickup</option>
-                                        <option value="delivery">Delivery</option>
+                                        <option  value="pickup" selected>Pickup</option>
+                                        <option value="delivery">Delivery within a 20-mile</option>
+                                        <option value="Shipping">Shipping</option>
                                     </select>
                                    </li>
                                   <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-									<span>Total Price</span> <span class="ml-auto text-dark ft-medium">${{product_card.total_price}} </span>
+									<span>Total Price</span> <span class="ml-auto text-dark ft-medium" id="total_price_fee">${{product_card.total_price}} </span>
 								  </li>
                                   
 								</ul>
@@ -216,11 +217,12 @@
                            
                             {% if product_card %}
                             <!--order url-->
-							<a href="{% url 'product:order' %}" class="btn btn-block btn-dark mb-3" id="pay_for_order" >Place Your Order</a>
+                            <form id="csrf-form" method="POST" action="{% url 'product:order' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="method_of_receiving_input" value="pickup">
+							<button type="submit" class="btn btn-block btn-dark mb-3" id="pay_for_order" >Place Your Order</button>
+                            </form>
                             <!--paypal-->
-                            <div class="paypaleBoxInputs">
-                                {{ paypal.render }}
-                            </div>
 
                             {% else %}
 
@@ -235,14 +237,49 @@
 				</div>
 			</section>
 			<!-- ======================= Product Detail End ======================== -->
-			
+            <!-- ======================= hidden form to get csrftokken ======================== -->
+            
+
 
 
 
 {% endblock %}
 
 {% block script %}
-    
+ 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var total_price = {{product_card.total_price}};
+    var shipping_price={{shipping_price}}
+    // get method_of_receiving by id
+    var method_of_receiving = document.getElementById('method_of_receiving');
+    // get method_of_receiving_input by name
+    var method_of_receiving_input = document.getElementsByName('method_of_receiving_input')[0];
+    // add event listener to method_of_receiving
+    method_of_receiving.addEventListener('change', function(){
+        console.log(total_price)
+        // set method_of_receiving_input value to method_of_receiving value
+        method_of_receiving_input.value = method_of_receiving.value;
+        // get total_price_fee by id
+        var total_price_fee = document.getElementById('total_price_fee');
+        // if method_of_receiving.value is delivery total_price_fee = total_price + 20
+        if (method_of_receiving.value == 'delivery'){
+            total_price_fee.innerHTML = total_price + 20;
+            
+        }
+        else if (method_of_receiving.value == 'Shipping'){
+            total_price_fee.innerHTML = total_price + shipping_price;
+        }
+        else{
+            total_price_fee.innerHTML = total_price;
+        }
+        
+
+    });
+});
+</script>
+
+
 <script>
     function remove_from_card(product_id){
         var url = "{% url 'product:remove_from_card' 0 %}"

@@ -50,7 +50,15 @@
 												<div class="cart_single_caption pl-3">
 													<p class="mb-0"><span class="text-muted small">{{item.product.name}}</span></p>
 													<h4 class="product_title fs-sm ft-medium mb-1 lh-1">{{item.product.category}}</h4>
-													<p class="mb-2"><span class="text-dark medium">Size: {% for size in item.sizes.all %} <strong> {{size.symbol}} </strong> ({{size.quantity}})  {% endfor %}</p>
+													<p class="mb-2"><span class="text-dark medium">Size:
+														 {% for size in item.sizes.all %}
+														 {% if size.quantity == 0  %}
+												
+														 {% else %}
+														 <strong> {{size.symbol}} </strong> ({{size.quantity}})  
+														 {% endif %}
+														 {% endfor %}
+														</p>
 													<h4 class="fs-sm ft-bold mb-0 lh-1">${{item.total_price}}</h4>
 												</div>
 											</div>

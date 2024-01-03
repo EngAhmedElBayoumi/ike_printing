@@ -387,7 +387,8 @@ class OrderAdmin(admin.ModelAdmin):
             '<strong>Phone:</strong> {}<br>'
             '<strong>Email:</strong> {}<br>'
             '<strong>Address :</strong> {}<br>'
-            '<strong>Cuntry and state:</strong> {}<br>'
+            '<strong>Address line 2 :</strong> {}<br>'
+            '<strong>City and state:</strong> {}<br>'
             '<strong>Postal code:</strong> {}<br>'
             ,
             
@@ -397,7 +398,8 @@ class OrderAdmin(admin.ModelAdmin):
             obj.user.profile.phone,
             obj.user.email,
             obj.user.profile.address,
-            obj.user.profile.country + ', ' + obj.user.profile.state ,
+            obj.user.profile.address_line2,
+            obj.user.profile.city + ', ' + obj.user.profile.state ,
             obj.user.profile.postal_code,
             
             

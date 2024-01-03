@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 import requests
 import base64
 from django.core.files.base import ContentFile
+from django.utils import timezone
 
 
 # Create your models here.
@@ -201,6 +202,8 @@ class Order(models.Model):
     #methods of receiving
     methods_of_receiving = models.CharField(max_length=50, default="pickup")
     order_date = models.DateTimeField(auto_now_add=True)
+    #order receiving date not time
+    order_receiving_date = models.DateField(null=True,blank=True)
     def __str__(self):
         return self.user.username
     

@@ -10,6 +10,10 @@ from .models import Profile , STATE_CHOICES , COUNTRY_CHOICES
 from product.models import UserImage , ProductDesign
 from product.models import Order
 from contact_us.models import ContactList
+#import send mail
+from django.core.mail import send_mail
+#import settings
+from django.conf import settings
 
 # Create your views here.
 def log_in(request):
@@ -300,9 +304,56 @@ def payment_methods(request):
 
 
 def forgot_password(request):
+    if request.method=="POST":
+        #get email
+        email=request.POST['email']
+        #check if user exists
+        if User.objects.filter(email=email).exists():
+            #get user
+            user=User.objects.get(email=email)
+            subject="Reset Password"
+            message="To reset your password click on this link https://furydgp.com/accounts/reset_password/"+str(user.id)
+            email_from = settings.EMAIL_HOST_USER
+            #send mail
+            send_mail(
+                subject,
+                message,
+                email_from,
+                [email],
+                fail_silently=False,
+            )
+            #message
+            messages.success(request, 'Email sent successfully')
+                
+        else:
+            #message
+            messages.error(request, 'Email does not exist')
+            #redirect to forgot password page
+            return redirect("accounts:forgot_password")
+            
     return render(request, 'forgetpassword.html', {})
 
 
 
-def reset_password(request):
+def reset_password(request,id):
+    #get user by id
+    user=User.objects.get(id=id)
+    #get password1 , password2
+    if request.method=="POST":
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        #check if passwords match
+        if password1 != password2:
+            #message
+            messages.error(request, 'Passwords do not match')
+            #redirect to reset password page
+            return redirect("accounts:reset_password",id=id)
+        #set password
+        user.set_password(password1)
+        #save user
+        user.save()
+        #message
+        messages.success(request, 'Password updated successfully')
+        #redirect to login page
+        return redirect("accounts:login")
     return render(request, 'resetePassword.html', {})

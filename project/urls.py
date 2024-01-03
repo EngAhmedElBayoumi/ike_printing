@@ -31,7 +31,7 @@ urlpatterns = [
     path("senior_dragon/",include("senior_dragon.urls")),
     path("senior_unicorn/",include("senior_unicorn.urls")),
     path("unicorn/",include("unicorn.urls")),
-    path('', include('paypal.standard.ipn.urls')), 
+    path('paypal-ipn/', include('paypal.standard.ipn.urls')), 
         ]
 
 #media , static url
@@ -43,6 +43,7 @@ urlpatterns += [
 
 
 handler404 = 'home.views.error_404_view'
+handler500 = 'home.views.error_404_view'
 
 
 

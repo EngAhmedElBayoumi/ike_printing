@@ -1,5 +1,5 @@
 projecturl = "http://127.0.0.1:8000/";
-//projecturl = "http://furydgp.com/";
+//projecturl = "https://furydgp.com/";
 
 let canvas = new fabric.Canvas('tshirt-canvas-front');
 let canvasBack = new fabric.Canvas('tshirt-canvas-back');
@@ -57,6 +57,9 @@ function changetshirt(front,back){
     // back=tshirtImage.replace("front","back");
     document.getElementById("tshirt-backgroundpicture").src = front;
     document.getElementById("tshirt-backgroundpicture-back").src = back;
+    //canvas background color = white
+    document.getElementById("tshirt-div").style.backgroundColor = "white";
+    document.getElementById("tshirt-div-back").style.backgroundColor = "white";
 }
 let activecanvas=canvas;
 
@@ -70,6 +73,39 @@ document.querySelectorAll(".product-tab-info-link").forEach(function(button) {
             activecanvas=canvasBack;
         }
     });
+});
+
+
+// active canvas on select object put x on the right top to delete object
+activecanvas.on('object:selected', function(options) {
+    // get active object
+    var activeObject = options.target;
+    // check if active object is image or text
+        var deleteIcon = new fabric.Text('X', {
+            left: activeObject.left,
+            top: activeObject.top,
+            fontFamily: 'Arial',
+            fill: 'red',
+            fontSize: 20,
+            originX: 'center',
+            originY: 'center'
+        });
+        // add delete icon to canvas
+        canvas.add(deleteIcon);
+        // delete icon on click
+        deleteIcon.on('mousedown', function() {
+            canvas.remove(activeObject);
+            canvas.remove(deleteIcon);
+        }
+        );
+        // delete icon on mouse over
+        deleteIcon.on('mouseover', function() {
+            var hoverCursor = canvas.hoverCursor;
+            canvas.hoverCursor = 'pointer';
+            canvas.renderAll();
+            canvas.hoverCursor = hoverCursor;
+        }
+        );
 });
 
 
@@ -151,6 +187,16 @@ document.getElementById("text-input").onkeyup = function() {
         activecanvas.renderAll();
     }
 };
+
+
+// active canvas on any event happenn check if Quote_Buy_tab has class active if yes remove it and click on it
+activecanvas.on('object:modified', function(options) {
+    if (document.getElementById("Quote_Buy_tab").classList.contains("active")) {
+        document.getElementById("Quote_Buy_tab").classList.remove("active");
+        document.getElementById("Quote_Buy_tab").click();
+    }
+});
+
 
 
 
@@ -482,29 +528,38 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
     // get pruduct height from input with id "product_height"
     var productHeightByInches = document.getElementById("product_height").value;
     // get product height in screen by pixels
-    var productHeightByPixels = document.getElementById("tshirt-div").offsetHeight;
+    // var productHeightByPixels = document.getElementById("tshirt-div").offsetHeight;
     // check if productHeightByPixels is 0 get tshirt-div-back
-    if (productHeightByPixels == 0) {
-        productHeightByPixels = document.getElementById("tshirt-div-back").offsetHeight;
-    }
+    // if (productHeightByPixels == 0) {
+    //     productHeightByPixels = document.getElementById("tshirt-div-back").offsetHeight;
+    // }
+    var productHeightByPixels= canvas.height;
     // calculate scale
     var scale = productHeightByPixels / productHeightByInches;
+    console.log('productHeightByPixels',productHeightByPixels);
+    console.log('productHeightByInches',productHeightByInches);
+    console.log('scale',scale);
     // get front design height on screen
     // get the objects on the canvas
     var frontObjects = canvas.getObjects();
     var backObjects = canvasBack.getObjects();
+
+    // Ensure canvas is fully rendered
+    canvas.renderAll();
+    canvasBack.renderAll();
     // calculate total height for front canvas
-    var frontDesignHeight = calculateTotalArea(frontObjects);
+    var frontDesignHeight = calculateTotalArea(frontObjects, canvas);
+    console.log('frontDesignHeightByPixels', frontDesignHeight,canvasBack)
     // calculate total height for back canvas
     var backDesignHeight = calculateTotalArea(backObjects);
+    console.log('backDesignHeight', backDesignHeight)
     // calculate front design height by inches
     var frontDesignHeightByInches = frontDesignHeight / scale;
+    console.log('frontDesignHeightByInches', frontDesignHeightByInches)
     // calculate back design height by inches
     var backDesignHeightByInches = backDesignHeight / scale;
-
     frontDesignHeightByInches = Math.round(frontDesignHeightByInches);
     backDesignHeightByInches = Math.round(backDesignHeightByInches);
-
     // set front_design_price to frontDesignHeightByInches
     front_design_price.innerHTML = frontDesignHeightByInches;
     // set back_design_price to backDesignHeightByInches
@@ -534,10 +589,8 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
         totalSizePrice += SizeItemPrice * SizeItemNumber;
         
     });
-
     // call getQuote function
     getQuote(frontDesignHeightByInches, backDesignHeightByInches, quality,totalSizePrice);
-
     // set product_size to quality
     product_size.innerHTML = quality;
     // set quantity_price to totalSizePrice
@@ -547,17 +600,17 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
 
 
 // function to calculate total area of objects
-function calculateTotalArea(objects) {
+function calculateTotalArea(objects, currentCanvas) {
     var totalArea = 0;
+    
     // loop through all objects
     objects.forEach(function(object) {
         // get object height on screen
         var objectHeight = object.getBoundingRect().height;
         // return object height
         totalArea += objectHeight;
-
-        
     });
+
     return totalArea;
 }
 var hidden_total_price =0;
@@ -572,6 +625,7 @@ function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) 
     }
     // get csrf_token from form with id has input  "csrf_token"
     var crftoken = document.getElementById("crftokenform").getElementsByTagName("input")[0].value;
+    console.log(crftoken);
     var product_id = document.getElementById("product_id").value;
     // create form data
     var formData = new FormData();
@@ -780,7 +834,7 @@ document.getElementById("addToCard").addEventListener("click", function() {
             // put imageSrc in design_resource
             design_resource.push(imageSrc);
             // open new window with imageSrc
-            window.open(imageSrc);
+            // window.open(imageSrc);
         }
     });
 
@@ -848,9 +902,14 @@ var designData={};
 
 // get element by id loaddesign , save-design
 
-document.getElementById("loaddesign").addEventListener("click", function() {
-    loaddesign();
+var mydesign=document.getElementById("loaddesign");
+// check if mydesign is not null
+if (mydesign != null) {
+    // add event listener click to mydesign
+    mydesign.addEventListener("click", function() {
+        loaddesign();
 });
+}
 
 function saveDesign() {
     console.log("savedesign");
