@@ -11,3 +11,6 @@ def error_404_view(request, exception):
 
 def privacy(request):
     return render(request, 'privacy.html', {})
+
+def about(request):
+    return render(request, 'about.html', {})

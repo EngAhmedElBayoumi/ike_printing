@@ -9,5 +9,6 @@ app_name = "home"
 urlpatterns = [
     path("",views.home,name="home"),
     path("privacy/",views.privacy,name="privacy"),
+    path("about/",views.about,name="about"),
 ]
 

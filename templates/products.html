@@ -214,8 +214,8 @@
                                                         <a href="javascript:void(0);" class="prd_btn_square snackbar-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
                                                             <i class="lni lni-heart"></i>
                                                         </a> -->
-                                                        <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
-                                                            <i class="lni lni-shopping-basket"></i>
+                                                        <a href="{% url 'product:self_customization_product' product.id %}" class="prd_btn_square"  title="Custom">
+                                                            <i class="fas fa-edit"></i>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -278,9 +278,9 @@
                                                     </a>
                                                     <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
                                                         <div class="group_btn">
-                                                            
-                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
-                                                                <i class="lni lni-shopping-basket"></i>
+            
+                                                            <a href="{% url 'product:self_customization_product' 555555 %}" class="prd_btn_square"  title="Custom">
+                                                                <i class="fas fa-edit"></i>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -296,6 +296,10 @@
                                             </div>
                                         </div>
                                     `;
+                                        //replace placeholder with product id in productCard
+                                        productCard.innerHTML = productCard.innerHTML.replace('555555', product.id);
+                                        console.log(product.id)
+
                                     // Append the product card to the productitem
                                     productitem.appendChild(productCard);
                                 });
@@ -339,9 +343,9 @@
                                                     </a>
                                                     <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
                                                         <div class="group_btn">
-                                                           
-                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
-                                                                <i class="lni lni-shopping-basket"></i>
+            
+                                                            <a href="{% url 'product:self_customization_product' 555555 %}" class="prd_btn_square"  title="Custom">
+                                                                <i class="fas fa-edit"></i>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -357,6 +361,10 @@
                                             </div>
                                         </div>
                                     `;
+                                        //replace placeholder with product id in productCard
+                                        productCard.innerHTML = productCard.innerHTML.replace('555555', product.id);
+                                        console.log(product.id)
+
                                     // Append the product card to the productitem
                                     productitem.appendChild(productCard);
                                 });
@@ -399,9 +407,9 @@
                                                     </a>
                                                     <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
                                                         <div class="group_btn">
-                                                            
-                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
-                                                                <i class="lni lni-shopping-basket"></i>
+            
+                                                            <a href="{% url 'product:self_customization_product' 555555 %}" class="prd_btn_square"  title="Custom">
+                                                                <i class="fas fa-edit"></i>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -411,12 +419,16 @@
                                                 <div class="text-left">
                                                     <div class="text-center">
                                                         <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="#">${product.name}</a></h5>
-                                                       
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     `;
+                                        //replace placeholder with product id in productCard
+                                        productCard.innerHTML = productCard.innerHTML.replace('555555', product.id);
+                                        console.log(product.id)
+
                                     // Append the product card to the productitem
                                     productitem.appendChild(productCard);
                                 });
@@ -459,9 +471,9 @@
                                                     </a>
                                                     <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
                                                         <div class="group_btn">
-                                                            
-                                                            <a href="javascript:void(0);" class="prd_btn_square snackbar-addcart" data-toggle="tooltip" data-placement="top" title="Add To Cart">
-                                                                <i class="lni lni-shopping-basket"></i>
+            
+                                                            <a href="{% url 'product:self_customization_product' 555555 %}" class="prd_btn_square"  title="Custom">
+                                                                <i class="fas fa-edit"></i>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -477,6 +489,10 @@
                                             </div>
                                         </div>
                                     `;
+                                        //replace placeholder with product id in productCard
+                                        productCard.innerHTML = productCard.innerHTML.replace('555555', product.id);
+                                        console.log(product.id)
+
                                     // Append the product card to the productitem
                                     productitem.appendChild(productCard);
                                 });

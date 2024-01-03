@@ -1,6 +1,8 @@
 from django.shortcuts import render
 #get product , Matireal , color , size , category model
 from .models import Product , Matireal , Color , Size , Category ,ClipArt ,UserImage ,ProductDesign ,FavoriteProduct ,CartProduct , CardSize , Order
+from .models import DesignImage
+from shipping.models import Shipping_price
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -17,6 +19,11 @@ from django.shortcuts import redirect
 from django.conf import settings
 #reverse
 from django.urls import reverse
+#django messages
+from django.contrib import messages
+#datetime
+from datetime import datetime , timedelta
+
 
 # Create your views here.
 
@@ -142,6 +149,54 @@ def self_customization(request):
     
     return render(request, 'custom.html', context)
 
+def self_customization_product(request,id):
+    #get all clip arts
+    clip_arts = ClipArt.objects.all()
+    #get all user images if user is authenticated
+    if request.user.is_authenticated:
+        user_images = UserImage.objects.filter(user=request.user)
+        product_designs = ProductDesign.objects.filter(user=request.user)
+    else:
+        user_images = []
+        product_designs=[]
+    #get 2 products for each category
+    categories = Category.objects.all()
+    products = []
+    #get product by id
+    product = Product.objects.get(id=id)
+    #append product to products
+    products.append(product)
+    for category in categories:
+        #check if there are product has this category
+        if Product.objects.filter(category=category,is_active=True).exists():
+            #check if product is not the same product
+            if Product.objects.filter(category=category,is_active=True).first() != product:
+                products.append(Product.objects.filter(category=category,is_active=True).first())
+            
+    products_data = serialize('json', [p for p in products if p is not None]) 
+    size_data = serialize('json', Size.objects.all())    
+    
+       
+    #get related products that have the same category get first 10 products
+    #check if products is not empty
+    if products and products[0] is not None:
+        related_products = Product.objects.filter(category=products[0].category,is_active=True).exclude(id=products[0].id).distinct()[:10]
+    else:
+        related_products = []
+    
+    
+    context={
+        'clip_arts':clip_arts,
+        'user_images':user_images,
+        'products':products,
+        'product_designs':product_designs,
+        'products_json': products_data,
+        'sizes_json': size_data,
+        'related_products': related_products,
+    }
+    
+    return render(request, 'custom.html', context)
+
 
 def edit_product_design(request,product_id):
     #get product by id
@@ -172,7 +227,13 @@ def edit_product_design(request,product_id):
 
 
 def ordaring(request):
-    return render(request, 'Ordaring.html', {})
+    #get user
+    if request.user.is_authenticated:
+        user=request.user
+        orders=Order.objects.filter(user=user)
+    else:
+        orders=[]
+    return render(request, 'Ordaring.html', {'orders':orders})
 
 
 
@@ -190,6 +251,7 @@ def getproductsbycategory(request, category_name):
             "price": 0,
             "frontimage": product.frontimage.url,
             "backimage": product.backimage.url,
+            "id": product.id,
         })
     
     return JsonResponse({"products": product_data})
@@ -210,6 +272,7 @@ def getproductsbysize(request,size_name):
             "price": 0,
             "frontimage": product.frontimage.url,
             "backimage": product.backimage.url,
+            "id": product.id,
         })
         
     return JsonResponse({"products": product_data})
@@ -230,6 +293,7 @@ def getproductsbymatireal(request,matireal_name):
             "price": 0,
             "frontimage": product.frontimage.url,
             "backimage": product.backimage.url,
+            "id": product.id,
         })
     
     return JsonResponse({"products": product_data})
@@ -250,6 +314,7 @@ def getproductsbycolor(request,color_name):
             "price": 0,
             "frontimage": product.frontimage.url,
             "backimage": product.backimage.url,
+            "id": product.id,
         })
     
     return JsonResponse({"products": product_data})
@@ -278,17 +343,23 @@ def save_user_image(request):
 
 def getproductbyid(request, product_id):
     #get product by id
-    product = Product.objects.get(id=product_id)
+    product = Product.objects.get(id=product_id,is_active=True)
     #get product sizes
-    sizes = product.sizes.all()
-    #get product colors
-    colors = product.colors.all()
-    #get product matireal
-    matireal = product.matireal.all()
-    description=product.description
+    if product:
+        sizes = product.sizes.all()
+        #get product colors
+        colors = product.colors.all()
+        #get product matireal
+        matireal = product.matireal.all()
+        description=product.description
+    else:
+        sizes = []
+        colors = []
+        matireal = []
+        description=""
     
     #related products
-    related_products = Product.objects.filter(category=product.category).exclude(id=product.id).distinct()[:10]
+    related_products = Product.objects.filter(category=product.category,is_active=True).exclude(id=product.id).distinct()[:10]
     
     #get product data
     product_data = {
@@ -477,12 +548,23 @@ def get_front_back_design_price(front_design_height, back_design_height, quantit
     back_design_height = validate_positive_integer(back_design_height, "Back Design Height") or 0
 
     # Get front and back design prices
-    front_design_price = PrintingPrice.objects.filter(min_size__lte=front_design_height, max_size__gte=front_design_height).first()
+    if front_design_height != 0 :
+        front_design_price = PrintingPrice.objects.filter(min_size__lte=front_design_height, max_size__gte=front_design_height).first()
+    else:
+        front_design_price = 0
     if front_design_price:
+        print(front_design_price.price)
         front_design_price=front_design_price.price * quantity
+        print(front_design_price)
+        
     else:
         front_design_price=0
-    back_design_price = PrintingPrice.objects.filter(min_size__lte=back_design_height, max_size__gte=back_design_height).first()
+    
+    if back_design_height != 0 :
+        back_design_price = PrintingPrice.objects.filter(min_size__lte=back_design_height, max_size__gte=back_design_height).first()
+    else:
+        back_design_price = 0
+    
     if back_design_price:  
          
         back_design_price=back_design_price.price * quantity
@@ -524,9 +606,13 @@ def get_quantity_discounted_price(quantity, quantity_price):
 
 def get_quote(request):
     front_design_height = request.POST.get('front_design_height')
+    print('front_design_height',front_design_height)
     back_design_height = request.POST.get('back_design_height')
+    print('back_design_height',back_design_height)
     quantity = request.POST.get('quantity')
+    print('quantity',quantity)
     quantity_price = request.POST.get('quantity_price')
+    print('quantity_price',quantity_price)
     
     try:
         # Validate and get front, back, and quantity prices
@@ -552,7 +638,7 @@ def get_quote(request):
 
         # Apply general discount
         total_price = get_general_discounted_price(total_price)
-
+        print('total_price',total_price)
         # Create JSON data
         data = {
             "front_design_price": front_design_price,
@@ -599,9 +685,33 @@ def order(request):
     product_card = CartProduct.objects.filter(user=request.user)
     #get total price from session
     total_price = request.session['total_price']    
+    
+    #get methods of receiving
+    method_of_receiving = request.POST.get('method_of_receiving_input')
+    print('method_of_receiving',method_of_receiving)
+    if method_of_receiving == "delivery":
+        total_price += 20
+        #put total price in session
+        request.session['total_price'] = total_price
+        
+    if method_of_receiving == "Shipping":
+        #get shipping price
+        shipping_price = Shipping_price.objects.first()
+        #check if shipping price is null
+        if shipping_price == None:  
+            total_price += 0
+        else:
+            #get shipping price
+            shipping_price = shipping_price.price
+            #add shipping price to total price
+            total_price += shipping_price
+        #put total price in session
+        request.session['total_price'] = total_price
 
     #put all data in session and return redirct page
     request.session['product_card'] = list(product_card.values())
+    request.session['method_of_receiving'] = method_of_receiving
+    
     return redirect('product:order_page')
 
     
@@ -639,11 +749,17 @@ def payment_success(request):
 
     # Get total price from session
     total_price = request.session['total_price']
+    method_of_receiving = request.session['method_of_receiving']
+    #receiving date depend on method of receiving pickup or delivery 1 week if shipping 2 weeks
+    if method_of_receiving == "pickup" or method_of_receiving == "delivery":
+        receiving_date = datetime.now() + timedelta(days=7)
+    else:
+        receiving_date = datetime.now() + timedelta(days=14)
 
     # Use a transaction to ensure data consistency
     with transaction.atomic():
         # Create a new order
-        order = Order.objects.create(user=request.user, total_price=total_price,methods_of_receiving="pickup")
+        order = Order.objects.create(user=request.user, total_price=total_price,methods_of_receiving=method_of_receiving,receiving_date=receiving_date)
 
         # Add products to the order
         order.cart_product.set(product_card)
@@ -675,13 +791,32 @@ def payment_failed(request):
     
     #return redirect to card
     return redirect('product:card')
-  
+ 
+ 
+def save_design_images(images_data):
+    design_images = []
+    
+    for image_data in images_data:
+        design_image = DesignImage.save_image(image_data)
+        if design_image:
+            design_images.append(design_image)
+
+    return design_images
+ 
  
 #login required
 @login_required() 
 def card(request):
     #get product card
     product_card = CartProduct.objects.filter(user=request.user)
+    #shipping price
+    shipping_price = Shipping_price.objects.first()
+    #check if shipping price is null
+    if shipping_price == None:
+        shipping_price=0
+    else:
+        shipping_price=shipping_price.price
+        
     #calculate total price
     subtotal=0
     for product in product_card:
@@ -747,7 +882,12 @@ def card(request):
             #set user
             cart_product.user.set([user])
             #set sizes
-            cart_product.sizes.set(sizes)
+            cart_product.sizes.set(sizes)  
+            #save design images
+            design_images = save_design_images(request.POST.getlist('design_images[]'))
+            #set design images
+            cart_product.design_images.set(design_images)
+            
             #save cart product
             cart_product.save()
             
@@ -758,7 +898,7 @@ def card(request):
         except Exception as e:
             #return error
             return JsonResponse({"error": str(e)})
-    return render(request, 'card.html', {'product_card':product_card})
+    return render(request, 'card.html', {'product_card':product_card,'shipping_price':shipping_price})
 
 
 #remove from card

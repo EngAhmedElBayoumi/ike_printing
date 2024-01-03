@@ -60,24 +60,18 @@
 									</div>
 								</div>
                                 <div class="form-group">
-									<label>Address *</label>
+									<label>Address line 1 *</label>
 									<input type="text" class="form-control" name="address" placeholder="Address *" required>
 								</div>
                                 <div class="form-group">
-									<label>Zip code *</label>
-									<input type="text" class="form-control" name="postal_code" placeholder="Zip code *" required>
+									<label>Address line 2 </label>
+									<input type="text" class="form-control" name="address_line2" placeholder="Address " >
 								</div>
                                 <div class="row">
 									<div class="form-group col-md-6">
-										<label>Country *</label>
-                                        <select class="form-control" name="country" required>
-                                            <option selected>Select Country</option>
-                                            {% for country_code, country_name in country_choices %}
-												<option value="{{ country_code }}">{{ country_name }}</option>
-											{% endfor %}
-                                        </select>
+										<label>City *</label>
+										<input type="text" class="form-control" name="city" placeholder="City *" required>
 									</div>
-									
 									<div class="form-group col-md-6">
 										<label>State *</label>
 										<select class="form-control" name="state" required>
@@ -87,6 +81,10 @@
 											{% endfor %}
                                         </select>
 									</div>
+								</div>
+								<div class="form-group">
+									<label>Zip code *</label>
+									<input type="text" class="form-control" name="postal_code" placeholder="Zip code *" required>
 								</div>
                                 
                                 

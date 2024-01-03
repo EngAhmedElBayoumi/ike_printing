@@ -9,6 +9,11 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile , STATE_CHOICES , COUNTRY_CHOICES
 from product.models import UserImage , ProductDesign
 from product.models import Order
+from contact_us.models import ContactList
+#import send mail
+from django.core.mail import send_mail
+#import settings
+from django.conf import settings
 
 # Create your views here.
 def log_in(request):
@@ -45,10 +50,9 @@ def log_out(request):
 def register(request):
     context={
         'state_choices':STATE_CHOICES,
-        'country_choices':COUNTRY_CHOICES,
     }
     if request.method=="POST":
-        #get first_name , last_name , username , email , phone , password1 , passowrd2 , address , state , Country , State
+        #get first_name , last_name , username , email , phone , password1 , passowrd2 , address , state , city , State
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         username = request.POST['username']
@@ -57,7 +61,11 @@ def register(request):
         password1 = request.POST['password1']
         password2 = request.POST['password2']
         address = request.POST['address']
-        country = request.POST['country']
+        address_line2 = request.POST['address_line2'] 
+        if not address_line2:
+            address_line2 = ' '
+        
+        city = request.POST['city']
         state = request.POST['state']
         postal_code=request.POST['postal_code']
         #check if passwords match
@@ -74,9 +82,17 @@ def register(request):
             #redirect to register page
             return redirect("accounts:register")
         
+        if User.objects.filter(email=email).exists():
+            #message
+            messages.error(request, 'Email already exists')
+            #redirect to register page
+            return redirect("accounts:register")
+        
         #create user and profile
         user = User.objects.create_user(username=username, password=password1, email=email, first_name=first_name, last_name=last_name)
-        profile = Profile.objects.create(user=user, phone=phone, address=address, country=country, state=state, postal_code=postal_code)
+        profile = Profile.objects.create(user=user, phone=phone, address=address, city=city, state=state, postal_code=postal_code, address_line2=address_line2)
+        #add user to contact list
+        contact_list=ContactList.objects.create(first_name=first_name,last_name=last_name,email=email,phone=phone,address=address)
         
         #login
         login(request, user)
@@ -97,28 +113,28 @@ def profile(request):
         myprofile = Profile.objects.get(user=user)
     except Profile.DoesNotExist:
         myprofile = None     
-    #get state , country if user have profile
+    #get state , city if user have profile
         
     context={
         'state_choices':STATE_CHOICES,
-        'country_choices':COUNTRY_CHOICES,
         'user':user,
         'profile':myprofile,
     }
     
     if request.method=="POST":
-        #get first_name , last_name  , phone , state , Country , image , current_password , new_password 
+        #get first_name , last_name  , phone , state , city , image , current_password , new_password 
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         phone = request.POST['phone']
         state = request.POST['state']
-        country = request.POST['country']
+        city = request.POST['city']
         image = request.FILES.get('image',False)
         password1 = request.POST['password1']
         password2 = request.POST['password2']
         postal_code=request.POST['postal_code']
         #address
         address = request.POST['address']
+        address_line2 = request.POST['address_line2']
         #check if passwords match
         if password1 != password2:
             #message
@@ -132,11 +148,11 @@ def profile(request):
         user.save()
         #if myprofile not exist create it
         if not myprofile:
-            myprofile = Profile.objects.create(user=user, phone=phone, country=country, state=state, image=image, postal_code=postal_code, address=address)
+            myprofile = Profile.objects.create(user=user, phone=phone, city=city, state=state, image=image, postal_code=postal_code, address=address, address_line2=address_line2)
         else:
             myprofile.phone=phone
             myprofile.state=state
-            myprofile.country=country
+            myprofile.city=city
             myprofile.postal_code=postal_code
             if image:
                 myprofile.image=image
@@ -288,9 +304,56 @@ def payment_methods(request):
 
 
 def forgot_password(request):
+    if request.method=="POST":
+        #get email
+        email=request.POST['email']
+        #check if user exists
+        if User.objects.filter(email=email).exists():
+            #get user
+            user=User.objects.get(email=email)
+            subject="Reset Password"
+            message="To reset your password click on this link https://furydgp.com/accounts/reset_password/"+str(user.id)
+            email_from = settings.EMAIL_HOST_USER
+            #send mail
+            send_mail(
+                subject,
+                message,
+                email_from,
+                [email],
+                fail_silently=False,
+            )
+            #message
+            messages.success(request, 'Email sent successfully')
+                
+        else:
+            #message
+            messages.error(request, 'Email does not exist')
+            #redirect to forgot password page
+            return redirect("accounts:forgot_password")
+            
     return render(request, 'forgetpassword.html', {})
 
 
 
-def reset_password(request):
+def reset_password(request,id):
+    #get user by id
+    user=User.objects.get(id=id)
+    #get password1 , password2
+    if request.method=="POST":
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        #check if passwords match
+        if password1 != password2:
+            #message
+            messages.error(request, 'Passwords do not match')
+            #redirect to reset password page
+            return redirect("accounts:reset_password",id=id)
+        #set password
+        user.set_password(password1)
+        #save user
+        user.save()
+        #message
+        messages.success(request, 'Password updated successfully')
+        #redirect to login page
+        return redirect("accounts:login")
     return render(request, 'resetePassword.html', {})

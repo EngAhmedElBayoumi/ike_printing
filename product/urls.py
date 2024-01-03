@@ -9,6 +9,7 @@ urlpatterns = [
     #product_with_category
     path("product_with_category/<int:category_id>",views.product_with_category,name="product_with_category"),
     path("self_customization/",views.self_customization,name="self_customization"),
+    path("self_customization_product/<int:id>",views.self_customization_product,name="self_customization_product"),
     path("ordaring/",views.ordaring,name="ordaring"),
     #getproductsbycategory
     path("getproductsbycategory/<str:category_name>",views.getproductsbycategory,name="getproductsbycategory"),

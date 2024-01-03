@@ -58,38 +58,41 @@
               </a>
               <div class="nav-toggle"></div>
               <div class="mobile_nav">
-                <ul>
-                  {% if user.is_authenticated %}
-                  <li class="liProfillelee">
-                    <a class="ProfileLinkHeader">
-                      <img
-                        class="UserProfileImages"
-                        src="{% static 'assets/img/team-1.jpg' %}"
-                      />
-                    </a>
-                    <ul class="nav-dropdown nav-submenu">
-                      <li>
-                        <a href="{% url 'accounts:profile' %}">My Profile</a>
-                      </li>
-                      <li><a href="{% url 'accounts:logout' %}">Log Out</a></li>
-                    </ul>
-                  </li>
-                  {% else %}
+								<ul>
+								{% comment %} if user login {% endcomment %}
+								{% if user.is_authenticated %}
+                                <li class="liProfillelee">
+                                    <a class="ProfileLinkHeader">
+                                        {% if user.profile.image.url and user.profile.image.url != "/media/False"  %}
+										<img class="UserProfileImages" src="{{ user.profile.image.url }}">
+										{% else %}
+										<!--user icon-->
+										<i class="lni lni-user" style="color:rgb(182 144 76)"></i>
+										{{user.first_name }}
+										{{user.last_name }}
+										{% endif %}
+										{% comment %} first name for user {% endcomment %}
+                                    </a>
+                                    <ul class="nav-dropdown nav-submenu">
+                                        <li><a href="{% url 'accounts:profile' %}">My Profile</a></li>
+                                        <li><a href="{% url 'accounts:logout' %}">Log Out</a></li>
+                                    </ul>
+								</li>
+								{% else %}
 
-                  <li>
-                    <a href="{% url 'accounts:login' %}">
-                      <i class="lni lni-user"></i>
-                    </a>
-                  </li>
-                  
-                  {% endif %}
-                  <li>
-                    <a href="{% url 'product:card' %}" style="color: #fff;" >
-                      <i class="lni lni-shopping-basket"></i><span class="dn-counter theme-bg">1</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+								<li>
+									<a href="{% url 'accounts:login' %}" >
+										<i class="lni lni-user text-white"></i>
+									</a>
+								</li>
+								{% endif %}
+								<li>
+									<a href="{% url 'product:card' %}" style="color: #fff;" >
+										<i class="lni lni-shopping-basket"></i><span class="dn-counter theme-bg"></span>
+									</a>
+								</li>
+								</ul>
+							</div>
             </div>
             <div class="nav-menus-wrapper" style="transition-property: none">
               <ul class="nav-menu">
@@ -133,7 +136,7 @@
                 </li>
                 <li>
 									<a href="{% url 'product:card' %}" >
-										<i class="lni lni-shopping-basket"></i><span class="dn-counter theme-bg">1</span>
+										<i class="lni lni-shopping-basket"></i><span class="dn-counter theme-bg"></span>
 									</a>
 								</li>
 
@@ -582,13 +585,7 @@
                                 >
                                   <div class="accordion-body text-muted">
                                     <div class="ProductColor">
-                                      <h2 class="m-0">Product Info</h2>
-                                      <div
-                                        class="DescriptionInTap"
-                                        id="product_description"
-                                      >
-                                        {{ products.0.description }}
-                                      </div>
+                                      
 
                                       <h2>Choose Product Color</h2>
                                       <div
@@ -687,6 +684,7 @@
                                           {% endfor %}
                                         </div>
                                       </div>
+
                                     </div>
                                   </div>
                                 </div>
@@ -741,12 +739,21 @@
                                             </div>
                                           </div>
                                           {% endfor %}
+                                          <h2 class="m-0">Product Info</h2>
+                                      <div
+                                        class="DescriptionInTap"
+                                        id="product_description"
+                                      >
+                                        {{ products.0.description }}
+                                      </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
+                                
                               </div>
+                              
                             </div>
                           </div>
                         </div>
@@ -2013,7 +2020,7 @@
                 <div class="footer_widget">
                   <h4 class="widget_title">Company</h4>
                   <ul class="footer-menu">
-                    <li><a href="#">About</a></li>
+                    <li><a href="{% url 'home:about' %}">About</a></li>
 									  <li><a href="{% url 'home:privacy' %}">Terms & Conditions - Security</a></li>
                   </ul>
                 </div>
@@ -2688,6 +2695,7 @@
     <!-- Product Modal End -->
 
     <form method="post" id="crftokenform">{% csrf_token %}</form>
+    <form method="post" id="crftokenform2">{% csrf_token %}</form>
 
     <!-- subscribeModal -->
 
@@ -3108,13 +3116,19 @@
 
     <script>
       projecturl = "http://127.0.0.1:8000/";
-      //projecturl = "http://furydgp.com/";
+      //projecturl = "https://furydgp.com/";
+
+      // if host is contain www. remove it 
+      if (window.location.host.includes("www.")) {
+        window.location.host = window.location.host.replace("www.", "");
+      }
+
 
       // function addImage
       function uploadimage(inputElement) {
         // get crftoken value from crftokenform input
         var crftoken = document
-          .getElementById("crftokenform")
+          .getElementById("crftokenform2")
           .getElementsByTagName("input")[0].value;
 
         var file_data = inputElement.files[0];

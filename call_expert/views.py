@@ -12,17 +12,81 @@ from senior_unicorn.models import working_setting as senior_unicorn_working_sett
 #import messages
 from django.contrib import messages
 #import zoom
-# from zoomus import ZoomClient
+from zoomus import ZoomClient
 #import settings
 from django.conf import settings
 #import redirect
 from django.shortcuts import redirect
 #import json
 import json
+import requests
+import json
+#import datetime
+from datetime import datetime, timedelta
+#send mail
+from django.core.mail import send_mail
+
 # Create your views here.
 
 
+
 import os
+
+
+#create zoom meeting    
+def create_zoom_meeting(start_time, duration, topic):
+    # Create a Zoom client
+    client = ZoomClient(settings.ZOOM_API_KEY, settings.ZOOM_API_SECRET, settings.ZOOM_ACCOUNT_ID)
+
+    # Check if start_time is a string and convert it to a datetime object
+        
+    # Create a Zoom meeting
+    meeting_info = client.meeting.create(user_id='me',
+                                         topic=topic,
+                                         type=2,  
+                                         start_time=datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ'),
+                                         duration=duration,
+                                         timezone='UTC',
+                                         settings={
+                                            "host_video": True,
+                                            "participant_video": True,
+                                            "cn_meeting": False,
+                                            "in_meeting": False,
+                                            "join_before_host": False,
+                                            "mute_upon_entry": False,
+                                            "watermark": False,
+                                            "use_pmi": False,
+                                            "approval_type": 0,
+                                            "registration_type": 2,
+                                            "audio": "both",
+                                            "auto_recording": "none",
+                                            "enforce_login": False,
+                                            "enforce_login_domains": "",
+                                            "alternative_hosts": "",
+                                            "close_registration": False,
+                                            "registrants_confirmation_email": True,
+                                            "waiting_room": True,
+                                            "global_dial_in_countries": [],
+                                            "global_dial_in_numbers": [],
+                                            "contact_name": "",
+                                            "contact_email": "",
+                                            "registrants_email_notification": True,
+                                            "meeting_authentication": False
+                                        }
+                                        
+                                        
+                                         )
+    #how to enable waiting room
+        
+
+
+    #meeting url
+    meeting_info = meeting_info.json()
+    print('meeting_info', meeting_info)
+    meeting_url=meeting_info.get('join_url')
+    return meeting_url
+
+
 
 allowed_extiontion=[
     '.pdf',
@@ -43,8 +107,14 @@ def allowed_file(file_name):
     else:
         return False
     
+    
+
 
 def call_expert(request):
+    #create meet with duration 50min and start time after 2 min and topic test
+    meeting_url = create_zoom_meeting('2024-01-05T12:00:00Z', 50, 'test')
+    print(meeting_url)
+    
     return render(request, 'ChooseDesigner.html', {})
 
 
@@ -323,6 +393,7 @@ def redirect_to_payment(request):
 
 
 
+
 def payment_success(request):
     #check meeting_type 
     meeting_type = request.session['meeting_type']
@@ -330,6 +401,26 @@ def payment_success(request):
     meeting_data = request.session['meeting_data']
     #check meeting_type and save meeting
     if meeting_type == 'dragon':
+        #calculate deuration
+        start_time = meeting_data['start_time']
+        end_time = meeting_data['end_time']
+        start_time = datetime.strptime(start_time, '%H:%M')
+        end_time = datetime.strptime(end_time, '%H:%M')
+        duration = end_time - start_time
+        duration = duration.seconds / 60
+        #create zoom meeting
+        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + 'Z', duration, meeting_data['subject'])
+        #send mail to user
+        send_mail(
+            'Fast Meeting Reservation',
+            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            settings.EMAIL_HOST_USER,
+            [meeting_data['user_email']],
+            fail_silently=False,
+        )
+        #save meeting
+        
+
         dragon_meeting.objects.create(
             user_name=meeting_data['user_name'],
             user_email=meeting_data['user_email'],
@@ -338,8 +429,26 @@ def payment_success(request):
             meeting_date=meeting_data['meeting_date'],
             start_time=meeting_data['start_time'],
             end_time=meeting_data['end_time'],
+            meeting_url=meeting_url
         )
     elif meeting_type == 'unicorn':
+        #calculate deuration
+        start_time = meeting_data['start_time']
+        end_time = meeting_data['end_time']
+        start_time = datetime.strptime(start_time, '%H:%M')
+        end_time = datetime.strptime(end_time, '%H:%M')
+        duration = end_time - start_time
+        duration = duration.seconds / 60
+        #create zoom meeting
+        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + 'Z', duration, meeting_data['subject'])
+        #send mail to user
+        send_mail(
+            'Fast Meeting Reservation',
+            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            settings.EMAIL_HOST_USER,
+            [meeting_data['user_email']],
+            fail_silently=False,
+        )
         unicorn_meeting.objects.create(
             user_name=meeting_data['user_name'],
             user_email=meeting_data['user_email'],
@@ -348,8 +457,26 @@ def payment_success(request):
             meeting_date=meeting_data['meeting_date'],
             start_time=meeting_data['start_time'],
             end_time=meeting_data['end_time'],
+            meeting_url=meeting_url
         )
     elif meeting_type == 'senior_dragon':
+        #calculate deuration
+        start_time = meeting_data['start_time']
+        end_time = meeting_data['end_time']
+        start_time = datetime.strptime(start_time, '%H:%M')
+        end_time = datetime.strptime(end_time, '%H:%M')
+        duration = end_time - start_time
+        duration = duration.seconds / 60
+        #create zoom meeting
+        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + 'Z', duration, meeting_data['subject'])
+        #send mail to user
+        send_mail(
+            'profissional Meeting Reservation',
+            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            settings.EMAIL_HOST_USER,
+            [meeting_data['user_email']],
+            fail_silently=False,
+        )
         senior_dragon_meeting.objects.create(
             user_name=meeting_data['user_name'],
             user_email=meeting_data['user_email'],
@@ -357,9 +484,27 @@ def payment_success(request):
             message=meeting_data['message'],
             meeting_date=meeting_data['meeting_date'],
             start_time=meeting_data['start_time'],
-            end_time=meeting_data['end_time']
+            end_time=meeting_data['end_time'],
+            meeting_url=meeting_url
         )
     elif meeting_type == 'senior_unicorn':
+        #calculate deuration
+        start_time = meeting_data['start_time']
+        end_time = meeting_data['end_time']
+        start_time = datetime.strptime(start_time, '%H:%M')
+        end_time = datetime.strptime(end_time, '%H:%M')
+        duration = end_time - start_time
+        duration = duration.seconds / 60
+        #create zoom meeting
+        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + 'Z', duration, meeting_data['subject'])
+        #send mail to user
+        send_mail(
+            'profissional Meeting Reservation',
+            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            settings.EMAIL_HOST_USER,
+            [meeting_data['user_email']],
+            fail_silently=False,
+        )
         senior_unicorn_meeting.objects.create(
             user_name=meeting_data['user_name'],
             user_email=meeting_data['user_email'],
@@ -367,7 +512,8 @@ def payment_success(request):
             message=meeting_data['message'],
             meeting_date=meeting_data['meeting_date'],
             start_time=meeting_data['start_time'],
-            end_time=meeting_data['end_time']
+            end_time=meeting_data['end_time'],
+            meeting_url=meeting_url
         )
     #clear session
     request.session['meeting_type'] = None

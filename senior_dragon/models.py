@@ -41,6 +41,7 @@ class meeting(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     upload_file = models.FileField(upload_to='uploads/meetings',null=True,blank=True)
+    meeting_url=models.CharField(max_length=5000,null=True,blank=True)
 
     def __str__(self):
         return str(self.meeting_date)

@@ -2,6 +2,10 @@ from django.db import models
 import json
 #import user
 from django.contrib.auth.models import User
+import requests
+import base64
+from django.core.files.base import ContentFile
+from django.utils import timezone
 
 
 # Create your models here.
@@ -129,7 +133,27 @@ class CardSize(models.Model):
     
     def __str__(self):
         return self.symbol
+  
+  
+#design images resourse
+class DesignImage(models.Model):
+    image = models.TextField()
     
+    #get image
+    def get_image(self):
+        return json.loads(self.image)
+    
+    #set image
+    def set_image(self):
+        self.image=json.dumps(self.image)
+
+    
+    def __str__(self):
+        return f'{self.id}'
+    
+
+    
+  
     
 #cart product
 class CartProduct(models.Model):
@@ -146,7 +170,9 @@ class CartProduct(models.Model):
     sizes = models.ManyToManyField(CardSize)
     front_tshirt_image = models.ImageField(upload_to='product/cartproduct_image',blank=True,null=True)
     back_tshirt_image = models.ImageField(upload_to='product/cartproduct_image',blank=True,null=True)
-   
+    #design images
+    design_images = models.ManyToManyField(DesignImage)
+    
     def __str__(self):
         return self.product.name
     
@@ -165,7 +191,9 @@ class CartProduct(models.Model):
     #set back canvas data
     def set_backcanvas(self):
         self.backcanvas=json.dumps(self.backcanvas)
-             
+   
+   
+          
 #order
 class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -174,6 +202,8 @@ class Order(models.Model):
     #methods of receiving
     methods_of_receiving = models.CharField(max_length=50, default="pickup")
     order_date = models.DateTimeField(auto_now_add=True)
+    #order receiving date not time
+    order_receiving_date = models.DateField(null=True,blank=True)
     def __str__(self):
         return self.user.username
     
