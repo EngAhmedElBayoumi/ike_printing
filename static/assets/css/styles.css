@@ -6411,7 +6411,8 @@ margin-bottom: 20px;
 	.nav-brand img {
 		max-width: 85px;
 		position: relative;
-		top: -2px;
+		top: 0px;
+        height: auto;
 	}
 	.order-selector{
 		display:none;
