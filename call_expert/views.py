@@ -5,10 +5,11 @@ from django.urls import reverse
 import uuid 
 from datetime import datetime
 from paypal.standard.forms import PayPalPaymentsForm 
-from dragon.models import working_setting as dragon_working_setting , meeting as dragon_meeting 
-from senior_dragon.models import working_setting as senior_dragon_working_setting , meeting as senior_dragon_meeting
-from unicorn.models import working_setting as unicorn_working_setting , meeting as unicorn_meeting
-from senior_unicorn.models import working_setting as senior_unicorn_working_setting , meeting as senior_unicorn_meeting
+from dragon.models import working_setting as dragon_working_setting , meeting as dragon_meeting  , upload_file as dragon_upload_file
+from senior_dragon.models import working_setting as senior_dragon_working_setting , meeting as senior_dragon_meeting , upload_file as senior_dragon_upload_file
+from unicorn.models import working_setting as unicorn_working_setting , meeting as unicorn_meeting , upload_file as unicorn_upload_file
+from senior_unicorn.models import working_setting as senior_unicorn_working_setting , meeting as senior_unicorn_meeting , upload_file as senior_unicorn_upload_file
+
 #import messages
 from django.contrib import messages
 #import zoom
@@ -76,7 +77,6 @@ def create_zoom_meeting(start_time, duration, topic):
                                         
                                         
                                          )
-    #how to enable waiting room
         
 
 
@@ -111,10 +111,6 @@ def allowed_file(file_name):
 
 
 def call_expert(request):
-    #create meet with duration 50min and start time after 2 min and topic test
-    meeting_url = create_zoom_meeting('2024-01-05T12:00:00Z', 50, 'test')
-    print(meeting_url)
-    
     return render(request, 'ChooseDesigner.html', {})
 
 
@@ -128,19 +124,12 @@ def call_senior_designer(request):
         fromtime=request.POST.get('fromtime') or None
         totime=request.POST.get('totime') or None
         date=request.POST.get('data') or None
-        upload_file=request.FILES.get('upload_file') or None
+        upload_file=request.FILES.getlist('upload_file') or None
         
         #validate all fields
         if not name or not email or not subject or not message or not fromtime or not totime or not date or not upload_file:
             messages.error(request, "All fields are required.")
             return render(request, 'CallSeniorDesigner.html', {})
-        
-        #check if file is empty
-        if upload_file:
-            #validate file type
-            if not allowed_file(upload_file):
-                messages.error(request, "File type not supported.")
-                return render(request, 'CallSeniorDesigner.html', {})  
         
         #convert fromtime from string to time not datetime
         fromtime = datetime.strptime(fromtime, '%H:%M').time()
@@ -185,7 +174,8 @@ def call_senior_designer(request):
                 'meeting_date': date.strftime('%Y-%m-%d'),  
                 'start_time': fromtime.strftime('%H:%M'),
                 'end_time': totime.strftime('%H:%M'),
-                'price': price
+                'price': price,
+                'upload_file': upload_file
             }
             #redirect to payment
             return redirect('call_expert:redirect_to_payment')                  
@@ -224,7 +214,8 @@ def call_senior_designer(request):
                     'meeting_date': date.strftime('%Y-%m-%d'),  
                     'start_time': fromtime.strftime('%H:%M'),
                     'end_time': totime.strftime('%H:%M'),
-                    'price': price
+                    'price': price,
+                    'upload_file': upload_file
                 }
                 #redirect to payment
                 return redirect('call_expert:redirect_to_payment')
@@ -259,19 +250,14 @@ def call_designer(request):
         fromtime=request.POST.get('fromtime') or None
         totime=request.POST.get('totime') or None
         date=request.POST.get('data') or None
-        upload_file=request.FILES.get('upload_file') or None
+        upload_file=request.FILES.getlist('upload_file') or None
         
         #validate all fields
         if not name or not email or not subject or not message or not fromtime or not totime or not date or not upload_file:
             messages.error(request, "All fields are required.")
             return render(request, 'CallSeniorDesigner.html', {})
         
-        #check if file is empty
-        if upload_file:
-            #validate file type
-            if not allowed_file(upload_file):
-                messages.error(request, "File type not supported.")
-                return render(request, 'CallSeniorDesigner.html', {})  
+        
         
         #convert fromtime from string to time not datetime
         fromtime = datetime.strptime(fromtime, '%H:%M').time()
@@ -318,7 +304,8 @@ def call_designer(request):
                 'meeting_date': date.strftime('%Y-%m-%d'),  
                 'start_time': fromtime.strftime('%H:%M'),
                 'end_time': totime.strftime('%H:%M'),
-                'price': price
+                'price': price,
+                'upload_file': upload_file
             }
             #redirect to payment
             return redirect('call_expert:redirect_to_payment')
@@ -358,7 +345,8 @@ def call_designer(request):
                     'meeting_date': date.strftime('%Y-%m-%d'),  
                     'start_time': fromtime.strftime('%H:%M'),
                     'end_time': totime.strftime('%H:%M'),
-                    'price': price
+                    'price': price,
+                    'upload_file': upload_file
                 }
                 #redirect to payment
                 return redirect('call_expert:redirect_to_payment')
@@ -419,8 +407,6 @@ def payment_success(request):
             fail_silently=False,
         )
         #save meeting
-        
-
         dragon_meeting.objects.create(
             user_name=meeting_data['user_name'],
             user_email=meeting_data['user_email'],
@@ -429,8 +415,16 @@ def payment_success(request):
             meeting_date=meeting_data['meeting_date'],
             start_time=meeting_data['start_time'],
             end_time=meeting_data['end_time'],
-            meeting_url=meeting_url
+            meeting_url=meeting_url,
         )
+        #save files
+        for file in meeting_data['upload_file']:
+            dragon_upload_file.objects.create(
+                file=file
+            )
+            #add file to meeting
+            dragon_meeting.objects.last().files.add(dragon_upload_file.objects.last())
+            
     elif meeting_type == 'unicorn':
         #calculate deuration
         start_time = meeting_data['start_time']
@@ -459,6 +453,13 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url
         )
+        #save files
+        for file in meeting_data['upload_file']:
+            dragon_upload_file.objects.create(
+                file=file
+            )
+            #add file to meeting
+            dragon_meeting.objects.last().files.add(dragon_upload_file.objects.last())
     elif meeting_type == 'senior_dragon':
         #calculate deuration
         start_time = meeting_data['start_time']
@@ -487,6 +488,13 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url
         )
+        #save files
+        for file in meeting_data['upload_file']:
+            dragon_upload_file.objects.create(
+                file=file
+            )
+            #add file to meeting
+            dragon_meeting.objects.last().files.add(dragon_upload_file.objects.last())
     elif meeting_type == 'senior_unicorn':
         #calculate deuration
         start_time = meeting_data['start_time']
@@ -515,6 +523,13 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url
         )
+        #save files
+        for file in meeting_data['upload_file']:
+            dragon_upload_file.objects.create(
+                file=file
+            )
+            #add file to meeting
+            dragon_meeting.objects.last().files.add(dragon_upload_file.objects.last())
     #clear session
     request.session['meeting_type'] = None
     request.session['meeting_data'] = None
