@@ -14,7 +14,6 @@ from contact_us.models import ContactList
 from django.core.mail import send_mail
 #import settings
 from django.conf import settings
-
 # Create your views here.
 def log_in(request):
     if request.method=="POST":
@@ -128,7 +127,7 @@ def profile(request):
         phone = request.POST['phone']
         state = request.POST['state']
         city = request.POST['city']
-        image = request.FILES.get('image',False)
+        image = request.FILES.get('image')
         password1 = request.POST['password1']
         password2 = request.POST['password2']
         postal_code=request.POST['postal_code']
@@ -154,11 +153,18 @@ def profile(request):
             myprofile.state=state
             myprofile.city=city
             myprofile.postal_code=postal_code
+            myprofile.address=address
+            myprofile.address_line2=address_line2
+            
             if image:
+                #check if image name non ascii characters rename it with unique name
+                if not image.name.isascii():
+                    image.name=str(image.name.encode('ascii', 'ignore'))[2:-1]
                 myprofile.image=image
             if password1:
                 user.set_password(password1)
             myprofile.save()
+        
         user.save()
         #message
         messages.success(request, 'Profile updated successfully')
