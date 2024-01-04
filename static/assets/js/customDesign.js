@@ -478,14 +478,17 @@ document.addEventListener("keydown", function(e) {
     
     // delete on DEL key or backspace key
     if(keyCode == 46){
-        var activeObject = activecanvas.getActiveObject();
+        var activeObject = activecanvas.getActiveObjects();
 
         if (activeObject) {
-            // Remove the active object from the canvas
-            activecanvas.remove(activeObject);
+            activeObject.forEach(function(object) {
+                activecanvas.remove(object);
+            });
         }
     }
 }, false);
+
+
 
 
 
@@ -518,10 +521,10 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
     canvas.renderAll();
     canvasBack.renderAll();
     // calculate total height for front canvas
-    var frontDesignHeight = calculateTotalArea(frontObjects, canvas);
+    var frontDesignHeight = calculateTotalArea(frontObjects, productHeightByPixels);
     console.log('frontDesignHeightByPixels', frontDesignHeight,canvasBack)
     // calculate total height for back canvas
-    var backDesignHeight = calculateTotalArea(backObjects);
+    var backDesignHeight = calculateTotalArea(backObjects, productHeightByPixels);
     console.log('backDesignHeight', backDesignHeight)
     // calculate front design height by inches
     var frontDesignHeightByInches = frontDesignHeight / scale;
@@ -570,7 +573,7 @@ document.getElementById("Quote_Buy_tab").addEventListener("click", function() {
 
 
 // function to calculate total area of objects
-function calculateTotalArea(objects, currentCanvas) {
+function calculateTotalArea(objects, productHeightByPixels) {
     var totalArea = 0;
     
     // loop through all objects
@@ -581,6 +584,12 @@ function calculateTotalArea(objects, currentCanvas) {
         totalArea += objectHeight;
     });
 
+    // check if totalArea grand than productHeightByPixels
+    if (totalArea > productHeightByPixels) {
+        // set total area = productHeightByPixels
+        totalArea = productHeightByPixels;
+    }
+
     return totalArea;
 }
 var hidden_total_price =0;
@@ -589,7 +598,7 @@ function getQuote(frontDesignHeight, backDesignHeight, quantity,quantity_price) 
     
     // check if quantity not null or empty or 0
     if (quantity == "" || quantity == 0) {
-        swal.fire("Please enter quantity");
+        swal.fire("Please enter sizes at the product tab");
         // return
         return;
     }
@@ -718,6 +727,29 @@ function getTShirtImage(canvasId, backgroundImageId) {
 }
 
 
+// function deleteSelection
+function deleteSelection() {
+    // get all selected objects
+    var activeObjects = activecanvas.getActiveObjects();
+
+    // check if there are any selected objects
+    if (activeObjects.length === 0) {
+        return;
+    }
+
+    // iterate through the array of selected objects and remove each one
+    activeObjects.forEach(function(object) {
+        activecanvas.remove(object);
+    });
+
+    // unselect objects
+    activecanvas.discardActiveObject();
+    
+    // save canvas state
+    saveCanvasState();
+}
+
+
 
 //------------------------
 // add to card
@@ -820,10 +852,6 @@ document.getElementById("addToCard").addEventListener("click", function() {
 
     });
 
-    // return;
-
-
-
     console.log("add to card=> " , quantity);
     // create form data
     var formData = new FormData();
@@ -847,6 +875,7 @@ document.getElementById("addToCard").addEventListener("click", function() {
     formData.append('back_tshirt_image', back_tshirt_image);
     // append design_resource
     formData.append('design_resource', JSON.stringify(design_resource));
+    console.log("design_resource=> " , design_resource);
 
     // axios call to add to card
     axios.post(`${projecturl}product/add_to_card/`, formData, {

@@ -23,7 +23,13 @@ from django.urls import reverse
 from django.contrib import messages
 #datetime
 from datetime import datetime , timedelta
-
+#import login_requried
+from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
+from django.core.files.temp import NamedTemporaryFile
+import requests
+import base64
+import uuid
 
 # Create your views here.
 
@@ -64,8 +70,6 @@ def product(request):
     return render(request, 'products.html', context)
 
 
-
-
 def product_with_category(request,category_id):
     
     #get  products by category id
@@ -104,8 +108,7 @@ def product_with_category(request,category_id):
     return render(request, 'products.html', context)
 
 
-
-
+@login_required()
 def self_customization(request):
     #get all clip arts
     clip_arts = ClipArt.objects.all()
@@ -149,6 +152,7 @@ def self_customization(request):
     
     return render(request, 'custom.html', context)
 
+@login_required()
 def self_customization_product(request,id):
     #get all clip arts
     clip_arts = ClipArt.objects.all()
@@ -196,6 +200,7 @@ def self_customization_product(request,id):
     }
     
     return render(request, 'custom.html', context)
+
 
 
 def edit_product_design(request,product_id):
@@ -320,8 +325,6 @@ def getproductsbycolor(request,color_name):
     return JsonResponse({"products": product_data})
 
 
-
-
 #save user image
 def save_user_image(request):
     #check if user is authenticated
@@ -443,91 +446,6 @@ def get_user_product_design(request):
 
 
 
-# def get_quote(request):
-#     #get form front_design_height , back_design_height , quantity ,quantity_price
-#     front_design_height = request.POST.get('front_design_height')
-#     back_design_height = request.POST.get('back_design_height')
-#     quantity = request.POST.get('quantity')
-#     quantity_price = request.POST.get('quantity_price')
-#     #check if quantity is 0 or null
-#     if quantity == "0" or quantity == "":
-#         #return error
-#         return JsonResponse({"error":"quantity is 0"})
-    
-#     #get price for design depend on height
-#     front_design_price = PrintingPrice.objects.filter(min_size__lte=front_design_height, max_size__gte=front_design_height).first()
-#     #check if front_design_price is null
-#     if front_design_price == None:
-#         #return error
-#         return JsonResponse({"error":"front design price not found"})
-#     front_design_price=front_design_price.price
-#     back_design_price = PrintingPrice.objects.filter(min_size__lte=back_design_height, max_size__gte=back_design_height).first()
-#     #check if back_design_price is null
-#     if back_design_price == None:
-#         #return error
-#         return JsonResponse({"error":"back design price not found"})
-#     back_design_price=back_design_price.price
-    
-#     #----------------
-#     #get discount for design depend on quantity
-#     front_design_discount = PrintingDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
-#     #check if there are discount for front design
-#     if front_design_discount:
-#         front_design_discount=front_design_discount.discount
-#         #apply discount
-#         front_design_price=front_design_price-(front_design_price*(front_design_discount/100))
-    
-#     back_design_discount = PrintingDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
-#     #check if there are discount for back design
-#     if back_design_discount:
-#         back_design_discount=back_design_discount.discount
-#         #apply discount
-#         back_design_price=back_design_price-(back_design_price*(back_design_discount/100))
-        
-#     #----------------
-#     #get discount for quantity
-#     quantity_discount = ProductDiscountQuantity.objects.filter(min_quantity__lte=quantity, max_quantity__gte=quantity).first()
-#     #check if there are discount for quantity
-#     if quantity_discount:
-#         quantity_discount=quantity_discount.discount
-#         #apply discount
-#         quantity_price=quantity_price-(quantity_price*(quantity_discount/100))
-        
-#     #----------------
-#     #convert quantity , front_design_price , back_design_price to int
-#     quantity=int(quantity)
-#     front_design_price=float(front_design_price)
-#     back_design_price=float(back_design_price)
-#     quantity_price=float(quantity_price)
-#     total_price = front_design_price + back_design_price + quantity_price
-    
-#     #----------------
-#     #get general discount
-#     general_discount = GeneralDiscount.objects.first()
-#     #check if there are general discount
-#     if general_discount:
-#         general_discount=general_discount.discount
-#         #apply discount
-#         total_price=total_price-(total_price*(general_discount/100))
-        
-#     #create json data with front_design_price , back_design_price , quantity_price , total_price
-#     data = {
-#         "front_design_price": front_design_price,
-#         "back_design_price": back_design_price,
-#         "quantity_price": quantity_price,
-#         "total_price": total_price,
-#     }
-#     if request.method=="POST":
-#         #return data
-#         print(data)
-#         return JsonResponse(data)
-    
-#     #return data
-#     return JsonResponse(data)
-# #------------------------------
-
-
-
 #validate positive integer
 def validate_positive_integer(value, field_name):
     try:
@@ -553,9 +471,7 @@ def get_front_back_design_price(front_design_height, back_design_height, quantit
     else:
         front_design_price = 0
     if front_design_price:
-        print(front_design_price.price)
         front_design_price=front_design_price.price * quantity
-        print(front_design_price)
         
     else:
         front_design_price=0
@@ -606,13 +522,9 @@ def get_quantity_discounted_price(quantity, quantity_price):
 
 def get_quote(request):
     front_design_height = request.POST.get('front_design_height')
-    print('front_design_height',front_design_height)
     back_design_height = request.POST.get('back_design_height')
-    print('back_design_height',back_design_height)
     quantity = request.POST.get('quantity')
-    print('quantity',quantity)
     quantity_price = request.POST.get('quantity_price')
-    print('quantity_price',quantity_price)
     
     try:
         # Validate and get front, back, and quantity prices
@@ -638,7 +550,6 @@ def get_quote(request):
 
         # Apply general discount
         total_price = get_general_discounted_price(total_price)
-        print('total_price',total_price)
         # Create JSON data
         data = {
             "front_design_price": front_design_price,
@@ -646,9 +557,6 @@ def get_quote(request):
             "quantity_price": quantity_price,
             "total_price": total_price,
         }
-        print(data)
-
-
         return JsonResponse(data)
 
     except ValueError as e:
@@ -688,7 +596,6 @@ def order(request):
     
     #get methods of receiving
     method_of_receiving = request.POST.get('method_of_receiving_input')
-    print('method_of_receiving',method_of_receiving)
     if method_of_receiving == "delivery":
         total_price += 20
         #put total price in session
@@ -792,16 +699,8 @@ def payment_failed(request):
     #return redirect to card
     return redirect('product:card')
  
- 
-def save_design_images(images_data):
-    design_images = []
-    
-    for image_data in images_data:
-        design_image = DesignImage.save_image(image_data)
-        if design_image:
-            design_images.append(design_image)
 
-    return design_images
+    
  
  
 #login required
@@ -855,6 +754,9 @@ def card(request):
             #get front_tshirt_image , back_tshirt_image
             front_tshirt_image = request.POST.get('front_tshirt_image')
             back_tshirt_image = request.POST.get('back_tshirt_image')
+            #save design images
+            design_images = request.POST.get('design_resource')
+            design_images = json.loads(design_images)
             
             #check if canvasBackgroundColor is null
             if canvasBackgroundColor == "":
@@ -873,6 +775,8 @@ def card(request):
                 size_quantity = size_item.get('quality')
                 size = CardSize.objects.create(symbol=symbol, quantity=size_quantity)
                 sizes.append(size)
+           
+           
             #get product
             product = Product.objects.get(id=product_id)
             #get user
@@ -883,16 +787,18 @@ def card(request):
             cart_product.user.set([user])
             #set sizes
             cart_product.sizes.set(sizes)  
-            #save design images
-            design_images = save_design_images(request.POST.getlist('design_images[]'))
-            #set design images
-            cart_product.design_images.set(design_images)
+            #loop on design images and create design image
+            for design_image_data in design_images:
+                design_image = DesignImage.objects.create(image=design_image_data)
+                #add design image to cart product
+                cart_product.design_images.add(design_image)
+
+                    
+                
+            
             
             #save cart product
-            cart_product.save()
-            
-            print(quantity)
-            
+            cart_product.save()            
             #return success
             return JsonResponse({"success": "success"})
         except Exception as e:

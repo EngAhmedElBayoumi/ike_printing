@@ -6,6 +6,8 @@ import requests
 import base64
 from django.core.files.base import ContentFile
 from django.utils import timezone
+from django.core.files.temp import NamedTemporaryFile
+from django.utils.html import format_html
 
 
 # Create your models here.
@@ -137,7 +139,11 @@ class CardSize(models.Model):
   
 #design images resourse
 class DesignImage(models.Model):
+    #text field for image with method json.dumps and json.loads
     image = models.TextField()
+
+    def __str__(self):
+        return str(self.id)
     
     #get image
     def get_image(self):
@@ -146,15 +152,8 @@ class DesignImage(models.Model):
     #set image
     def set_image(self):
         self.image=json.dumps(self.image)
-
     
-    def __str__(self):
-        return f'{self.id}'
-    
-
-    
-  
-    
+        
 #cart product
 class CartProduct(models.Model):
     user = models.ManyToManyField(User)
