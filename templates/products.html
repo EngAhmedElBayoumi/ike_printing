@@ -200,10 +200,10 @@
 									<div class="product_grid card b-0">
                                       <div class="card-body p-0">
                                             <div class="shop_thumb position-relative">
-                                                <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:self_customization_product' product.id %}">
                                                     <img class="card-img-top" src="{{product.frontimage.url}}" alt="">
                                                 </a>
-                                                <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:self_customization_product' product.id %}">
                                                     <img class="card-img-top" src="{{product.backimage.url}}" alt="">
                                                 </a>
                                                 <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
@@ -270,10 +270,10 @@
                                         <div class="product_grid card b-0">
                                             <div class="card-body p-0">
                                                 <div class="shop_thumb position-relative">
-                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:self_customization_product' 555555 %}">
                                                         <img class="card-img-top" src="${product.frontimage}" alt="">
                                                     </a>
-                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:self_customization_product' 555555 %}">
                                                         <img class="card-img-top" src="${product.backimage}" alt="">
                                                     </a>
                                                     <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
@@ -297,8 +297,7 @@
                                         </div>
                                     `;
                                         //replace placeholder with product id in productCard
-                                        productCard.innerHTML = productCard.innerHTML.replace('555555', product.id);
-                                        console.log(product.id)
+                                        productCard.innerHTML = productCard.innerHTML.replaceAll('555555', product.id);
 
                                     // Append the product card to the productitem
                                     productitem.appendChild(productCard);
@@ -335,10 +334,10 @@
                                         <div class="product_grid card b-0">
                                             <div class="card-body p-0">
                                                 <div class="shop_thumb position-relative">
-                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:self_customization_product' 555555 %}">
                                                         <img class="card-img-top" src="${product.frontimage}" alt="">
                                                     </a>
-                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:self_customization_product' 555555 %}">
                                                         <img class="card-img-top" src="${product.backimage}" alt="">
                                                     </a>
                                                     <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
@@ -362,7 +361,7 @@
                                         </div>
                                     `;
                                         //replace placeholder with product id in productCard
-                                        productCard.innerHTML = productCard.innerHTML.replace('555555', product.id);
+                                        productCard.innerHTML = productCard.innerHTML.replaceAll('555555', product.id);
                                         console.log(product.id)
 
                                     // Append the product card to the productitem
@@ -399,10 +398,10 @@
                                         <div class="product_grid card b-0">
                                             <div class="card-body p-0">
                                                 <div class="shop_thumb position-relative">
-                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:self_customization_product' 555555 %}">
                                                         <img class="card-img-top" src="${product.frontimage}" alt="">
                                                     </a>
-                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:self_customization_product' 555555 %}">
                                                         <img class="card-img-top" src="${product.backimage}" alt="">
                                                     </a>
                                                     <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
@@ -426,7 +425,7 @@
                                         </div>
                                     `;
                                         //replace placeholder with product id in productCard
-                                        productCard.innerHTML = productCard.innerHTML.replace('555555', product.id);
+                                        productCard.innerHTML = productCard.innerHTML.replaceAll('555555', product.id);
                                         console.log(product.id)
 
                                     // Append the product card to the productitem
@@ -463,10 +462,10 @@
                                         <div class="product_grid card b-0">
                                             <div class="card-body p-0">
                                                 <div class="shop_thumb position-relative">
-                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="#">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-hide" href="{% url 'product:self_customization_product' 555555 %}">
                                                         <img class="card-img-top" src="${product.frontimage}" alt="">
                                                     </a>
-                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="#">
+                                                    <a class="card-img-top d-block overflow-hidden ovr-show" href="{% url 'product:self_customization_product' 555555 %}">
                                                         <img class="card-img-top" src="${product.backimage}" alt="">
                                                     </a>
                                                     <div class="product-hover-overlay btn d-flex align-items-center justify-content-center">
@@ -490,7 +489,7 @@
                                         </div>
                                     `;
                                         //replace placeholder with product id in productCard
-                                        productCard.innerHTML = productCard.innerHTML.replace('555555', product.id);
+                                        productCard.innerHTML = productCard.innerHTML.replaceAll('555555', product.id);
                                         console.log(product.id)
 
                                     // Append the product card to the productitem
