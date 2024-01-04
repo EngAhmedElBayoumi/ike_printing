@@ -1,6 +1,8 @@
 projecturl = "http://127.0.0.1:8000/";
 //projecturl = "https://furydgp.com/";
 
+var text_design_information = {}
+
 let canvas = new fabric.Canvas('tshirt-canvas-front');
 let canvasBack = new fabric.Canvas('tshirt-canvas-back');
 
@@ -77,12 +79,13 @@ document.querySelectorAll(".product-tab-info-link").forEach(function(button) {
 //function to add text
 function addText(){
     var message = document.getElementById("text-input").value;
+    // get text_design_information
     var text = new fabric.Text(message, {
         left: 100,
         top: 100,
         // arial
-        fontFamily: 'Arial' ,
-        fill: '#000000',
+        fontFamily: text_design_information.fontFamily?text_design_information.fontFamily:"arial",
+        fill: text_design_information.fontColor?text_design_information.fontColor:"black",
         fontSize: 20,
         lockUniScaling: true // disable uniform scaling
     });
@@ -165,6 +168,8 @@ activecanvas.on('object:modified', function(options) {
 
 //function to change font family
 function changeFontFamily(fontFamily){
+    // add font to text_design_information
+    text_design_information.fontFamily=fontFamily;
     activecanvas.getActiveObject().set("fontFamily", fontFamily);
     activecanvas.renderAll();
 
@@ -183,6 +188,8 @@ function changeFontSize(fontSize){
 
 //function to change font color
 function changeFontColor(fontColor){
+    // add font to text_design_information
+    text_design_information.fontColor=fontColor;
     activecanvas.getActiveObject().set("fill", fontColor);
     activecanvas.renderAll();
 
