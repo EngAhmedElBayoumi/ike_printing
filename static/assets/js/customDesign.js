@@ -74,43 +74,6 @@ document.querySelectorAll(".product-tab-info-link").forEach(function(button) {
         }
     });
 });
-
-
-// active canvas on select object put x on the right top to delete object
-activecanvas.on('object:selected', function(options) {
-    // get active object
-    var activeObject = options.target;
-    // check if active object is image or text
-        var deleteIcon = new fabric.Text('X', {
-            left: activeObject.left,
-            top: activeObject.top,
-            fontFamily: 'Arial',
-            fill: 'red',
-            fontSize: 20,
-            originX: 'center',
-            originY: 'center'
-        });
-        // add delete icon to canvas
-        canvas.add(deleteIcon);
-        // delete icon on click
-        deleteIcon.on('mousedown', function() {
-            canvas.remove(activeObject);
-            canvas.remove(deleteIcon);
-        }
-        );
-        // delete icon on mouse over
-        deleteIcon.on('mouseover', function() {
-            var hoverCursor = canvas.hoverCursor;
-            canvas.hoverCursor = 'pointer';
-            canvas.renderAll();
-            canvas.hoverCursor = hoverCursor;
-        }
-        );
-});
-
-
-
-
 //function to add text
 function addText(){
     var message = document.getElementById("text-input").value;
