@@ -193,23 +193,17 @@ JAZZMIN_SETTINGS = {
     
     #show view site
     "show_view_site_url": True,
-    
     #topmenu_links 
     "topmenu_links": [
         {"name": "IKE Printing website",  "url": "http://127.0.0.1:8000/", "new_window": True},
     ],
-    
-    "copyright": "IKE Printing",
-     
+    "copyright": "IKE Printing", 
     "navigation_expanded": True,
-      
-    
     #option to change theme color
     "theme": "default",
     "theme_css": "",
     "show_ui_builder": True,
     "changeform_format": "horizontal_tabs",
-    
     #sidebar menu icon for product app
     "icons": {
         "product.Products": "fas fa-tshirt",

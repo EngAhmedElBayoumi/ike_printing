@@ -14,9 +14,9 @@ urlpatterns = [
     #getproductsbycategory
     path("getproductsbycategory/<str:category_name>",views.getproductsbycategory,name="getproductsbycategory"),
     #getproductsbycolor
-    path("getproductsbycolor/<str:color_name>",views.getproductsbycolor,name="getproductsbycolor"),
+    path("getproductsbycolor/<str:color_id>",views.getproductsbycolor,name="getproductsbycolor"),
     #getproductsbysize
-    path("getproductsbysize/<str:size_name>",views.getproductsbysize,name="getproductsbysize"),
+    path("getproductsbysize/<str:size_id>",views.getproductsbysize,name="getproductsbysize"),
     #getproductsbymatireal
     path("getproductsbymatireal/<str:matireal_name>",views.getproductsbymatireal,name="getproductsbymatireal"),
     #save_user_image

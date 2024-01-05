@@ -373,8 +373,8 @@ def redirect_to_payment(request):
             'invoice' : uuid.uuid4(), 
             'currency' : 'USD', 
             'notify_url' : f'http://{host}{reverse("paypal-ipn")}/',
-            'return_url' : f'http://{host}{reverse("call_expert:payment_success")}/',
-            'cancel_url' : f'http://{host}{reverse("call_expert:payment_failed")}/',
+            'return_url' : f'http://{host}{reverse("call_expert:payment_success")}',
+            'cancel_url' : f'http://{host}{reverse("call_expert:payment_failed")}',
     }
     paypal = PayPalPaymentsForm(initial=paypal_checkout)
     return render(request, 'order_redirect.html',{'paypal':paypal})

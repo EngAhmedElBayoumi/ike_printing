@@ -44,8 +44,6 @@ def log_out(request):
     return redirect("home:home")
     
 
-
-
 def register(request):
     context={
         'state_choices':STATE_CHOICES,
@@ -100,7 +98,6 @@ def register(request):
     
     
     return render(request, 'register.html', context)
-
 
 
 @login_required(login_url="/accounts/login/")
@@ -199,7 +196,6 @@ def my_orders(request):
     
     return render(request,'my-orders.html',context)
 
-
 @login_required(login_url="/accounts/login/")
 def my_images(request):
     user=request.user
@@ -223,7 +219,6 @@ def my_images(request):
     
     return render(request,'my-Images.html',context)
 
-
 @login_required(login_url="/accounts/login/")
 def my_designs(request):
     user=request.user
@@ -246,7 +241,6 @@ def my_designs(request):
     
     return render(request,'my-Designs.html',context)
 
-
 @login_required(login_url="/accounts/login/")
 def wishlist(request):
     user=request.user
@@ -265,7 +259,6 @@ def wishlist(request):
     }
     
     return render(request,'wishlist.html',context)
-
 
 @login_required(login_url="/accounts/login/")
 def addresses(request):
@@ -286,7 +279,6 @@ def addresses(request):
     
     return render(request,'addresses.html',context)
 
-
 @login_required(login_url="/accounts/login/")
 def payment_methods(request):
     user=request.user
@@ -305,9 +297,6 @@ def payment_methods(request):
     }
     
     return render(request,'payment-methods.html',context)
-
-
-
 
 def forgot_password(request):
     if request.method=="POST":
@@ -338,8 +327,6 @@ def forgot_password(request):
             return redirect("accounts:forgot_password")
             
     return render(request, 'forgetpassword.html', {})
-
-
 
 def reset_password(request,id):
     #get user by id

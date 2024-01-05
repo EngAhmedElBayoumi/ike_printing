@@ -13,6 +13,12 @@ from django.core.files.base import ContentFile
 from PIL import Image
 import io
 from django.http import HttpResponse
+#import datetime
+from datetime import datetime
+from django.utils import timezone
+#import strftime
+from time import strftime
+
 
 
 # Register your models here.
@@ -282,10 +288,10 @@ class CartProductAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
     # resource_class = OrderResource
-    list_display = ('display_order_number','display_user_details', 'display_cart_products','display_product_image','display_product_designs' ,'methods_of_receiving', 'total_price', 'order_date', 'display_design_images')
+    list_display = ('display_order_number','display_user_details', 'display_cart_products','display_product_image','methods_of_receiving', 'total_price', 'order_date','display_order_receiving_date' ,'status', 'display_design_images')
 
     def display_order_number(self, obj):
-        return f'#{obj.pk}'
+        return f'#{obj.pk+1000}'
     
     def display_user_details(self, obj):
         return format_html(
@@ -314,10 +320,14 @@ class OrderAdmin(admin.ModelAdmin):
     def display_cart_products(self, obj):
         # Display all details in each cart product
         cart_products = obj.cart_product.all()
+        #get from Color table name of color
+        #color = Color.objects.get(name=cart_products.product_color)
+        
+        
         return format_html(
             '<br>'.join(
                 f'<strong>Product:</strong> {cart_product.product.name}<br>'
-                f'<strong>Color:</strong>   <span style="background:{cart_product.product_color};width:20px;height:20px;">{cart_product.product_color}</span><br>'
+                f'<strong>Color:</strong>   <span style="background:{cart_product.product_color};width:20px;height:20px;">{self.get_color_name(cart_product.product_color)}</span><br>'
                 #size info symbol and quantity
                 f'<strong>Sizes:</strong> {", ".join(f"{size.symbol} ({size.quantity})" for size in cart_product.sizes.all())}<br>'
                 f'<strong>Quantity:</strong> {cart_product.quantity}<br>'
@@ -325,16 +335,22 @@ class OrderAdmin(admin.ModelAdmin):
                 for cart_product in cart_products
             )
         )
-    
+    def get_color_name(self, color_code):
+        try:
+            color = Color.objects.get(code=color_code)
+            return color.name
+        except:
+            return color_code            
+
     def display_product_image(self, obj):
         # Display all details in each cart product
         cart_products = obj.cart_product.all()
         return format_html(
             '<br>'.join(
                 #front
-                f'<a href="{cart_product.front_tshirt_image}" download><img src="{cart_product.front_tshirt_image}" style="max-width: 100px; max-height: 100px;object-fit: scale-down;margin-right:10px; margin-top:20px" /></a>'
+                f'<a href="{cart_product.front_tshirt_image}" target="_blank"><img src="{cart_product.front_tshirt_image}" style="max-width: 100px; max-height: 100px;object-fit: scale-down;margin-right:10px; margin-top:20px" /></a>'
                 #back
-                f'<a href="{cart_product.back_tshirt_image}" download><img src="{cart_product.back_tshirt_image}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-top:20px" /></a>'
+                f'<a href="{cart_product.back_tshirt_image}" target="_blank"><img src="{cart_product.back_tshirt_image}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-top:20px" /></a>'
                 for cart_product in cart_products
             )
         )
@@ -342,18 +358,26 @@ class OrderAdmin(admin.ModelAdmin):
     def  methods_of_receiving(self, obj):
         return f'{obj.methods_of_receiving}'
         
-    def display_product_designs(self, obj):
-        # Display all details in each cart product
-        cart_products = obj.cart_product.all()
-        return format_html(
-            '<br>'.join(
-                #front
-                f'<img src="{cart_product.frontcanvas}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-right:10px; margin-top:40px" />'
-                #back
-                f'<img src="{cart_product.backcanvas}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-top:40px" />'
-                for cart_product in cart_products
-            )
-        )
+    # def display_product_designs(self, obj):
+    #     # Display all details in each cart product
+    #     cart_products = obj.cart_product.all()
+    #     return format_html(
+    #         '<br>'.join(
+    #             #front
+    #             f'<img src="{cart_product.frontcanvas}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-right:10px; margin-top:40px" />'
+    #             #back
+    #             f'<img src="{cart_product.backcanvas}" style="max-width: 100px; max-height: 100px;object-fit: scale-down; margin-top:40px" />'
+    #             for cart_product in cart_products
+    #         )
+    #     )
+    
+
+    
+    
+    def display_order_receiving_date(self, obj):
+        #date with formate month/day/year
+        date = obj.order_receiving_date.strftime("%B/%d/%Y")
+        return f'{date}'
     
     def display_design_images(self, obj):
         # loop through all designs images for each cart product on the order and display them in img tags in a tag with download link
@@ -370,10 +394,11 @@ class OrderAdmin(admin.ModelAdmin):
     display_user_details.short_description = 'User Details'
     display_cart_products.short_description = 'Cart Products'
     display_product_image.short_description = 'Product Image'
-    display_product_designs.short_description = 'Product Designs'
+    # display_product_designs.short_description = 'Product Designs'
     display_design_images.short_description = 'Design Images'
     methods_of_receiving.short_description = 'Methods Of Receiving'
-    #search bar
+    display_order_receiving_date.short_description = 'Delivery Date'
+
     
      
 

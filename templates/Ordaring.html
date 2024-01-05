@@ -60,12 +60,24 @@
 														 {% endfor %}
 														</p>
 													<h4 class="fs-sm ft-bold mb-0 lh-1">${{item.total_price}}</h4>
+													
 												</div>
 											</div>
 										</div>
 										
 									</div>
 									{% endfor %}
+									<div class="row m-5">
+										<div class="col">
+											<h4 class="fs-sm ft-bold mb-0 lh-1">{{order.order_receiving_date}}</h4>
+										</div>
+										<div class="col">
+											<h4 class="fs-sm ft-bold mb-0 lh-1">{{order.methods_of_receiving}}</h4>
+										</div>
+										<div class="col">
+											<h4 class="fs-sm ft-bold mb-0 lh-1">{{order.status}}</h4>
+										</div>
+									</div>
 								</div>
 								<div class="ord_list_footer d-flex align-items-center justify-content-between br-top px-3">
 									<div class="col-xl-9 col-lg-9 col-md-8 pr-0 py-2 olf_flex d-flex align-items-center justify-content-between">
