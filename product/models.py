@@ -191,7 +191,18 @@ class CartProduct(models.Model):
     def set_backcanvas(self):
         self.backcanvas=json.dumps(self.backcanvas)
    
-   
+
+#order status  Processing/ in Progress/ Ready For Pickup/ Shipping/ Delivered/ Finished
+order_status = (
+    ('Processing','Processing'),
+    ('in_Progress','in_Progress'),
+    ('Ready_For_Pickup','Ready_For_Pickup'),
+    ('Shipping','Shipping'),
+    ('Delivered','Delivered'),
+    ('Finished','Finished'),
+    )    
+
+ 
           
 #order
 class Order(models.Model):
@@ -203,6 +214,7 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     #order receiving date not time
     order_receiving_date = models.DateField(null=True,blank=True)
+    status = models.CharField(max_length=50,default="Processing",choices=order_status)
     def __str__(self):
         return self.user.username
     

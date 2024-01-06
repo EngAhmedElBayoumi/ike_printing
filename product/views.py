@@ -41,13 +41,19 @@ def product(request):
     #add artubute number to matireals to use it in template to display how many products have this matireal
     for matireal in matireals:
         matireal.number = Product.objects.filter(matireal=matireal).count()
-    #get all colors
     colors = Color.objects.all()
+    #get all colors
+    for color in colors:
+        color.number = Product.objects.filter(colors=color).count()
+        color.id=color.id
+        color.code=color.code
+        
     #get all sizes
     sizes = Size.objects.all()
     #add artubute number to sizes to use it in template to display how many products have this size
     for size in sizes:
         size.number = Product.objects.filter(sizes=size,is_active=True).count()
+        size.id=size.id
     #get all categories
     categories = Category.objects.all()
     #add artubute number to categories to use it in template to display how many products have this category
@@ -263,9 +269,9 @@ def getproductsbycategory(request, category_name):
 
 
 ##getproductsbysize name
-def getproductsbysize(request,size_name):
+def getproductsbysize(request,size_id):
     # Get size by name
-    size = Size.objects.get(name=size_name)
+    size = Size.objects.get(id=size_id)
     # Get products by size
     products = Product.objects.filter(sizes=size,is_active=True)
     # Construct a list of product data to return as JSON
@@ -279,7 +285,6 @@ def getproductsbysize(request,size_name):
             "backimage": product.backimage.url,
             "id": product.id,
         })
-        
     return JsonResponse({"products": product_data})
 
 
@@ -305,9 +310,9 @@ def getproductsbymatireal(request,matireal_name):
     
     
 ##getproductsbycolor name
-def getproductsbycolor(request,color_name):
+def getproductsbycolor(request,color_id):
     # Get color by name
-    color = Color.objects.get(code=color_name)
+    color = Color.objects.get(id=color_id)
     # Get products by color
     products = Product.objects.filter(colors=color,is_active=True)
     # Construct a list of product data to return as JSON
@@ -631,7 +636,6 @@ def order_page(request):
     product_card = request.session['product_card']
     #get total price
     total_price = request.session['total_price']
-    
     host = request.get_host() # Host 
     paypal_checkout = {
             'business' : settings.PAYPAL_RECEIVER, 
@@ -640,8 +644,8 @@ def order_page(request):
             'invoice' : uuid.uuid4(), 
             'currency' : 'USD', 
             'notify_url' : f'http://{host}{reverse("paypal-ipn")}/',
-            'return_url' : f'http://{host}{reverse("product:payment_success")}/',
-            'cancel_url' : f'http://{host}{reverse("product:payment_failed")}/',
+            'return_url' : f'http://{host}{reverse("product:payment_success")}',
+            'cancel_url' : f'http://{host}{reverse("product:payment_failed")}',
     }  
     
     paypal = PayPalPaymentsForm(initial=paypal_checkout)
@@ -666,7 +670,7 @@ def payment_success(request):
     # Use a transaction to ensure data consistency
     with transaction.atomic():
         # Create a new order
-        order = Order.objects.create(user=request.user, total_price=total_price,methods_of_receiving=method_of_receiving,receiving_date=receiving_date)
+        order = Order.objects.create(user=request.user, total_price=total_price,methods_of_receiving=method_of_receiving,order_receiving_date=receiving_date)
 
         # Add products to the order
         order.cart_product.set(product_card)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import working_setting , meeting
+from .models import working_setting , meeting ,upload_file
 # Register your models here.
 
 #displaying the models in the admin page 
@@ -24,3 +24,4 @@ class meeting_display(admin.ModelAdmin):
         return format_html(images_html)
 admin.site.register(working_setting,working_setting_display)
 admin.site.register(meeting,meeting_display)
+admin.site.register(upload_file)

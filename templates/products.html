@@ -89,8 +89,8 @@
 															<ul class="no-ul-list">
                                                                 {% for size in sizes %}
 																<li>
-																	<input id="{{size.id}}" onchange="getproductsbysize(this)" class="checkbox-custom" value="{{size.name}}" type="checkbox">
-                                                                    <label for="{{size.id}}" class="checkbox-custom-label">{{size.simbol}}<span>{{size.number}}</span></label>
+																	<input id="size_{{size.id}}" onchange="getproductsbysize(this)" class="checkbox-custom" value="{{size.name}}" type="checkbox">
+                                                                    <label for="size_{{size.id}}" class="checkbox-custom-label">{{size.simbol}}<span>{{size.number}}</span></label>
 
 																</li>
                                                                 {% endfor %}
@@ -146,8 +146,8 @@
 														<div class="text-left">
                                                             {% for color in colors %}
 															<div class="form-check form-option form-check-inline mb-1">
-																<input class="form-check-input" type="radio" name="colora8" id="{{color.code}}" onchange="getproductsbycolor(this)" value="{{color.name}}">
-																<label class="form-option-label rounded-circle" for="{{color.code}}"><span class="form-option-color rounded-circle" style="background-color:{{color.code}}"></span></label>
+																<input class="form-check-input" type="radio" name="colora8" id="color_{{color.id}}" onchange="getproductsbycolor(this)" value="{{color.name}}">
+																<label class="form-option-label rounded-circle" for="color_{{color.id}}"><span class="form-option-color rounded-circle" style="background-color:{{color.code}}"></span></label>
 															</div>
                                                             {% endfor %}
 															
@@ -315,9 +315,13 @@
                 function getproductsbycolor(checked) {
                     if (checked.checked){
                        var category=checked.id
-                       console.log(category)
-                       var link="{% url 'product:getproductsbycolor' 'placeholder' %}"
+                       console.log(checked)
+                       // remove color_ from category
+                        category=category.replace('color_','')
+                        console.log(category)
+                        var link="{% url 'product:getproductsbycolor' 'placeholder' %}"
                         link=link.replace('placeholder',category)
+                        console.log(link)
                         $.ajax({
                             type: "GET",
                             url: link,
@@ -378,9 +382,14 @@
               
                 function getproductsbysize(checked) {
                     if (checked.checked){
-                        var category=checked.value
+                        var size=checked.id  
+                        // remove size_ from size
+                        size=size.replace('size_','')
+
+                        console.log(size)
                         var link="{% url 'product:getproductsbysize' 'placeholder' %}"
-                        link=link.replace('placeholder',category)
+                        link=link.replace('placeholder',size)
+                        console.log(link)
 
                         $.ajax({
                             type: "GET",

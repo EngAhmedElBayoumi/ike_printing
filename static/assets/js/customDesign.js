@@ -81,8 +81,9 @@ function addText(){
     var message = document.getElementById("text-input").value;
     // get text_design_information
     var text = new fabric.Text(message, {
-        left: 100,
-        top: 100,
+        // top , left center of canvas
+        top: activecanvas.height / 2,
+        left: activecanvas.width / 2,
         // arial
         fontFamily: text_design_information.fontFamily?text_design_information.fontFamily:"arial",
         fill: text_design_information.fontColor?text_design_information.fontColor:"black",
