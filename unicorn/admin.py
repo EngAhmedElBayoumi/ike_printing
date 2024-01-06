@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import working_setting , meeting , upload_file
+from .models import working_setting , meeting 
+from django.utils.html import format_html
+
+
 # Register your models here.
 
 #displaying the models in the admin page 
@@ -23,7 +26,9 @@ class meeting_display(admin.ModelAdmin):
             images_html += '<a href={} download><img src="{}" width="100" height="100"/></a>'.format(file.file.url,file.file.url)
         return format_html(images_html)
     
+    
+    
+    
 
 admin.site.register(working_setting,working_setting_display)
 admin.site.register(meeting,meeting_display)
-admin.site.register(upload_file)

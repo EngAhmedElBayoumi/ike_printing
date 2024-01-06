@@ -1,5 +1,5 @@
 from django.db import models
-
+from call_expert.models import upload_file
 # Create your models here.
 
 
@@ -30,15 +30,6 @@ class working_setting(models.Model):
         return self.day
     
 
-#files for the meeting
-class upload_file(models.Model):
-    file = models.FileField(upload_to='uploads/meetings',null=True,blank=True)
-    def __str__(self):
-        #id
-        return str(self.id)
-
-
-
 #reserving meeting data and time
 class meeting(models.Model):
     user_name = models.CharField(max_length=100)
@@ -49,7 +40,7 @@ class meeting(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     #meeting files
-    files = models.ManyToManyField(upload_file,null=True,blank=True)
+    files = models.ManyToManyField(upload_file,'unicorn_meeting',null=True,blank=True)
     meeting_url=models.CharField(max_length=5000,null=True,blank=True)
 
     def __str__(self):

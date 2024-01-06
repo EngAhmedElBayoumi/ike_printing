@@ -1,4 +1,7 @@
 from django.db import models
+from call_expert.models import upload_file
+from django.contrib.auth.models import User
+#
 
 # Create your models here.
 
@@ -29,11 +32,7 @@ class working_setting(models.Model):
     def __str__(self):
         return self.day
 
-class upload_file(models.Model):
-    file = models.FileField(upload_to='uploads/meetings',null=True,blank=True)
-    def __str__(self):
-        #id
-        return str(self.id) 
+
 
 #reserving meeting data and time
 class meeting(models.Model):
@@ -45,7 +44,7 @@ class meeting(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     #meeting files
-    files = models.ManyToManyField(upload_file,null=True,blank=True)
+    files = models.ManyToManyField(upload_file,'senior_unicorn_meeting_files',null=True,blank=True)
     meeting_url=models.CharField(max_length=5000,null=True,blank=True)
 
     def __str__(self):

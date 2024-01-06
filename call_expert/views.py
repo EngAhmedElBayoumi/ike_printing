@@ -5,10 +5,11 @@ from django.urls import reverse
 import uuid 
 from datetime import datetime
 from paypal.standard.forms import PayPalPaymentsForm 
-from dragon.models import working_setting as dragon_working_setting , meeting as dragon_meeting  , upload_file as dragon_upload_file
-from senior_dragon.models import working_setting as senior_dragon_working_setting , meeting as senior_dragon_meeting , upload_file as senior_dragon_upload_file
-from unicorn.models import working_setting as unicorn_working_setting , meeting as unicorn_meeting , upload_file as unicorn_upload_file
-from senior_unicorn.models import working_setting as senior_unicorn_working_setting , meeting as senior_unicorn_meeting , upload_file as senior_unicorn_upload_file
+from dragon.models import working_setting as dragon_working_setting , meeting as dragon_meeting 
+from senior_dragon.models import working_setting as senior_dragon_working_setting , meeting as senior_dragon_meeting 
+from unicorn.models import working_setting as unicorn_working_setting , meeting as unicorn_meeting 
+from senior_unicorn.models import working_setting as senior_unicorn_working_setting , meeting as senior_unicorn_meeting 
+from .models import upload_file  as UploadFiles
 
 #import messages
 from django.contrib import messages
@@ -126,8 +127,11 @@ def call_senior_designer(request):
         date=request.POST.get('data') or None
         upload_file=request.FILES.getlist('upload_file') or None
         
+        
+        
+        
         #validate all fields
-        if not name or not email or not subject or not message or not fromtime or not totime or not date or not upload_file:
+        if not name or not email or not subject or not message or not fromtime or not totime or not date:
             messages.error(request, "All fields are required.")
             return render(request, 'CallSeniorDesigner.html', {})
         
@@ -153,16 +157,6 @@ def call_senior_designer(request):
             unicorn_conflict = True
         #check if the time is not exist in senior unicorn meetings add meeting to senior unicorn else check in senior dragon meetings 
         if not unicorn_conflict:
-            # No conflict: schedule with senior unicorn
-            # senior_unicorn_meeting.objects.create(
-            #     user_name=name,
-            #     user_email=email,
-            #     subject=subject,
-            #     message=message,
-            #     meeting_date=date,
-            #     start_time=fromtime,
-            #     end_time=totime
-            # )
             request.session['meeting_type'] = 'senior_unicorn'
             price=senior_unicorn_working_setting.objects.first().meeting_price
             #the all data of meeting on session
@@ -175,8 +169,18 @@ def call_senior_designer(request):
                 'start_time': fromtime.strftime('%H:%M'),
                 'end_time': totime.strftime('%H:%M'),
                 'price': price,
-                'upload_file': upload_file
             }
+            #save upload file to database and get id of files and save it to session
+            files_id = []
+            if upload_file:
+                for file in upload_file:
+                    file = UploadFiles.objects.create(file=file)
+                    files_id.append(file.id)
+            
+            request.session['meeting_data']['files_id'] = files_id
+                         
+            
+            
             #redirect to payment
             return redirect('call_expert:redirect_to_payment')                  
 
@@ -193,16 +197,6 @@ def call_senior_designer(request):
                 dragon_conflict = True
 
             if not dragon_conflict:
-                # No conflict: schedule with senior dragon
-                # senior_dragon_meeting.objects.create(
-                #     user_name=name,
-                #     user_email=email,
-                #     subject=subject,
-                #     message=message,
-                #     meeting_date=date,
-                #     start_time=fromtime,
-                #     end_time=totime
-                # )
                 request.session['meeting_type'] = 'senior_dragon'
                 price = senior_dragon_working_setting.objects.first().meeting_price
                 #the all data of meeting on session
@@ -215,8 +209,14 @@ def call_senior_designer(request):
                     'start_time': fromtime.strftime('%H:%M'),
                     'end_time': totime.strftime('%H:%M'),
                     'price': price,
-                    'upload_file': upload_file
                 }
+                files_id = []
+                if upload_file:
+                    for file in upload_file:
+                        file = UploadFiles.objects.create(file=file)
+                        files_id.append(file.id)
+                
+                request.session['meeting_data']['files_id'] = files_id
                 #redirect to payment
                 return redirect('call_expert:redirect_to_payment')
             else:
@@ -252,12 +252,11 @@ def call_designer(request):
         date=request.POST.get('data') or None
         upload_file=request.FILES.getlist('upload_file') or None
         
+        
         #validate all fields
-        if not name or not email or not subject or not message or not fromtime or not totime or not date or not upload_file:
+        if not name or not email or not subject or not message or not fromtime or not totime or not date :
             messages.error(request, "All fields are required.")
             return render(request, 'CallSeniorDesigner.html', {})
-        
-        
         
         #convert fromtime from string to time not datetime
         fromtime = datetime.strptime(fromtime, '%H:%M').time()
@@ -278,22 +277,9 @@ def call_designer(request):
                 unicorn_conflict = True
         else:
             unicorn_conflict = True
-    # payment stage
     
         #check if the time is not exist in senior unicorn meetings add meeting to senior unicorn else check in senior dragon meetings 
         if not unicorn_conflict:
-            # No conflict: schedule with senior unicorn
-            # unicorn_meeting.objects.create(
-            #     user_name=name,
-            #     user_email=email,
-            #     subject=subject,
-            #     message=message,
-            #     meeting_date=date,
-            #     start_time=fromtime,
-            #     end_time=totime,
-            #     upload_file=upload_file
-                
-            # )
             request.session['meeting_type'] = 'unicorn'
             #the all data of meeting on session
             request.session['meeting_data'] = {
@@ -305,11 +291,15 @@ def call_designer(request):
                 'start_time': fromtime.strftime('%H:%M'),
                 'end_time': totime.strftime('%H:%M'),
                 'price': price,
-                'upload_file': upload_file
             }
+            files_id = []
+            if upload_file:
+                for file in upload_file:
+                    file = UploadFiles.objects.create(file=file)
+                    files_id.append(file.id)
+            request.session['meeting_data']['files_id'] = files_id
             #redirect to payment
             return redirect('call_expert:redirect_to_payment')
-
         else:
             # Check availability in senior dragon meetings
             dragon_conflict = dragon_meeting.objects.filter(meeting_date=date, start_time__lt=totime, end_time__gt=fromtime).exists()
@@ -320,20 +310,7 @@ def call_designer(request):
             if fromtime >= break_time_from and totime <= break_time_to:
                 #conflict true
                 dragon_conflict = True
-            
-            
             if not dragon_conflict:
-                # No conflict: schedule with senior dragon
-                # dragon_meeting.objects(
-                #     user_name=name,
-                #     user_email=email,
-                #     subject=subject,
-                #     message=message,
-                #     meeting_date=date,
-                #     start_time=fromtime,
-                #     end_time=totime,
-                #     upload_file=upload_file
-                # )
                 request.session['meeting_type'] = 'dragon'
                 price = dragon_working_setting.objects.first().meeting_price
                 #the all data of meeting on session
@@ -346,12 +323,15 @@ def call_designer(request):
                     'start_time': fromtime.strftime('%H:%M'),
                     'end_time': totime.strftime('%H:%M'),
                     'price': price,
-                    'upload_file': upload_file
                 }
+                files_id = []
+                if upload_file:
+                    for file in upload_file:
+                        file = UploadFiles.objects.create(file=file)
+                        files_id.append(file.id)
+                request.session['meeting_data']['files_id'] = files_id
                 #redirect to payment
                 return redirect('call_expert:redirect_to_payment')
-            
-
             else:
                 messages.error(request, "No available slots with either  Unicorn or Dragon teams.")  
       
@@ -396,18 +376,11 @@ def payment_success(request):
         end_time = datetime.strptime(end_time, '%H:%M')
         duration = end_time - start_time
         duration = duration.seconds / 60
+        meeting_datetime = datetime.strptime(meeting_data['meeting_date'] + ' ' + meeting_data['start_time'], '%Y-%m-%d %H:%M')
         #create zoom meeting
-        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + 'Z', duration, meeting_data['subject'])
-        #send mail to user
-        send_mail(
-            'Fast Meeting Reservation',
-            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
-            settings.EMAIL_HOST_USER,
-            [meeting_data['user_email']],
-            fail_silently=False,
-        )
+        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + ":00"+ 'Z', duration, meeting_data['subject'])
         #save meeting
-        dragon_meeting.objects.create(
+        dragon_meeting_instance=dragon_meeting.objects.create(
             user_name=meeting_data['user_name'],
             user_email=meeting_data['user_email'],
             subject=meeting_data['subject'],
@@ -417,14 +390,22 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url,
         )
-        #save files
-        for file in meeting_data['upload_file']:
-            dragon_upload_file.objects.create(
-                file=file
-            )
-            #add file to meeting
-            dragon_meeting.objects.last().files.add(dragon_upload_file.objects.last())
-            
+        #get all files id
+        files_id = meeting_data['files_id']
+        if files_id:
+            #get all files from database
+            files = UploadFiles.objects.filter(id__in=files_id)
+            #save files to meeting
+            dragon_meeting_instance.files.set(files)
+          
+        #send mail to user
+        send_mail(
+            'Fast Meeting Reservation',
+            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            settings.EMAIL_HOST_USER,
+            [meeting_data['user_email']],
+            fail_silently=False,
+        )   
     elif meeting_type == 'unicorn':
         #calculate deuration
         start_time = meeting_data['start_time']
@@ -434,16 +415,10 @@ def payment_success(request):
         duration = end_time - start_time
         duration = duration.seconds / 60
         #create zoom meeting
-        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + 'Z', duration, meeting_data['subject'])
-        #send mail to user
-        send_mail(
-            'Fast Meeting Reservation',
-            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
-            settings.EMAIL_HOST_USER,
-            [meeting_data['user_email']],
-            fail_silently=False,
-        )
-        unicorn_meeting.objects.create(
+        meeting_datetime = datetime.strptime(meeting_data['meeting_date'] + ' ' + meeting_data['start_time'], '%Y-%m-%d %H:%M')
+        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + ":00"+ 'Z', duration, meeting_data['subject'])
+        
+        unicorn_meeting_instance=unicorn_meeting.objects.create(
             user_name=meeting_data['user_name'],
             user_email=meeting_data['user_email'],
             subject=meeting_data['subject'],
@@ -453,13 +428,24 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url
         )
-        #save files
-        for file in meeting_data['upload_file']:
-            dragon_upload_file.objects.create(
-                file=file
-            )
-            #add file to meeting
-            dragon_meeting.objects.last().files.add(dragon_upload_file.objects.last())
+        #get all files id
+        files_id = meeting_data['files_id']
+        if files_id:
+            #get all files from database
+            files = UploadFiles.objects.filter(id__in=files_id)
+            #save files to meeting
+            unicorn_meeting_instance.files.set(files)
+        
+        
+        #send mail to user
+        send_mail(
+            'Fast Meeting Reservation',
+            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            settings.EMAIL_HOST_USER,
+            [meeting_data['user_email']],
+            fail_silently=False,
+        )
+        
     elif meeting_type == 'senior_dragon':
         #calculate deuration
         start_time = meeting_data['start_time']
@@ -469,16 +455,9 @@ def payment_success(request):
         duration = end_time - start_time
         duration = duration.seconds / 60
         #create zoom meeting
-        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + 'Z', duration, meeting_data['subject'])
-        #send mail to user
-        send_mail(
-            'profissional Meeting Reservation',
-            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
-            settings.EMAIL_HOST_USER,
-            [meeting_data['user_email']],
-            fail_silently=False,
-        )
-        senior_dragon_meeting.objects.create(
+        meeting_datetime = datetime.strptime(meeting_data['meeting_date'] + ' ' + meeting_data['start_time'], '%Y-%m-%d %H:%M')
+        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + ":00"+ 'Z', duration, meeting_data['subject'])
+        senior_dragon_meeting_instance=senior_dragon_meeting.objects.create(
             user_name=meeting_data['user_name'],
             user_email=meeting_data['user_email'],
             subject=meeting_data['subject'],
@@ -488,13 +467,24 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url
         )
-        #save files
-        for file in meeting_data['upload_file']:
-            dragon_upload_file.objects.create(
-                file=file
-            )
-            #add file to meeting
-            dragon_meeting.objects.last().files.add(dragon_upload_file.objects.last())
+        #get all files id
+        files_id = meeting_data['files_id']
+        if files_id:
+            #get all files from database
+            files = UploadFiles.objects.filter(id__in=files_id)
+            #save files to meeting
+            senior_dragon_meeting_instance.files.set(files)
+        
+        #send mail to user
+        send_mail(
+            'profissional Meeting Reservation',
+            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            settings.EMAIL_HOST_USER,
+            [meeting_data['user_email']],
+            fail_silently=False,
+        )
+        
+        
     elif meeting_type == 'senior_unicorn':
         #calculate deuration
         start_time = meeting_data['start_time']
@@ -504,16 +494,9 @@ def payment_success(request):
         duration = end_time - start_time
         duration = duration.seconds / 60
         #create zoom meeting
-        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + 'Z', duration, meeting_data['subject'])
-        #send mail to user
-        send_mail(
-            'profissional Meeting Reservation',
-            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
-            settings.EMAIL_HOST_USER,
-            [meeting_data['user_email']],
-            fail_silently=False,
-        )
-        senior_unicorn_meeting.objects.create(
+        meeting_datetime = datetime.strptime(meeting_data['meeting_date'] + ' ' + meeting_data['start_time'], '%Y-%m-%d %H:%M')
+        meeting_url = create_zoom_meeting(meeting_data['meeting_date'] + 'T' + meeting_data['start_time'] + ":00"+ 'Z', duration, meeting_data['subject'])
+        senior_unicorn_meeting_instance = senior_unicorn_meeting.objects.create(
             user_name=meeting_data['user_name'],
             user_email=meeting_data['user_email'],
             subject=meeting_data['subject'],
@@ -523,16 +506,30 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url
         )
-        #save files
-        for file in meeting_data['upload_file']:
-            dragon_upload_file.objects.create(
-                file=file
-            )
-            #add file to meeting
-            dragon_meeting.objects.last().files.add(dragon_upload_file.objects.last())
+
+        # get all files id
+        files_id = meeting_data['files_id']
+        if files_id:
+            # get all files from database
+            files = UploadFiles.objects.filter(id__in=files_id)
+
+            # save files to meeting
+            senior_unicorn_meeting_instance.files.set(files)
+        
+        #send mail to user
+        send_mail(
+            'profissional Meeting Reservation',
+            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            settings.EMAIL_HOST_USER,
+            [meeting_data['user_email']],
+            fail_silently=False,
+        )
+        
+        
     #clear session
     request.session['meeting_type'] = None
     request.session['meeting_data'] = None
+    request.session['files_id'] = None
     messages.success(request, "Your payment is done successfully and your meeting is scheduled.")
     return redirect('call_expert:call_expert')
 
@@ -542,5 +539,6 @@ def payment_failed(request):
     #clear session
     request.session['meeting_type'] = None
     request.session['meeting_data'] = None
+    request.session['files_id'] = None
     messages.error(request, "Your payment is failed.")
     return redirect('call_expert:call_expert')

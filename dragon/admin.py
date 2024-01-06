@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import working_setting , meeting , upload_file
+from .models import working_setting , meeting
 #import return html
 from django.utils.html import format_html
 
@@ -29,5 +29,4 @@ class meeting_display(admin.ModelAdmin):
         
 admin.site.register(working_setting,working_setting_display)
 admin.site.register(meeting,meeting_display)
-admin.site.register(upload_file)
 
