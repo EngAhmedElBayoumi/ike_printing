@@ -2613,13 +2613,16 @@
                       />
                     </td>
                     <td>
-                      <select class="form-control" onchange="" required>
-                        <option value="S">S</option>
+                      <select class="form-control" style="text-transform: uppercase;" onchange="" required>
+                        {% for size in products.0.sizes.all %}
+              <option value="{{ size.simbol }}">{{ size.simbol }}</option>
+            {% endfor %}
+                        <!-- <option value="S">S</option>
                         <option value="M">M</option>
                         <option value="L">L</option>
                         <option value="XL">XL</option>
                         <option value="XXL">XXL</option>
-                        <option value="XXXL">XXXL</option>
+                        <option value="XXXL">XXXL</option> -->
                       </select>
                     </td>
                     <td>
@@ -3048,19 +3051,24 @@
             <input type="text" class="form-control InputAddName" placeholder="Name">
           </td>
           <td>
-            <select class="form-control" onchange="">
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-              <option value="XXL">XXL</option>
-              <option value="XXXL">XXXL</option>
-            </select>
-          </td>
-          <td>
-            <button onclick="removeRow(this)" class="btn btn-danger" style="color: #fff">Remove</button>
-          </td>
-        `;
+            <select class="form-control" onchange="" style="text-transform: uppercase;">
+`;
+// Add the for loop
+rowContent += `
+            {% for size in products.0.sizes.all %}
+              <option value="{{ size.simbol }}">{{ size.simbol }}</option>
+            {% endfor %}
+`;
+
+// Complete the rest of the rowContent variable
+rowContent += `
+          </select>
+        </td>
+        <td>
+          <button onclick="removeRow(this)" class="btn btn-danger" style="color: #fff">Remove</button>
+        </td>
+`;
+
         newRow.innerHTML = rowContent;
         tableBody.appendChild(newRow);
       }
