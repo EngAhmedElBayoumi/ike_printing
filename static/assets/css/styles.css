@@ -5580,21 +5580,24 @@ text {
 }
 
 .tablecarrrt .cart_single {
-    width: 300px;
+    width: 100px;
 }
 .tablecarrrt  .TrashItem{
         width: 100px;
 }
 .tablecarrrt .ProductImage{
-        width: 150px !important;
+    width: 100px;
+    margin: auto;
 }
-.tablecarrrt  .ProductName{
-        width: 150px;
+.tablecarrrt .ProductName{
+    width: max-content;
     text-align: center;
+    margin: auto;
 }
 .tablecarrrt  .ProductPrice{
-        width: 100px;
-    text-align: center
+    width: max-content;
+    text-align: center;
+    margin: auto;
 }
 
 .cats_side_wrap .sl_cat_01 .d-inline-flex {
