@@ -170,7 +170,7 @@ class CartProduct(models.Model):
     front_tshirt_image = models.ImageField(upload_to='product/cartproduct_image',blank=True,null=True)
     back_tshirt_image = models.ImageField(upload_to='product/cartproduct_image',blank=True,null=True)
     #design images
-    design_images = models.ManyToManyField(DesignImage)
+    design_images = models.ManyToManyField(DesignImage,blank=True,null=True)
     
     def __str__(self):
         return self.product.name
