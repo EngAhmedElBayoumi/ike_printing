@@ -755,6 +755,7 @@ function deleteSelection() {
 //------------------------
 // add to card
 document.getElementById("addToCard").addEventListener("click", function() {
+
     // get product id from input with id "product_id"
     var product_id = document.getElementById("product_id").value;
     // get quantity from input with id "product_size"
@@ -877,7 +878,10 @@ document.getElementById("addToCard").addEventListener("click", function() {
     // append design_resource
     formData.append('design_resource', JSON.stringify(design_resource));
     console.log("design_resource=> " , design_resource);
-
+    // get element by class name preloaderPage
+    var preloaderPage = document.getElementsByClassName("preloaderPage")[0];
+    // show preloaderPage
+    preloaderPage.style.display = "block";
     // axios call to add to card
     axios.post(`${projecturl}product/add_to_card/`, formData, {
         withCredentials: true,
@@ -889,6 +893,10 @@ document.getElementById("addToCard").addEventListener("click", function() {
         // alert to the user that product added to card
         swal.fire("Product added to your card");
         console.log(response)
+        // get element by class name preloaderPage
+        var preloaderPage = document.getElementsByClassName("preloaderPage")[0];
+        // hide preloaderPage
+        preloaderPage.style.display = "none";
     }
     )
     .catch(function (error) {
