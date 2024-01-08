@@ -19,7 +19,7 @@
 		<!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
-		<div class="preloader"></div>
+		<div class="preloaderPage"></div>
         <!-- ============================================================== -->
         <!-- Main wrapper - style you can find in pages.scss -->
         <!-- ============================================================== -->
@@ -313,6 +313,18 @@
 			}
 		</script>
 
+		<script>
+			// website on load function 
+			// get preloaderPage by class name
+			var preloaderPage = document.getElementsByClassName("preloaderPage")[0];
+			window.addEventListener("load", function () {
+				// hide preloaderPage
+				preloaderPage.style.display = "none";
+			});
+
+
+
+		</script>
 		
 
         {% block script %}

@@ -173,14 +173,20 @@
 									<div class="col-xl-3 col-lg-3 col-md-4 olf_flex text-left px-0 py-2 br-right"><button  onclick="clear_card()" class="ft-medium fs-sm"><i class="ti-close mr-2"></i>Cleare Cart</button></div>
 									<div class="col-xl-9 col-lg-9 col-md-8 pr-0 py-2 olf_flex d-flex align-items-center justify-content-between">
 										<div class="olf_flex_inner hide_mob"><p class="m-0 p-0"><span class="text-muted medium"></span></p></div>
-										<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Subtotal: ${{product_card.total}}</h5></div>
+										<div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Subtotal: ${{product_card.subtotal}}</h5></div>
 									</div>
 								</div>
 							</div>
 							<!-- End Order List -->
 							<div class="CartDescription">
-                                    <p>For same day pickup option please contact our sister company <a href="#">IKE PRINT</a></p>
-                                </div>
+                                    <p>For same day pickup option please contact our sister company <a href="https://maps.app.goo.gl/En6EjvcsV52r3E47A?g_st=iw">IKE PRINT</a></p>
+                            </div>
+							<div class="CartDescription">
+                                <p> <span class="text-danger">Policy on receipt:</span>
+                                    
+                                    All products are having no return, no exchange, and no refund policy, unless a manufacture error has occurred.                                </p>
+                                
+                            </div>
                         </div>
 						
 						<!-- Sidebar -->
@@ -209,8 +215,20 @@
                                         <option value="Shipping">Shipping</option>
                                     </select>
                                    </li>
+                                   <li class="list-group-item d-flex text-dark fs-sm ft-regular" id="shipping_price_card" style="display:none !important">
+									<span>shipping price</span> <span class="ml-auto text-dark ft-medium">${{shipping_price}} </span>
+								  </li>
+                                   <li class="list-group-item d-flex text-dark fs-sm ft-regular" id="delivery_price_card" style="display:none !important">
+									<span>delivery price</span> <span class="ml-auto text-dark ft-medium">$20 </span>
+								  </li>
                                   <li class="list-group-item d-flex text-dark fs-sm ft-regular">
 									<span>Total Price</span> <span class="ml-auto text-dark ft-medium" id="total_price_fee">${{product_card.total_price}} </span>
+								  </li>
+                                  <li class="list-group-item d-flex text-dark fs-sm ft-regular" id="delivery_or_pickup">
+									<span> Delivery or pickup you can Receive</span> <span class="ml-auto text-dark ft-medium" id="total_price_fee">one week </span>
+								  </li>
+                                  <li class="list-group-item d-flex text-dark fs-sm ft-regular" id="shipping" style="display:none !important">
+									<span>shipping you can Receive after</span> <span class="ml-auto text-dark ft-medium" id="total_price_fee">two weeks </span>
 								  </li>
                                   
 								</ul>
@@ -267,13 +285,39 @@
         // if method_of_receiving.value is delivery total_price_fee = total_price + 20
         if (method_of_receiving.value == 'delivery'){
             total_price_fee.innerHTML = total_price + 20;
+            // show delivery_or_pickup
+            document.getElementById('delivery_or_pickup').style.display = 'block';
+            // hide shipping
+            document.getElementById('shipping').style.setProperty('display', 'none', 'important');
+            // show delivery_price_card
+            document.getElementById('delivery_price_card').style.display = 'block';
+            // hide shipping_price_card
+            document.getElementById('shipping_price_card').style.setProperty('display', 'none', 'important');
             
         }
         else if (method_of_receiving.value == 'Shipping'){
             total_price_fee.innerHTML = total_price + shipping_price;
+            // show shipping
+            document.getElementById('shipping').style.display = 'block';
+            // hide delivery_or_pickup
+            document.getElementById('delivery_or_pickup').style.setProperty('display', 'none', 'important');
+            // show shipping_price_card
+            document.getElementById('shipping_price_card').style.display = 'block';
+            // hide delivery_price_card
+            document.getElementById('delivery_price_card').style.setProperty('display', 'none', 'important');
+
         }
         else{
             total_price_fee.innerHTML = total_price;
+            // hide shipping
+            document.getElementById('shipping').style.setProperty('display', 'none', 'important');
+            // hide delivery_or_pickup
+            document.getElementById('delivery_or_pickup').style.display = 'none';
+            // hide shipping_price_card
+            document.getElementById('shipping_price_card').style.setProperty('display', 'none', 'important');
+            // hide delivery_price_card
+            document.getElementById('delivery_price_card').style.setProperty('display', 'none', 'important');
+
         }
         
 

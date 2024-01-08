@@ -209,13 +209,11 @@ color: #000;
 														<div class="col-lg-3">
 															<div class="CallAppointMentBox">
 																<div class="twochoise mb-3">
-														<div class="paymentWrap">
-															<div class="btn-group paymentBtnGroup btn-group-justified"
-																data-toggle="buttons">
 																
-															   
-																
-															 
+															<div class="paymentWrap">
+																<p><span class="text-danger"> notic</span> All Available Time by houston time zone</p>
+
+															<div class="btn-group paymentBtnGroup btn-group-justified" data-toggle="buttons">
 															</div>
 														</div>
 													</div>
@@ -231,17 +229,9 @@ color: #000;
 																	Book Date & Time Now</button>  
 															</div>
 														</div>
-	
-	
-	
 													</div>
 												</form>
-												{% comment %} <div class=" col col-md-12">
-													<div class="paypaleBoxInputs">
-														{{ paypal.render }}
-													</div>
-												</div> {% endcomment %}
-												<!--/row -->
+												
 											</div>
 							</div>
 						</div>
@@ -293,7 +283,7 @@ if (form) {
     }
 }
 		</script>
-		
+
 		
 			<script>
 				// Function to handle the changeDate event
@@ -320,21 +310,17 @@ if (form) {
 
 				// get from date day name
 				var dayName = date.toLocaleString('en-us', {  weekday: 'long' });
-				// convert date to be like 2020-12-12
-				date=date.toISOString().slice(0,10)
-				// date += 1day
 				date = new Date(date);
-				date.setDate(date.getDate() + 1);
-				// convert date to be like 2020-12-12
-				date=date.toISOString().slice(0,10)
-				
-				// get data element by id
-				var datainput = document.getElementById("data");
-				datainput.value=date
-				console.log(date)
-
-
+				date.setDate(date.getDate());
+				// Use getFullYear(), getMonth() + 1, and getDate() to format the date
+				const year = date.getFullYear();
+				const month = (date.getMonth() + 1).toString().padStart(2, '0');
+				const day = date.getDate().toString().padStart(2, '0');
+				// Concatenate the parts to form the desired date string
+				const formattedDate = `${year}-${month}-${day}`;
 				// get from date month name
+				// put date in data input
+				document.getElementById("data").value=formattedDate
 
 				// make ajax request to get avilable time from database by day name and data
 				$.ajax({
@@ -342,7 +328,7 @@ if (form) {
 				type: "GET",
 				data: {
 				"dayName": dayName,
-				"date": date
+				"date": formattedDate
 				},
 				success: function (data) {
 					console.log(data)
@@ -374,25 +360,16 @@ if (form) {
 				console.log(error)
 			}
 			});
-
-
-
-
-				
-				
 				}
 				// Add an event listener for the changeDate event
 				$('.bootstrap-datepicker-inline').datepicker().on('changeDate', handleDateChange);
 			  </script>
-		
-
 			<script>
 				function putTime(item){
 					// this item inner text from: 03:00-To: 03:30 in want to get 03:00 and 03:30
 					 // Regular expression to match time patterns
 					var timePattern = /\d{2}:\d{2}/g;
 					var timeText=item.innerText
-					console.log(timeText)
 					// Extract all time patterns from the input string
 					var times = timeText.match(timePattern);
 					from=times[0]
@@ -411,6 +388,9 @@ if (form) {
 					// enable submitbtn
 					submitbtn.disabled=false
 
+					console.log(from)
+					console.log(to)
+
 
 				}
 			</script>
@@ -426,10 +406,6 @@ if (form) {
 					$("#MediaLocatonOffer").modal("hide");
 				});
 			</script>
-
-
-	
-
 			{% endblock %}
 
 {% endblock %}

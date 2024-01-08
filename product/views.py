@@ -31,6 +31,9 @@ import requests
 import base64
 import uuid
 
+#import send mail
+from django.core.mail import send_mail
+
 # Create your views here.
 
 def product(request):
@@ -657,7 +660,9 @@ def order_page(request):
 def payment_success(request):
     # Get product card
     product_card = CartProduct.objects.filter(user=request.user)
-
+    #get user email
+    user_email=request.user.email
+    
     # Get total price from session
     total_price = request.session['total_price']
     method_of_receiving = request.session['method_of_receiving']
@@ -674,7 +679,10 @@ def payment_success(request):
 
         # Add products to the order
         order.cart_product.set(product_card)
-
+        #get order id
+        order_id=order.id
+        
+        
         # Clear the user field in each product_card
         for product in product_card:
             product.user.remove(request.user)
@@ -682,8 +690,14 @@ def payment_success(request):
     #clear session
     request.session['product_card'] = []
     request.session['total_price'] = 0
-    
-
+    #send mail
+    send_mail(
+            'Order Confirmation',
+            f'Your order has been placed successfully. with number #{order_id} and total price {total_price} and receiving date {receiving_date} and method of receiving {method_of_receiving}',
+            settings.EMAIL_HOST_USER,
+            [user_email],
+            fail_silently=False,
+        )
     #django messages
     messages.success(request, "Your order has been placed successfully.")
     

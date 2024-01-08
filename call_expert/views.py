@@ -256,7 +256,7 @@ def call_designer(request):
         #validate all fields
         if not name or not email or not subject or not message or not fromtime or not totime or not date :
             messages.error(request, "All fields are required.")
-            return render(request, 'CallSeniorDesigner.html', {})
+            return redirect('call_expert:callEpertTwo')
         
         #convert fromtime from string to time not datetime
         fromtime = datetime.strptime(fromtime, '%H:%M').time()
@@ -390,6 +390,8 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url,
         )
+        
+        meeting_id = dragon_meeting_instance.id
         #get all files id
         files_id = meeting_data['files_id']
         if files_id:
@@ -401,11 +403,17 @@ def payment_success(request):
         #send mail to user
         send_mail(
             'Fast Meeting Reservation',
-            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            f' Your meeting is scheduled successfully and meeting number is #{meeting_id} and the meeting url is:  {meeting_url} and the meeting date is {meeting_data["meeting_date"]} and the meeting time is {meeting_data["start_time"]} with houston time zone',
             settings.EMAIL_HOST_USER,
             [meeting_data['user_email']],
             fail_silently=False,
-        )   
+        )  
+        #clear session
+        request.session['meeting_type'] = None
+        request.session['meeting_data'] = None
+        request.session['files_id'] = None
+        messages.success(request, "Your payment is done successfully and your meeting is scheduled.")
+        return redirect('call_expert:callEpertTwo') 
     elif meeting_type == 'unicorn':
         #calculate deuration
         start_time = meeting_data['start_time']
@@ -428,6 +436,7 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url
         )
+        meeting_id = unicorn_meeting_instance.id
         #get all files id
         files_id = meeting_data['files_id']
         if files_id:
@@ -440,11 +449,17 @@ def payment_success(request):
         #send mail to user
         send_mail(
             'Fast Meeting Reservation',
-            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            f'Your meeting is scheduled successfully and meeting number is #{meeting_id} and the meeting url is:  {meeting_url} and the meeting date is {meeting_data["meeting_date"]} and the meeting time is {meeting_data["start_time"]} with houston time zone',
             settings.EMAIL_HOST_USER,
             [meeting_data['user_email']],
             fail_silently=False,
         )
+        #clear session
+        request.session['meeting_type'] = None
+        request.session['meeting_data'] = None
+        request.session['files_id'] = None
+        messages.success(request, "Your payment is done successfully and your meeting is scheduled.")
+        return redirect('call_expert:callEpertTwo') 
         
     elif meeting_type == 'senior_dragon':
         #calculate deuration
@@ -467,6 +482,7 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url
         )
+        meeting_id = senior_dragon_meeting_instance.id
         #get all files id
         files_id = meeting_data['files_id']
         if files_id:
@@ -478,11 +494,17 @@ def payment_success(request):
         #send mail to user
         send_mail(
             'profissional Meeting Reservation',
-            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            f'Your meeting is scheduled successfully and meeting number is #{meeting_id} and the meeting url is:  {meeting_url} and the meeting date is {meeting_data["meeting_date"]} and the meeting time is {meeting_data["start_time"]} with houston time zone',
             settings.EMAIL_HOST_USER,
             [meeting_data['user_email']],
             fail_silently=False,
         )
+        #clear session
+        request.session['meeting_type'] = None
+        request.session['meeting_data'] = None
+        request.session['files_id'] = None
+        messages.success(request, "Your payment is done successfully and your meeting is scheduled.")
+        return redirect('call_expert:call_senior_designer') 
         
         
     elif meeting_type == 'senior_unicorn':
@@ -506,6 +528,7 @@ def payment_success(request):
             end_time=meeting_data['end_time'],
             meeting_url=meeting_url
         )
+        meeting_id = senior_unicorn_meeting_instance.id
 
         # get all files id
         files_id = meeting_data['files_id']
@@ -519,19 +542,20 @@ def payment_success(request):
         #send mail to user
         send_mail(
             'profissional Meeting Reservation',
-            'Your meeting is scheduled successfully and the meeting url is: ' + meeting_url,
+            f'Your meeting is scheduled successfully and meeting number is #{meeting_id} and the meeting url is:  {meeting_url} and the meeting date is {meeting_data["meeting_date"]} and the meeting time is {meeting_data["start_time"]} with houston time zone',
             settings.EMAIL_HOST_USER,
             [meeting_data['user_email']],
             fail_silently=False,
         )
+        #clear session
+        request.session['meeting_type'] = None
+        request.session['meeting_data'] = None
+        request.session['files_id'] = None
+        messages.success(request, "Your payment is done successfully and your meeting is scheduled.")
+        return redirect('call_expert:call_senior_designer') 
         
         
-    #clear session
-    request.session['meeting_type'] = None
-    request.session['meeting_data'] = None
-    request.session['files_id'] = None
-    messages.success(request, "Your payment is done successfully and your meeting is scheduled.")
-    return redirect('call_expert:call_expert')
+    
 
 
 

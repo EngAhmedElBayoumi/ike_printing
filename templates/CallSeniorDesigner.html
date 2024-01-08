@@ -209,6 +209,8 @@ color: #000;
 															<div class="CallAppointMentBox">
 																<div class="twochoise mb-3">
 														<div class="paymentWrap">
+															<p><span class="text-danger"> notic</span> All Available Time by houston time zone</p>
+
 															<div class="btn-group paymentBtnGroup btn-group-justified"
 																data-toggle="buttons">
 																
@@ -282,18 +284,14 @@ color: #000;
 			<script>
 				// Function to handle the changeDate event
 				function handleDateChange(event) {
-		
-				// check that data not in past 
-				// get today date by date not time
 				var today = new Date();
-				today.setHours(0,0,0,0);
 				var date = event.date;
+				console.log("date",date)
 				var singleTime=""
 				//get paymentBtnGroup element by class name
 				var timesection = document.getElementsByClassName("paymentBtnGroup");
 				// clear the div
 				timesection[0].innerHTML=""
-				//if the date is in past display message the data is in past you must select next data
 				if(today>date)
 				{
 					singleTime=`<div class="" role="alert">You must select today or next</div>`
@@ -303,20 +301,26 @@ color: #000;
 
 				// get from date day name
 				var dayName = date.toLocaleString('en-us', {  weekday: 'long' });
-				// convert date to be like 2020-12-12
-				date=date.toISOString().slice(0,10)
-				// date += 1day
 				date = new Date(date);
-				date.setDate(date.getDate() + 1);
-				// convert date to be like 2020-12-12
-				date=date.toISOString().slice(0,10)
-				
-				// get data element by id
+				date.setDate(date.getDate());
+
+				// Use getFullYear(), getMonth() + 1, and getDate() to format the date
+				const year = date.getFullYear();
+				const month = (date.getMonth() + 1).toString().padStart(2, '0');
+				const day = date.getDate().toString().padStart(2, '0');
+
+				// Concatenate the parts to form the desired date string
+				const formattedDate = `${year}-${month}-${day}`;
+				console.log('date',date)
+				console.log('formattedDate',formattedDate)
+
+
 				var datainput = document.getElementById("data");
-				datainput.value=date
-				console.log(date)
+				datainput.value=formattedDate
+				
+				
 
-
+				
 				// get from date month name
 
 				// make ajax request to get avilable time from database by day name and data
@@ -325,7 +329,7 @@ color: #000;
 				type: "GET",
 				data: {
 				"dayName": dayName,
-				"date": date
+				"date": formattedDate
 				},
 				success: function (data) {
 					console.log(data)
